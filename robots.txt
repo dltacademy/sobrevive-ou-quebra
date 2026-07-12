@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://Tiagolucer.github.io/sobrevive-ou-quebra/sitemap.xml
+Sitemap: https://tiagolucer.github.io/sobrevive-ou-quebra/sitemap.xml
