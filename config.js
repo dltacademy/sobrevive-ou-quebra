@@ -4,16 +4,16 @@
 
 const CONFIG = {
   // Link de afiliado padrão (Binance) — usado quando não há ?c= reconhecido
-  refDefault: "https://accounts.binance.com/register?ref=SEU_REF_AQUI",
+  refDefault: "https://www.binance.com/register?ref=BOSS2026",
 
   // Um link ref por canal/campanha — regra do doc 10: rastreamento por origem.
   // Chave = valor do parâmetro ?c= na URL. Edite/adicione livremente.
   refByChannel: {
-    grupos: "https://accounts.binance.com/register?ref=SEU_REF_AQUI",   // grupos Telegram/Discord/WhatsApp orgânico
-    whats: "https://accounts.binance.com/register?ref=SEU_REF_AQUI",    // status/DM WhatsApp pessoal
-    yt: "https://accounts.binance.com/register?ref=SEU_REF_AQUI",       // descrição/comentários YouTube
-    bio: "https://accounts.binance.com/register?ref=SEU_REF_AQUI",      // bio de redes sociais
-    "tg-ads": "https://accounts.binance.com/register?ref=SEU_REF_AQUI", // posts patrocinados no Telegram (B1)
+    grupos: "https://www.binance.com/register?ref=BOSS2026",   // grupos Telegram/Discord/WhatsApp orgânico
+    whats: "https://www.binance.com/register?ref=BOSS2026",    // status/DM WhatsApp pessoal
+    yt: "https://www.binance.com/register?ref=BOSS2026",       // descrição/comentários YouTube
+    bio: "https://www.binance.com/register?ref=BOSS2026",      // bio de redes sociais
+    "tg-ads": "https://www.binance.com/register?ref=BOSS2026", // posts patrocinados no Telegram (B1)
   },
 
   // Username do Telegram para a chamada de 15min (sem @, ex: "hyadhuad")
