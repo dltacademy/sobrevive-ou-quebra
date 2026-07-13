@@ -23,7 +23,8 @@ js/
   example-data.js      CSV sintético pro botão "ver com dados de exemplo"
   share-card.js        geração dos cards 1080x1080 pra download
   app.js                wiring da UI
-og-image.jpg          preview de compartilhamento (WhatsApp/Telegram/X)
+og-image.png          preview de compartilhamento (WhatsApp/Telegram/X) — marca DLT Academy
+assets/                logo/favicon de marca (dlt-mark.png, dlt-logo.png, dlt-logo-light.png)
 robots.txt / sitemap.xml
 .github/workflows/pages.yml   deploy automático no GitHub Pages a cada push em main
 ```
