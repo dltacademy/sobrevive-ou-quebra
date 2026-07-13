@@ -23,7 +23,7 @@ const CONFIG = {
   goatCounterSite: "",
 
   // URL pública final do site (preencher após o deploy — usada nos cards de share)
-  siteUrl: "https://tiagolucer.github.io/sobrevive-ou-quebra/",
+  siteUrl: "https://dltacademy.github.io/sobrevive-ou-quebra/",
 
   // Marca
   brand: "dltacademy",
