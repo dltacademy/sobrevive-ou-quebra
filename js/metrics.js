@@ -126,7 +126,7 @@ function buildDiagnosis(m, refDiscountPct) {
     findings.push({
       severity: m.feeBleedPct > 0.15 ? 3 : 2,
       title: "Taxas estão comendo parte real do seu resultado",
-      text: `Você pagou ${formatBRL(m.totalFees)} em taxas nos últimos ${m.totalTrades} trades — isso equivale a ${(m.feeBleedPct * 100).toFixed(1)}% do volume bruto movimentado. Com um desconto de taxa de ~${Math.round(refDiscountPct * 100)}%, seriam ~${formatBRL(savings)} a menos.`,
+      text: `Você pagou ${formatBRL(m.totalFees)} em taxas nos últimos ${m.totalTrades} trades — isso equivale a ${(m.feeBleedPct * 100).toFixed(1)}% do volume bruto movimentado. Com o cashback vitalício de ~${Math.round(refDiscountPct * 100)}% nas taxas, seriam ~${formatBRL(savings)} a menos — e vale pra sempre, não só nesses trades.`,
     });
   }
 

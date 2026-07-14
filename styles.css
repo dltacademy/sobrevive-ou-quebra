@@ -62,9 +62,9 @@ header.top { padding: 20px 0 0; }
   text-decoration: none;
   font-size: 15px;
 }
-/* .brand img — logo DA (miniatura) no header; ver brand-header-snippet.html */
-.brand img { height: 30px; display: block; }
-.brand .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--accent); }
+/* .brand img — logomarca completa (ícone + "DLT ACADEMY" já embutido na imagem).
+   NÃO colocar <span> de texto do lado — a imagem já é o lockup completo. */
+.brand img { height: 32px; display: block; }
 
 section { padding: 40px 0; }
 section.hero { padding-top: 28px; padding-bottom: 20px; }
