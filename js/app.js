@@ -2,7 +2,7 @@
 // Wiring da UI — conecta sliders/upload aos módulos de cálculo.
 // ============================================================
 
-const REF_DISCOUNT_PCT = 0.10; // desconto de taxa estimado via link ref (ajustar se souber o valor exato)
+const REF_DISCOUNT_PCT = 0.10; // cashback vitalício de taxa estimado via link ref (ajustar se souber o valor exato)
 
 function track(eventName) {
   if (window.goatcounter && window.goatcounter.count) {
