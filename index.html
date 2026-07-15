@@ -7,6 +7,8 @@
 <meta name="description" content="Simulador gratuito de gestão de risco em futuros cripto: descubra em 30 segundos se sua estratégia sobrevive a 100 trades. Analise seu histórico real, veja win rate, profit factor e sangramento de taxas — sem cadastro, seus dados não saem do navegador.">
 <meta name="keywords" content="simulador de risco futuros, análise de trades futuros, win rate, profit factor, calculadora de liquidação, diário de trade, gestão de risco cripto, revenge trading, futuros binance">
 <meta name="robots" content="noindex, nofollow, noarchive">
+<meta name="referrer" content="no-referrer">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://gc.zgo.at; style-src 'self' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data: blob:; connect-src 'self' https://*.goatcounter.com; object-src 'none'; frame-src 'none'; worker-src 'none'; base-uri 'none'; form-action 'self'; upgrade-insecure-requests">
 <link rel="canonical" href="https://sobrevive-ou-quebra.dlt.academy/">
 
 <!-- Open Graph -->
@@ -26,17 +28,6 @@
 <link rel="icon" type="image/png" href="assets/dlt-mark.png">
 <link rel="stylesheet" href="styles.css">
 
-<script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "WebApplication",
-  "name": "Sobrevive ou Quebra?",
-  "applicationCategory": "FinanceApplication",
-  "operatingSystem": "Web",
-  "description": "Simulador gratuito de gestão de risco em futuros cripto e analisador de histórico de trades.",
-  "offers": { "@type": "Offer", "price": "0", "priceCurrency": "BRL" }
-}
-</script>
 </head>
 <body>
 
@@ -114,7 +105,7 @@
           <li>Sem sinais, sem promessa de lucro — só gestão de risco de verdade</li>
         </ul>
         <div class="btn-row">
-          <a class="btn btn-primary" id="cta-ref-sim" href="#" target="_blank" rel="sponsored nofollow noopener">Ainda não tenho Binance →</a>
+          <a class="btn btn-primary" id="cta-ref-sim" href="#" target="_blank" rel="sponsored nofollow noopener noreferrer" referrerpolicy="no-referrer">Ainda não tenho Binance →</a>
           <a class="btn btn-secondary js-open-router" href="#proximo-passo">Já tenho — ver meu próximo passo</a>
           <a class="btn btn-secondary" href="#beneficio-indicado">Já me cadastrei — solicitar benefício</a>
         </div>
@@ -232,7 +223,7 @@
           <p id="router-offer-reason">—</p>
           <ul class="offer-list" id="router-offer-points"></ul>
           <div class="btn-row router-actions">
-            <a class="btn btn-primary" id="router-offer-cta" href="#" target="_blank" rel="sponsored nofollow noopener">Ver oferta →</a>
+            <a class="btn btn-primary" id="router-offer-cta" href="#" target="_blank" rel="sponsored nofollow noopener noreferrer" referrerpolicy="no-referrer">Ver oferta →</a>
             <button class="btn-secondary" type="button" id="router-reset">Refazer respostas</button>
           </div>
           <p class="fine-print" id="router-offer-note"></p>
@@ -300,7 +291,7 @@
         <div id="benefit-ready" class="benefit-ready" hidden aria-live="polite">
           <div class="benefit-ready-title">Revise antes de enviar</div>
           <pre id="benefit-message-preview"></pre>
-          <a class="btn btn-telegram" id="benefit-telegram" target="_blank" rel="nofollow noopener">Abrir Telegram e enviar solicitação →</a>
+          <a class="btn btn-telegram" id="benefit-telegram" target="_blank" rel="nofollow noopener noreferrer" referrerpolicy="no-referrer">Abrir Telegram e enviar solicitação →</a>
           <p class="fine-print">Abrir o Telegram não confirma automaticamente o benefício. Você ainda precisa enviar a mensagem; o cadastro será conferido no painel antes de qualquer atendimento.</p>
         </div>
       </div>
@@ -324,14 +315,5 @@
 <script src="js/example-data.js"></script>
 <script src="js/share-card.js"></script>
 <script src="js/app.js"></script>
-<script>
-  if (CONFIG.goatCounterSite) {
-    var gc = document.createElement("script");
-    gc.async = true;
-    gc.setAttribute("data-goatcounter", "https://" + CONFIG.goatCounterSite + ".goatcounter.com/count");
-    gc.src = "//gc.zgo.at/count.js";
-    document.head.appendChild(gc);
-  }
-</script>
 </body>
 </html>

@@ -3,6 +3,7 @@
 // ============================================================
 
 const FEE_SCENARIO_PCT = 0.10; // cenário educacional; não presume que uma oferta cobre o CSV analisado
+const MAX_CSV_BYTES = 5 * 1024 * 1024;
 
 function track(eventName) {
   if (window.goatcounter && window.goatcounter.count) {
@@ -178,7 +179,8 @@ function renderRouterAlternatives(keys) {
     link.className = "alternative-link";
     link.href = getOfferLink(key);
     link.target = "_blank";
-    link.rel = "sponsored nofollow noopener";
+    link.rel = "sponsored nofollow noopener noreferrer";
+    link.referrerPolicy = "no-referrer";
     link.dataset.offer = key;
     link.textContent = "Ver condições →";
     link.addEventListener("click", () => track(`clique_oferta_${key}_alternativa`));
@@ -412,8 +414,17 @@ fileInput.addEventListener("change", (e) => {
 });
 
 function handleFile(file) {
+  if (!file.name.toLowerCase().endsWith(".csv")) {
+    alert("Use um arquivo CSV exportado pela corretora.");
+    return;
+  }
+  if (file.size > MAX_CSV_BYTES) {
+    alert("Por segurança, o arquivo deve ter no máximo 5 MB. Exporte um período menor e tente novamente.");
+    return;
+  }
   const reader = new FileReader();
   reader.onload = (e) => processCSVText(e.target.result);
+  reader.onerror = () => alert("Não conseguimos ler o arquivo local. Nenhum dado foi enviado.");
   reader.readAsText(file);
   track("upload_csv");
 }
@@ -424,7 +435,19 @@ document.getElementById("btn-example").addEventListener("click", () => {
 });
 
 function processCSVText(text) {
-  const { headers, rows } = parseCSV(text);
+  if (typeof text !== "string" || text.length > MAX_CSV_BYTES) {
+    alert("O conteúdo excede o limite local de 5 MB.");
+    return;
+  }
+  const { headers, rows, error } = parseCSV(text);
+  if (error === "too_many_rows") {
+    alert("Por segurança, analise no máximo 20.000 linhas por vez. Exporte um período menor.");
+    return;
+  }
+  if (error === "too_many_columns") {
+    alert("O CSV tem colunas demais para uma análise segura. Exporte apenas o histórico de trades.");
+    return;
+  }
   if (!headers.length || !rows.length) {
     alert("Não conseguimos ler esse arquivo. Confirme que é um CSV exportado do seu histórico de trades.");
     return;
@@ -523,11 +546,26 @@ function renderRaioX(m) {
   findings.forEach((f) => {
     const div = document.createElement("div");
     div.className = "finding sev-" + f.severity;
-    div.innerHTML = `<div class="finding-title">${f.title}</div><div class="finding-text">${f.text}</div>`;
+    const title = document.createElement("div");
+    title.className = "finding-title";
+    title.textContent = f.title;
+    const text = document.createElement("div");
+    text.className = "finding-text";
+    text.textContent = f.text;
+    div.append(title, text);
     list.appendChild(div);
   });
   if (!findings.length) {
-    list.innerHTML = '<div class="finding sev-1"><div class="finding-title">Gestão de risco consistente</div><div class="finding-text">Não identificamos padrões problemáticos óbvios nesse histórico — bom sinal.</div></div>';
+    const div = document.createElement("div");
+    div.className = "finding sev-1";
+    const title = document.createElement("div");
+    title.className = "finding-title";
+    title.textContent = "Gestão de risco consistente";
+    const text = document.createElement("div");
+    text.className = "finding-text";
+    text.textContent = "Não identificamos padrões problemáticos óbvios nesse histórico — bom sinal.";
+    div.append(title, text);
+    list.appendChild(div);
   }
 
   const savings = m.totalFees * FEE_SCENARIO_PCT;
@@ -574,3 +612,13 @@ wireConversionLinks();
 initReferralBenefit();
 runSimAndRender();
 runCalc();
+
+// Analytics opcional. O identificador precisa ser um subdomínio simples;
+// valores inválidos não geram script nem requisição externa.
+if (CONFIG.goatCounterSite && /^[a-z0-9-]{1,63}$/.test(CONFIG.goatCounterSite)) {
+  const gc = document.createElement("script");
+  gc.async = true;
+  gc.dataset.goatcounter = `https://${CONFIG.goatCounterSite}.goatcounter.com/count`;
+  gc.src = "https://gc.zgo.at/count.js";
+  document.head.appendChild(gc);
+}

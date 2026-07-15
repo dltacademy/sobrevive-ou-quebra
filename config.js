@@ -66,7 +66,8 @@ const CONFIG = {
 
 function getChannel() {
   const params = new URLSearchParams(window.location.search);
-  return params.get("c") || null;
+  const channel = params.get("c");
+  return channel && /^[A-Za-z0-9_-]{1,40}$/.test(channel) ? channel : null;
 }
 
 function getVariant() {
