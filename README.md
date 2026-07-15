@@ -1,11 +1,13 @@
 # Sobrevive ou Quebra?
 
-Ferramenta web gratuita, 100% client-side, com duas portas de entrada pra converter tráfego em indicados qualificados de afiliado Binance:
+Ferramenta web gratuita, 100% client-side, com duas portas de entrada para educar, diagnosticar e encaminhar cada pessoa para uma oferta afiliada compatível com o contexto dela:
 
 - **Simulador de sobrevivência** — Monte Carlo (1.000 simulações de 100 trades) que mostra se uma estratégia de futuros sobrevive dado banca, alavancagem, risco por trade, win rate e R:R. Mira quem ainda não abriu conta (S2).
 - **Raio-X do histórico** — upload de CSV de trades (auto-detecção de colunas Binance/Bybit + mapeamento manual como fallback) gera diagnóstico de win rate, profit factor, sangramento de taxas, revenge trading e overtrading. Mira quem já opera em outra corretora (S1).
 
-Nenhum dado sai do navegador. Sem cadastro, sem backend, sem dependências (HTML/CSS/JS vanilla).
+Nenhum dado sai do navegador. Sem cadastro, sem backend, sem dependências (HTML/CSS/JS vanilla). Depois do resultado, um roteador pergunta se a pessoa já tem Binance e qual problema quer resolver. Binance continua prioritária para novas contas; quem já tem conta recebe uma alternativa contextual, sem mural de links.
+
+> **Pré-lançamento:** indexação bloqueada de propósito por `<meta name="robots">` e `robots.txt`. Só remover os dois bloqueios depois dos testes finais, tracking e links estarem confirmados.
 
 Contexto completo do projeto (estratégia, scripts de outreach, plano de julho) está no vault DFM: `100 - AREAS/03 - Financiamento/100 - PROJECTS/2 - Active/Venda de produtos afiliados por comissão/`.
 
@@ -31,16 +33,22 @@ robots.txt / sitemap.xml
 
 ## Antes de divulgar — checklist de lançamento
 
-1. Editar `config.js`: colar os links ref da Binance por canal (`refByChannel`), o username do Telegram, e o código do site no GoatCounter (goatcounter.com, gratuito, sem cookies).
-2. Habilitar GitHub Pages neste repo (Settings → Pages → Source: GitHub Actions) — o workflow já está pronto, só falta o primeiro push disparar.
-3. Testar a URL final: rodar o simulador, subir um CSV real, conferir que os botões de download geram os cards.
-4. Testar o preview de link (OG image) mandando a URL pra você mesmo no WhatsApp/Telegram.
-5. Divulgar com `?c=<canal>` em cada lugar diferente (grupos, whats, yt, bio, tg-ads) pra rastrear qual canal converte — o painel de afiliados da Binance mostra o funil por ref.
+1. Confirmar em `config.js` os links por canal (`refByChannel`) e todos os destinos em `offers`.
+2. O Telegram `@tiagolucer` está configurado somente no gate de benefício temporário para indicados; não existe contato aberto ao lado dos CTAs. Preencher ainda o código do site no GoatCounter.
+3. Abrir todos os links em janela anônima e registrar o benefício exibido, país, data e condições.
+4. Rodar simulador, CSV de exemplo, CSV real, calculadora, cards e todas as combinações do roteador em desktop e celular.
+5. Somente depois, trocar o `robots.txt` para `Allow: /`, recolocar o Sitemap e mudar a meta `robots` para `index, follow`.
+6. Confirmar o deploy no GitHub Pages e testar o preview do link em WhatsApp/Telegram.
+7. Divulgar com `?c=<canal>&v=<variante>` em cada origem.
 
 ## Rastreamento
 
-- **GoatCounter**: pageview por canal/variante, cliques em "ver exemplo", upload concluído, cliques nos CTAs (ref e Telegram).
-- **Binance**: 1 link ref por canal (regra do plano de julho) — cadastro → ativo aparece no painel de afiliados.
+- **GoatCounter**: eventos carregam canal e variante; o roteador também mede respostas, recomendação gerada e clique por oferta.
+- **Painéis afiliados**: cadastro e ativação são medidos no programa de cada oferta. Para Binance, `refByChannel` continua permitindo um destino específico por origem quando houver links separados.
+
+## Benefício temporário para indicados
+
+O contato no Telegram não é suporte público. A pessoa declara que concluiu o cadastro pelo link, informa plataforma + UID + data, revisa a mensagem e então abre `@tiagolucer`. Nenhum dado é armazenado no site. O benefício fica pendente até a indicação ser confirmada no painel e depende da disponibilidade da campanha. Nunca pedir senha, 2FA, documento, selfie, chave privada, saldo, carteira ou comprovante financeiro.
 
 ## Desenvolvimento local
 

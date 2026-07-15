@@ -6,6 +6,9 @@
 <title>Sobrevive ou Quebra? — Teste sua estratégia de futuros antes de arriscar dinheiro real</title>
 <meta name="description" content="Simulador gratuito de gestão de risco em futuros cripto: descubra em 30 segundos se sua estratégia sobrevive a 100 trades. Analise seu histórico real, veja win rate, profit factor e sangramento de taxas — sem cadastro, seus dados não saem do navegador.">
 <meta name="keywords" content="simulador de risco futuros, análise de trades futuros, win rate, profit factor, calculadora de liquidação, diário de trade, gestão de risco cripto, revenge trading, futuros binance">
+<meta name="robots" content="noindex, nofollow, noarchive">
+<meta name="referrer" content="no-referrer">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://gc.zgo.at; style-src 'self' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data: blob:; connect-src 'self' https://*.goatcounter.com; object-src 'none'; frame-src 'none'; worker-src 'none'; base-uri 'none'; form-action 'self'; upgrade-insecure-requests">
 <link rel="canonical" href="https://sobrevive-ou-quebra.dlt.academy/">
 
 <!-- Open Graph -->
@@ -25,17 +28,6 @@
 <link rel="icon" type="image/png" href="assets/dlt-mark.png">
 <link rel="stylesheet" href="styles.css">
 
-<script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "WebApplication",
-  "name": "Sobrevive ou Quebra?",
-  "applicationCategory": "FinanceApplication",
-  "operatingSystem": "Web",
-  "description": "Simulador gratuito de gestão de risco em futuros cripto e analisador de histórico de trades.",
-  "offers": { "@type": "Offer", "price": "0", "priceCurrency": "BRL" }
-}
-</script>
 </head>
 <body>
 
@@ -50,7 +42,7 @@
 
     <!-- ============ HERO / PORTA 1 — SIMULADOR ============ -->
     <section class="hero">
-      <span class="disclaimer-badge">⚠️ Não é recomendação de investimento — educacional, com dados reais de probabilidade</span>
+      <span class="disclaimer-badge">⚠️ Não é recomendação de investimento — modelo educacional de probabilidade</span>
       <h1 id="headline">A maioria <span class="highlight">quebra</span> operando futuros.<br>A sua estratégia sobrevive?</h1>
       <p class="subtitle" id="subheadline">Ajuste os controles abaixo e veja 1.000 simulações da sua estratégia rodando 100 trades — em segundos, sem cadastro, sem instalar nada.</p>
 
@@ -81,6 +73,8 @@
           </div>
         </div>
 
+        <p class="model-note"><strong>O que o modelo assume:</strong> o stop é executado antes da liquidação; alavancagem entra na estimativa de taxa. Não simula funding, slippage, manutenção de margem ou falha do stop. Use o resultado para comparar regras de risco — não para prever seu saldo.</p>
+
         <div class="result-banner" id="result-banner">
           <div>
             <div class="big-stat" id="result-big">—</div>
@@ -102,18 +96,20 @@
       </div>
 
       <div class="card convert-block" id="convert-sim">
-        <span class="tag s2">Decidiu operar mesmo assim?</span>
-        <div class="convert-headline">Pelo menos faça direito.</div>
-        <div class="convert-sub">13 anos de mercado cripto. Se você vai operar futuros de qualquer forma, comece com cashback vitalício nas taxas + uma revisão gratuita da sua gestão de risco antes do primeiro trade real.</div>
+        <span class="tag s2">Seu próximo passo</span>
+        <div class="convert-headline">Decidiu operar? Comece reduzindo o risco — inclusive o custo.</div>
+        <div class="convert-sub">Se você ainda não tem Binance, o link abaixo ativa o cashback vitalício de Spot disponível nessa indicação. Se já tem conta, responda duas perguntas e receba uma alternativa que você realmente possa usar.</div>
         <ul class="offer-list">
-          <li>Conta na Binance com cashback vitalício nas taxas (link abaixo)</li>
-          <li>Chamada de 15min pelo Telegram: configuração, alavancagem, stop, gestão emocional</li>
+          <li>Cashback vitalício nas taxas elegíveis de Spot pelo código BOSS2026</li>
+          <li>Roteamento sem empilhar links ou recomendar uma conta que você já possui</li>
           <li>Sem sinais, sem promessa de lucro — só gestão de risco de verdade</li>
         </ul>
         <div class="btn-row">
-          <a class="btn btn-primary" id="cta-ref-sim" href="#" target="_blank" rel="nofollow noopener">Abrir conta com cashback vitalício →</a>
-          <a class="btn btn-telegram" id="cta-tg-sim" href="#" target="_blank" rel="nofollow noopener">💬 Chamada de 15min grátis</a>
+          <a class="btn btn-primary" id="cta-ref-sim" href="#" target="_blank" rel="sponsored nofollow noopener noreferrer" referrerpolicy="no-referrer">Ainda não tenho Binance →</a>
+          <a class="btn btn-secondary js-open-router" href="#proximo-passo">Já tenho — ver meu próximo passo</a>
+          <a class="btn btn-secondary" href="#beneficio-indicado">Já me cadastrei — solicitar benefício</a>
         </div>
+        <p class="fine-print">A abertura da conta não obriga você a operar futuros. Verifique o benefício exibido no cadastro e só opere depois de entender alavancagem, liquidação e stop.</p>
       </div>
     </section>
 
@@ -163,17 +159,16 @@
 
       <div class="card convert-block" id="convert-rx">
         <span class="tag s1">Com base no seu histórico</span>
-        <div class="convert-headline">Quanto você deixou de ganhar em taxa</div>
+        <div class="convert-headline">Quanto uma redução de taxa representaria no seu histórico</div>
         <div class="savings-highlight" id="rx-savings">—</div>
-        <div class="convert-sub">Projeção com base no seu próprio histórico e no cashback vitalício de taxa da Binance pelo link abaixo — não dá pra migrar sua conta atual, mas uma conta nova na Binance já entra com esse cashback pra sempre.</div>
+        <div class="convert-sub">Este é um cenário educacional de 10% aplicado ao CSV — não afirma que o cashback de uma oferta cubra os trades analisados. Agora precisamos saber onde você já tem conta para não recomendar um benefício de novo usuário que não se aplica.</div>
         <ul class="offer-list">
-          <li>Cashback vitalício nas taxas operando pelo link (não é desconto só na entrada)</li>
-          <li>Chamada de 15min pra revisar os pontos do diagnóstico junto comigo</li>
+          <li>Sem conta Binance: cashback vitalício nas taxas elegíveis de Spot pelo link</li>
+          <li>Com conta Binance: alternativa contextual entre as corretoras cadastradas</li>
           <li>13 anos de mercado — gestão de risco e psicologia de trading, não sinal</li>
         </ul>
         <div class="btn-row">
-          <a class="btn btn-primary" id="cta-ref-rx" href="#" target="_blank" rel="nofollow noopener">Abrir conta com cashback vitalício →</a>
-          <a class="btn btn-telegram" id="cta-tg-rx" href="#" target="_blank" rel="nofollow noopener">💬 Revisar meu diagnóstico</a>
+          <a class="btn btn-primary js-open-router" id="cta-ref-rx" href="#proximo-passo">Encontrar a opção adequada →</a>
         </div>
       </div>
     </section>
@@ -196,6 +191,112 @@
       </div>
     </section>
 
+    <!-- ============ ROTEADOR DE PRÓXIMO PASSO ============ -->
+    <section id="proximo-passo" aria-labelledby="router-title">
+      <div class="card router-card">
+        <span class="tag">Recomendação contextual</span>
+        <h2 id="router-title">Qual próximo passo faz sentido para você?</h2>
+        <p class="section-desc">Duas respostas, uma recomendação principal. Os critérios são utilidade para o seu caso e possibilidade real de receber o benefício — não a comissão mais alta.</p>
+
+        <div class="router-question" data-question="binance">
+          <div class="router-label">1. Você já tem uma conta Binance validada?</div>
+          <div class="radio-group" role="group" aria-label="Conta Binance">
+            <button type="button" data-router-field="hasBinance" data-value="no">Ainda não</button>
+            <button type="button" data-router-field="hasBinance" data-value="yes">Sim</button>
+          </div>
+        </div>
+
+        <div class="router-question" data-question="goal">
+          <div class="router-label">2. O que você quer resolver agora?</div>
+          <div class="radio-group" role="group" aria-label="Objetivo principal">
+            <button type="button" data-router-field="goal" data-value="trade">Começar ou melhorar no trading</button>
+            <button type="button" data-router-field="goal" data-value="alternative">Ter outra corretora</button>
+            <button type="button" data-router-field="goal" data-value="spend">Gastar cripto e economizar em viagens</button>
+          </div>
+        </div>
+
+        <div id="router-pending" class="router-pending" aria-live="polite">Responda as duas perguntas para liberar a recomendação.</div>
+
+        <div id="router-result" class="router-result" hidden aria-live="polite">
+          <div class="router-kicker">Recomendação principal</div>
+          <h3 id="router-offer-name">—</h3>
+          <p id="router-offer-reason">—</p>
+          <ul class="offer-list" id="router-offer-points"></ul>
+          <div class="btn-row router-actions">
+            <a class="btn btn-primary" id="router-offer-cta" href="#" target="_blank" rel="sponsored nofollow noopener noreferrer" referrerpolicy="no-referrer">Ver oferta →</a>
+            <button class="btn-secondary" type="button" id="router-reset">Refazer respostas</button>
+          </div>
+          <p class="fine-print" id="router-offer-note"></p>
+
+          <details id="router-alternatives">
+            <summary>Ver alternativas compatíveis</summary>
+            <div id="router-alternative-list" class="alternative-grid"></div>
+          </details>
+        </div>
+
+        <div class="affiliate-disclosure">
+          <strong>Transparência:</strong> esta página contém links de afiliado. Podemos receber comissão se você se cadastrar e usar um produto, sem custo adicional direto para você. Benefícios, disponibilidade, cashback e regras mudam por país e campanha; confira sempre a tela final antes do cadastro.
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ BENEFÍCIO TEMPORÁRIO PARA INDICADOS ============ -->
+    <section id="beneficio-indicado" aria-labelledby="benefit-title">
+      <div class="card benefit-card">
+        <span class="tag s1">Temporário · opcional · sujeito a confirmação</span>
+        <h2 id="benefit-title">Já se cadastrou pelo link deste site?</h2>
+        <p class="section-desc">Indicados confirmados no painel podem solicitar uma consultoria inicial de até 20 minutos sobre primeiros passos, segurança e gestão de risco. A disponibilidade é limitada e o benefício só é liberado depois da confirmação do cadastro.</p>
+
+        <ol class="benefit-steps">
+          <li>Você conclui o cadastro pelo link afiliado exibido nesta página.</li>
+          <li>Informa somente a plataforma, seu UID/número de usuário e a data do cadastro.</li>
+          <li>O cadastro é conferido no painel; depois da confirmação, combinamos o atendimento se ainda houver disponibilidade.</li>
+        </ol>
+
+        <button class="btn-secondary" type="button" id="benefit-start">Tenho interesse e já concluí o cadastro</button>
+
+        <form id="benefit-form" class="benefit-form" hidden>
+          <div class="calc-grid">
+            <div class="calc-field">
+              <label for="benefit-offer">Plataforma usada no cadastro</label>
+              <select id="benefit-offer" required>
+                <option value="">Selecione</option>
+                <option value="Binance">Binance</option>
+                <option value="Bybit">Bybit</option>
+                <option value="ether.fi Cash">ether.fi Cash</option>
+                <option value="OKX">OKX</option>
+                <option value="KuCoin">KuCoin</option>
+                <option value="MEXC">MEXC</option>
+              </select>
+            </div>
+            <div class="calc-field">
+              <label for="benefit-date">Data do cadastro</label>
+              <input type="date" id="benefit-date" required>
+            </div>
+          </div>
+          <div class="calc-field">
+            <label for="benefit-uid">UID / número de usuário na plataforma</label>
+            <input type="text" id="benefit-uid" inputmode="numeric" autocomplete="off" minlength="4" maxlength="40" placeholder="Somente o UID público da conta" required>
+          </div>
+          <label class="benefit-consent">
+            <input type="checkbox" id="benefit-confirm" required>
+            <span>Confirmo que me cadastrei pelo link deste site e quero enviar esses dados ao Tiago pelo Telegram para conferência no painel.</span>
+          </label>
+          <div class="privacy-warning"><strong>Nunca envie:</strong> senha, código 2FA, documento, selfie, chave privada, saldo, endereço de carteira ou comprovante de depósito. Para a conferência bastam plataforma, UID e data.</div>
+          <div class="btn-row benefit-actions">
+            <button class="btn-primary" type="submit">Preparar solicitação →</button>
+          </div>
+        </form>
+
+        <div id="benefit-ready" class="benefit-ready" hidden aria-live="polite">
+          <div class="benefit-ready-title">Revise antes de enviar</div>
+          <pre id="benefit-message-preview"></pre>
+          <a class="btn btn-telegram" id="benefit-telegram" target="_blank" rel="nofollow noopener noreferrer" referrerpolicy="no-referrer">Abrir Telegram e enviar solicitação →</a>
+          <p class="fine-print">Abrir o Telegram não confirma automaticamente o benefício. Você ainda precisa enviar a mensagem; o cadastro será conferido no painel antes de qualquer atendimento.</p>
+        </div>
+      </div>
+    </section>
+
   </div>
 </main>
 
@@ -214,14 +315,5 @@
 <script src="js/example-data.js"></script>
 <script src="js/share-card.js"></script>
 <script src="js/app.js"></script>
-<script>
-  if (CONFIG.goatCounterSite) {
-    var gc = document.createElement("script");
-    gc.async = true;
-    gc.setAttribute("data-goatcounter", "https://" + CONFIG.goatCounterSite + ".goatcounter.com/count");
-    gc.src = "//gc.zgo.at/count.js";
-    document.head.appendChild(gc);
-  }
-</script>
 </body>
 </html>
