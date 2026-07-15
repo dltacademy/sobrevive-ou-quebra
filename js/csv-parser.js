@@ -5,6 +5,9 @@
 // Tudo roda no navegador — nenhum arquivo é enviado a servidor.
 // ============================================================
 
+const MAX_CSV_ROWS = 20000;
+const MAX_CSV_COLUMNS = 100;
+
 function parseCSV(text) {
   const delimiter = detectDelimiter(text);
   const rows = [];
@@ -30,11 +33,20 @@ function parseCSV(text) {
         inQuotes = true;
       } else if (c === delimiter) {
         row.push(field);
+        if (row.length > MAX_CSV_COLUMNS) {
+          return { headers: [], rows: [], error: "too_many_columns" };
+        }
         field = "";
       } else if (c === "\n" || c === "\r") {
         if (c === "\r" && text[i + 1] === "\n") i++;
         row.push(field);
+        if (row.length > MAX_CSV_COLUMNS) {
+          return { headers: [], rows: [], error: "too_many_columns" };
+        }
         if (row.some((f) => f.trim() !== "")) rows.push(row);
+        if (rows.length > MAX_CSV_ROWS + 1) {
+          return { headers: [], rows: [], error: "too_many_rows" };
+        }
         row = [];
         field = "";
       } else {
@@ -44,17 +56,23 @@ function parseCSV(text) {
   }
   if (field !== "" || row.length) {
     row.push(field);
+    if (row.length > MAX_CSV_COLUMNS) {
+      return { headers: [], rows: [], error: "too_many_columns" };
+    }
     if (row.some((f) => f.trim() !== "")) rows.push(row);
+    if (rows.length > MAX_CSV_ROWS + 1) {
+      return { headers: [], rows: [], error: "too_many_rows" };
+    }
   }
 
   if (!rows.length) return { headers: [], rows: [] };
   const headers = rows[0].map((h) => h.trim());
   const dataRows = rows.slice(1).map((r) => {
-    const obj = {};
+    const obj = Object.create(null);
     headers.forEach((h, idx) => (obj[h] = (r[idx] || "").trim()));
     return obj;
   });
-  return { headers, rows: dataRows };
+  return { headers, rows: dataRows, error: null };
 }
 
 function detectDelimiter(text) {

@@ -3,7 +3,9 @@
 // Nenhum dado sai do navegador; tudo roda em JS puro.
 // ============================================================
 
-const TAKER_FEE = 0.0005; // ~0.05% por perna (entrada+saída), aproximação de futuros Binance
+// Hipótese educacional: ~0,05% por perna. Não representa uma tabela vigente
+// nem inclui funding, slippage, manutenção de margem ou liquidação.
+const TAKER_FEE = 0.0005;
 
 /**
  * Roda 1 sequência de N trades e retorna a curva de equity + se quebrou.

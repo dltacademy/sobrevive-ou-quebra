@@ -2,11 +2,17 @@
 // Wiring da UI — conecta sliders/upload aos módulos de cálculo.
 // ============================================================
 
-const REF_DISCOUNT_PCT = 0.10; // cashback vitalício de taxa estimado via link ref (ajustar se souber o valor exato)
+const FEE_SCENARIO_PCT = 0.10; // cenário educacional; não presume que uma oferta cobre o CSV analisado
+const MAX_CSV_BYTES = 5 * 1024 * 1024;
 
 function track(eventName) {
   if (window.goatcounter && window.goatcounter.count) {
-    window.goatcounter.count({ path: eventName, event: true });
+    const channel = getChannel() || "direto";
+    const variant = getVariant();
+    window.goatcounter.count({
+      path: `${eventName}?c=${encodeURIComponent(channel)}&v=${encodeURIComponent(variant)}`,
+      event: true,
+    });
   }
 }
 
@@ -24,21 +30,276 @@ function applyVariant() {
 // ---------- Links de conversão (ref + telegram) ----------
 function wireConversionLinks() {
   const ref = getRefLink();
-  const tg = getTelegramLink("Vim pelo Sobrevive ou Quebra? — quero a chamada de 15min");
-  ["cta-ref-sim", "cta-ref-rx"].forEach((id) => {
-    const el = document.getElementById(id);
-    if (el) el.href = ref;
-  });
-  ["cta-tg-sim", "cta-tg-rx"].forEach((id) => {
-    const el = document.getElementById(id);
-    if (el) el.href = tg;
-  });
-  document.querySelectorAll("#cta-ref-sim, #cta-ref-rx").forEach((el) =>
-    el.addEventListener("click", () => track("clique_ref"))
+  const directBinance = document.getElementById("cta-ref-sim");
+  if (directBinance) directBinance.href = ref;
+  if (directBinance) {
+    directBinance.addEventListener("click", () => track("clique_oferta_binance_direto"));
+  }
+  document.querySelectorAll(".js-open-router").forEach((el) =>
+    el.addEventListener("click", () => track("abriu_roteador"))
   );
-  document.querySelectorAll("#cta-tg-sim, #cta-tg-rx").forEach((el) =>
-    el.addEventListener("click", () => track("clique_telegram"))
-  );
+}
+
+// ============================================================
+// ROTEADOR — uma recomendação principal conforme contexto
+// ============================================================
+const routerState = { hasBinance: null, goal: null };
+
+const ROUTER_OFFERS = {
+  binance: {
+    title: "Binance com cashback vitalício no Spot",
+    cta: "Abrir com o código BOSS2026 →",
+    points: [
+      "Cashback vitalício nas taxas elegíveis de Spot ativado pelo link de indicação",
+      "Boa porta de entrada para spot e, depois de entender os riscos, futuros",
+      "Código de referência: BOSS2026",
+    ],
+    note: "Válido para conta nova elegível. Confirme o cashback de Spot exibido na tela de cadastro. Não presumimos que o mesmo percentual cubra Futures; o benefício acompanha as regras vigentes do programa de indicação.",
+  },
+  bybit: {
+    title: "Bybit como segunda corretora",
+    cta: "Conhecer a Bybit →",
+    points: [
+      "Alternativa ampla para spot, derivativos, pagamentos e cartão",
+      "Útil para quem já tem Binance e quer separar estratégias ou comparar execução",
+      "Código de referência: O0YDQDM",
+    ],
+    note: "Produtos, recompensas e cartão variam por país. Confira KYC, tarefas e condições exibidas no cadastro.",
+  },
+  etherfi: {
+    title: "ether.fi Cash para gastos e viagens",
+    cta: "Ver a oferta do ether.fi Cash →",
+    points: [
+      "Cartão focado em gastar stablecoins e cripto no dia a dia",
+      "Cashback pode chegar a 3% conforme tier, promoção, gasto e transação elegível",
+      "Comece o cadastro no navegador pelo link; instale o app somente depois",
+    ],
+    note: "O fluxo navegador → cadastro → aplicativo é importante para a atribuição da promoção. Confira cashback, FX, taxas, limites e elegibilidade antes de concluir.",
+  },
+  okx: {
+    title: "Cartão OKX Brasil",
+    cta: "Ver a oferta da OKX →",
+    points: [
+      "Cartão virtual conectado ao saldo em USD do OKX Pay",
+      "A tabela atual do produto brasileiro informa IOF zero e sem anuidade",
+      "Código de referência: 30985036",
+    ],
+    note: "Condições do produto brasileiro. Câmbio em moeda diferente de USD usa a taxa da Mastercard; elegibilidade e campanhas podem mudar.",
+  },
+  kucoin: {
+    title: "KuCoin",
+    cta: "Conhecer a KuCoin →",
+    points: [
+      "Alternativa secundária para spot e futuros",
+      "Pode fazer sentido para quem já usa as opções principais",
+      "Código de referência: QBSD5WP6",
+    ],
+    note: "Disponibilidade, comissão e benefícios dependem do país e dos termos atuais.",
+  },
+  mexc: {
+    title: "MEXC",
+    cta: "Conhecer a MEXC →",
+    points: [
+      "Alternativa secundária para ampliar o catálogo de ativos",
+      "KYC, recursos e limites variam por jurisdição",
+    ],
+    note: "Não conte com acesso sem KYC: confirme os requisitos atuais e a disponibilidade regional antes do cadastro.",
+  },
+};
+
+function selectRouterOffer() {
+  if (!routerState.hasBinance || !routerState.goal) return null;
+  if (routerState.goal === "spend") {
+    return { primary: "etherfi", alternatives: ["okx"] };
+  }
+  if (routerState.hasBinance === "no") {
+    return { primary: "binance", alternatives: ["bybit"] };
+  }
+  return { primary: "bybit", alternatives: ["kucoin", "mexc", "okx"] };
+}
+
+function renderRouter() {
+  const selection = selectRouterOffer();
+  const pending = document.getElementById("router-pending");
+  const result = document.getElementById("router-result");
+  if (!selection) {
+    pending.hidden = false;
+    result.hidden = true;
+    return;
+  }
+
+  const offer = ROUTER_OFFERS[selection.primary];
+  pending.hidden = true;
+  result.hidden = false;
+  result.dataset.offer = selection.primary;
+  document.getElementById("router-offer-name").textContent = offer.title;
+  document.getElementById("router-offer-reason").textContent = buildRouterReason(selection.primary);
+  document.getElementById("router-offer-note").textContent = offer.note;
+
+  const points = document.getElementById("router-offer-points");
+  points.innerHTML = "";
+  offer.points.forEach((point) => {
+    const li = document.createElement("li");
+    li.textContent = point;
+    points.appendChild(li);
+  });
+
+  const cta = document.getElementById("router-offer-cta");
+  cta.href = getOfferLink(selection.primary);
+  cta.textContent = offer.cta;
+  cta.dataset.offer = selection.primary;
+  renderRouterAlternatives(selection.alternatives);
+  track(`roteador_resultado_${selection.primary}`);
+}
+
+function buildRouterReason(primary) {
+  if (primary === "binance") {
+    return "Você ainda não tem Binance e quer resolver uma necessidade ligada a trading. Aqui o benefício de conta nova ainda pode ser ativado; começar por outra indicação agora só aumentaria a complexidade.";
+  }
+  if (primary === "etherfi") {
+    return "Seu objetivo principal é gastar cripto e reduzir atrito em viagens. Por isso, um cartão especializado é mais coerente do que abrir outra corretora apenas para trading.";
+  }
+  return "Como você já tem Binance, não faz sentido prometer um benefício de novo usuário nela. A Bybit é a alternativa principal pelo conjunto de recursos e pelo programa de indicação.";
+}
+
+function renderRouterAlternatives(keys) {
+  const details = document.getElementById("router-alternatives");
+  const list = document.getElementById("router-alternative-list");
+  list.innerHTML = "";
+  details.hidden = keys.length === 0;
+  keys.forEach((key) => {
+    const offer = ROUTER_OFFERS[key];
+    const card = document.createElement("article");
+    card.className = "alternative-card";
+    const title = document.createElement("h4");
+    title.textContent = offer.title;
+    const text = document.createElement("p");
+    text.textContent = offer.points[0];
+    const link = document.createElement("a");
+    link.className = "alternative-link";
+    link.href = getOfferLink(key);
+    link.target = "_blank";
+    link.rel = "sponsored nofollow noopener noreferrer";
+    link.referrerPolicy = "no-referrer";
+    link.dataset.offer = key;
+    link.textContent = "Ver condições →";
+    link.addEventListener("click", () => track(`clique_oferta_${key}_alternativa`));
+    card.append(title, text, link);
+    list.appendChild(card);
+  });
+}
+
+function resetRouter() {
+  routerState.hasBinance = null;
+  routerState.goal = null;
+  document.querySelectorAll("[data-router-field]").forEach((button) => {
+    button.classList.remove("selected");
+    button.setAttribute("aria-pressed", "false");
+  });
+  document.getElementById("router-alternatives").open = false;
+  renderRouter();
+  track("roteador_reset");
+}
+
+document.querySelectorAll("[data-router-field]").forEach((button) => {
+  button.setAttribute("aria-pressed", "false");
+  button.addEventListener("click", () => {
+    const field = button.dataset.routerField;
+    const value = button.dataset.value;
+    routerState[field] = value;
+    document.querySelectorAll(`[data-router-field="${field}"]`).forEach((peer) => {
+      const selected = peer === button;
+      peer.classList.toggle("selected", selected);
+      peer.setAttribute("aria-pressed", String(selected));
+    });
+    track(`roteador_resposta_${field}_${value}`);
+    renderRouter();
+  });
+});
+
+document.getElementById("router-offer-cta").addEventListener("click", (event) => {
+  const offer = event.currentTarget.dataset.offer || "desconhecida";
+  track(`clique_oferta_${offer}_principal`);
+});
+document.getElementById("router-reset").addEventListener("click", resetRouter);
+
+// ============================================================
+// BENEFÍCIO TEMPORÁRIO — contato liberado após dados mínimos
+// ============================================================
+function initReferralBenefit() {
+  const section = document.getElementById("beneficio-indicado");
+  if (!section) return;
+  if (!isTelegramConfigured()) {
+    section.hidden = true;
+    return;
+  }
+
+  const start = document.getElementById("benefit-start");
+  const form = document.getElementById("benefit-form");
+  const offer = document.getElementById("benefit-offer");
+  const uid = document.getElementById("benefit-uid");
+  const date = document.getElementById("benefit-date");
+  const ready = document.getElementById("benefit-ready");
+  const preview = document.getElementById("benefit-message-preview");
+  const telegram = document.getElementById("benefit-telegram");
+
+  date.max = new Date().toISOString().slice(0, 10);
+
+  start.addEventListener("click", () => {
+    form.hidden = false;
+    start.hidden = true;
+    offer.focus();
+    track("beneficio_verificacao_iniciada");
+  });
+
+  form.addEventListener("input", () => {
+    ready.hidden = true;
+    telegram.removeAttribute("href");
+  });
+
+  form.addEventListener("submit", (event) => {
+    event.preventDefault();
+    if (!form.reportValidity()) return;
+
+    const cleanUid = uid.value.trim();
+    if (!/^[A-Za-z0-9_-]{4,40}$/.test(cleanUid)) {
+      uid.setCustomValidity("Use somente letras, números, _ ou - do UID da plataforma.");
+      uid.reportValidity();
+      return;
+    }
+    uid.setCustomValidity("");
+
+    const selectedDate = new Date(date.value + "T00:00:00");
+    if (Number.isNaN(selectedDate.getTime()) || selectedDate > new Date()) {
+      date.setCustomValidity("Informe uma data de cadastro válida, sem usar uma data futura.");
+      date.reportValidity();
+      return;
+    }
+    date.setCustomValidity("");
+
+    const channel = getChannel() || "direto";
+    const variant = getVariant();
+    const message = [
+      "Olá, Tiago. Quero solicitar o benefício temporário para indicados do site Sobrevive ou Quebra?.",
+      "",
+      `Plataforma: ${offer.value}`,
+      `UID: ${cleanUid}`,
+      `Data do cadastro: ${date.value.split("-").reverse().join("/")}`,
+      `Origem do site: ${channel} · variante ${variant}`,
+      "",
+      "Confirmo que me cadastrei pelo link do site e entendo que o benefício depende da confirmação no painel e da disponibilidade.",
+    ].join("\n");
+
+    preview.textContent = message;
+    telegram.href = getTelegramLink(message);
+    ready.hidden = false;
+    ready.scrollIntoView({ behavior: "smooth", block: "nearest" });
+    track("beneficio_solicitacao_preparada_" + offer.value.toLowerCase().replace(/[^a-z0-9]+/g, "_"));
+  });
+
+  uid.addEventListener("input", () => uid.setCustomValidity(""));
+  date.addEventListener("input", () => date.setCustomValidity(""));
+  telegram.addEventListener("click", () => track("beneficio_abriu_telegram"));
 }
 
 // ============================================================
@@ -153,8 +414,17 @@ fileInput.addEventListener("change", (e) => {
 });
 
 function handleFile(file) {
+  if (!file.name.toLowerCase().endsWith(".csv")) {
+    alert("Use um arquivo CSV exportado pela corretora.");
+    return;
+  }
+  if (file.size > MAX_CSV_BYTES) {
+    alert("Por segurança, o arquivo deve ter no máximo 5 MB. Exporte um período menor e tente novamente.");
+    return;
+  }
   const reader = new FileReader();
   reader.onload = (e) => processCSVText(e.target.result);
+  reader.onerror = () => alert("Não conseguimos ler o arquivo local. Nenhum dado foi enviado.");
   reader.readAsText(file);
   track("upload_csv");
 }
@@ -165,7 +435,19 @@ document.getElementById("btn-example").addEventListener("click", () => {
 });
 
 function processCSVText(text) {
-  const { headers, rows } = parseCSV(text);
+  if (typeof text !== "string" || text.length > MAX_CSV_BYTES) {
+    alert("O conteúdo excede o limite local de 5 MB.");
+    return;
+  }
+  const { headers, rows, error } = parseCSV(text);
+  if (error === "too_many_rows") {
+    alert("Por segurança, analise no máximo 20.000 linhas por vez. Exporte um período menor.");
+    return;
+  }
+  if (error === "too_many_columns") {
+    alert("O CSV tem colunas demais para uma análise segura. Exporte apenas o histórico de trades.");
+    return;
+  }
   if (!headers.length || !rows.length) {
     alert("Não conseguimos ler esse arquivo. Confirme que é um CSV exportado do seu histórico de trades.");
     return;
@@ -258,21 +540,37 @@ function renderRaioX(m) {
   document.getElementById("rx-dd").textContent = formatBRLShort(m.maxDrawdown);
   document.getElementById("rx-rr").textContent = m.realizedRR !== null ? m.realizedRR.toFixed(2) : "—";
 
-  const findings = buildDiagnosis(m, REF_DISCOUNT_PCT);
+  const findings = buildDiagnosis(m, FEE_SCENARIO_PCT);
   const list = document.getElementById("findings-list");
   list.innerHTML = "";
   findings.forEach((f) => {
     const div = document.createElement("div");
     div.className = "finding sev-" + f.severity;
-    div.innerHTML = `<div class="finding-title">${f.title}</div><div class="finding-text">${f.text}</div>`;
+    const title = document.createElement("div");
+    title.className = "finding-title";
+    title.textContent = f.title;
+    const text = document.createElement("div");
+    text.className = "finding-text";
+    text.textContent = f.text;
+    div.append(title, text);
     list.appendChild(div);
   });
   if (!findings.length) {
-    list.innerHTML = '<div class="finding sev-1"><div class="finding-title">Gestão de risco consistente</div><div class="finding-text">Não identificamos padrões problemáticos óbvios nesse histórico — bom sinal.</div></div>';
+    const div = document.createElement("div");
+    div.className = "finding sev-1";
+    const title = document.createElement("div");
+    title.className = "finding-title";
+    title.textContent = "Gestão de risco consistente";
+    const text = document.createElement("div");
+    text.className = "finding-text";
+    text.textContent = "Não identificamos padrões problemáticos óbvios nesse histórico — bom sinal.";
+    div.append(title, text);
+    list.appendChild(div);
   }
 
-  const savings = m.totalFees * REF_DISCOUNT_PCT;
-  document.getElementById("rx-savings").textContent = formatBRLShort(savings) + " a menos em taxas";
+  const savings = m.totalFees * FEE_SCENARIO_PCT;
+  document.getElementById("rx-savings").textContent =
+    formatBRLShort(savings) + " preservados num cenário de 10% menos taxa";
   document.getElementById("convert-rx").classList.add("visible");
 
   document.getElementById("raiox-results").scrollIntoView({ behavior: "smooth", block: "start" });
@@ -311,5 +609,16 @@ function runCalc() {
 // ============================================================
 applyVariant();
 wireConversionLinks();
+initReferralBenefit();
 runSimAndRender();
 runCalc();
+
+// Analytics opcional. O identificador precisa ser um subdomínio simples;
+// valores inválidos não geram script nem requisição externa.
+if (CONFIG.goatCounterSite && /^[a-z0-9-]{1,63}$/.test(CONFIG.goatCounterSite)) {
+  const gc = document.createElement("script");
+  gc.async = true;
+  gc.dataset.goatcounter = `https://${CONFIG.goatCounterSite}.goatcounter.com/count`;
+  gc.src = "https://gc.zgo.at/count.js";
+  document.head.appendChild(gc);
+}
