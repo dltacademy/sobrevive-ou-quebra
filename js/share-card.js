@@ -1,6 +1,6 @@
 // ============================================================
 // Gera um card 1080x1080 (canvas) pra download/compartilhamento.
-// Todo card termina em cupom de presente (cashback vitalício),
+// Todo card termina em cupom de presente (cashback vitalício no Spot),
 // não só estatística — ver BRAND.md do ferramenta-kit.
 // ============================================================
 
@@ -37,7 +37,7 @@ function generateSimulatorCard(mcResult, params) {
 
   drawCouponBox(ctx, {
     label: "PRESENTE POR TESTAR",
-    offerText: "Cashback vitalício\nnas taxas Binance",
+    offerText: "Cashback vitalício\nno Spot Binance",
   });
   return canvas;
 }
@@ -75,7 +75,7 @@ function generateRaioXCard(metrics) {
 
   drawCouponBox(ctx, {
     label: "PRESENTE POR ANALISAR",
-    offerText: "Cashback vitalício\nnas taxas Binance",
+    offerText: "Cashback vitalício\nno Spot Binance",
   });
   return canvas;
 }
