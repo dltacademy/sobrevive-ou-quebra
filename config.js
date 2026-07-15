@@ -16,8 +16,43 @@ const CONFIG = {
     "tg-ads": "https://www.binance.com/register?ref=BOSS2026", // posts patrocinados no Telegram (B1)
   },
 
-  // Username do Telegram para a chamada de 15min (sem @, ex: "hyadhuad")
-  telegramUsername: "SEU_USUARIO_TELEGRAM",
+  // Ofertas usadas pelo roteador. O texto público e a ordem ficam em js/app.js;
+  // este arquivo concentra somente destinos e configurações operacionais.
+  offers: {
+    binance: {
+      name: "Binance",
+      url: "https://www.binance.com/register?ref=BOSS2026",
+      code: "BOSS2026",
+    },
+    bybit: {
+      name: "Bybit",
+      url: "https://www.bybit.com/invite?ref=O0YDQDM",
+      code: "O0YDQDM",
+    },
+    etherfi: {
+      name: "ether.fi Cash",
+      url: "https://www.ether.fi/@e155ee95",
+      code: "",
+    },
+    okx: {
+      name: "OKX",
+      url: "https://okx.com/en-br/join/30985036",
+      code: "30985036",
+    },
+    kucoin: {
+      name: "KuCoin",
+      url: "https://www.kucoin.com/r/rf/QBSD5WP6",
+      code: "QBSD5WP6",
+    },
+    mexc: {
+      name: "MEXC",
+      url: "https://promote.mexc.com/r/602CUJpOyA",
+      code: "",
+    },
+  },
+
+  // Username do Telegram para a consultoria de 20 minutos (sem @, ex: "hyadhuad")
+  telegramUsername: "tiagolucer",
 
   // Código de site do GoatCounter (ex: "meusite" para meusite.goatcounter.com)
   goatCounterSite: "",
@@ -49,6 +84,19 @@ function getRefLink() {
 }
 
 function getTelegramLink(prefill) {
+  if (!isTelegramConfigured()) return null;
   const base = `https://t.me/${CONFIG.telegramUsername}`;
   return prefill ? `${base}?text=${encodeURIComponent(prefill)}` : base;
+}
+
+function isTelegramConfigured() {
+  return Boolean(
+    CONFIG.telegramUsername &&
+    CONFIG.telegramUsername !== "SEU_USUARIO_TELEGRAM"
+  );
+}
+
+function getOfferLink(offerKey) {
+  if (offerKey === "binance") return getRefLink();
+  return CONFIG.offers[offerKey] ? CONFIG.offers[offerKey].url : "#";
 }

@@ -118,15 +118,15 @@ function coefficientOfVariation(arr) {
 }
 
 /** Gera os 3 principais diagnósticos em texto, ordenados por severidade. */
-function buildDiagnosis(m, refDiscountPct) {
+function buildDiagnosis(m, feeScenarioPct) {
   const findings = [];
 
   if (m.feeBleedPct > 0.08) {
-    const savings = m.totalFees * refDiscountPct;
+    const savings = m.totalFees * feeScenarioPct;
     findings.push({
       severity: m.feeBleedPct > 0.15 ? 3 : 2,
       title: "Taxas estão comendo parte real do seu resultado",
-      text: `Você pagou ${formatBRL(m.totalFees)} em taxas nos últimos ${m.totalTrades} trades — isso equivale a ${(m.feeBleedPct * 100).toFixed(1)}% do volume bruto movimentado. Com o cashback vitalício de ~${Math.round(refDiscountPct * 100)}% nas taxas, seriam ~${formatBRL(savings)} a menos — e vale pra sempre, não só nesses trades.`,
+      text: `Você pagou ${formatBRL(m.totalFees)} em taxas nos últimos ${m.totalTrades} trades — isso equivale a ${(m.feeBleedPct * 100).toFixed(1)}% do volume bruto movimentado. Como cenário educacional, uma redução de ${Math.round(feeScenarioPct * 100)}% nesse custo preservaria ~${formatBRL(savings)}. Isso não afirma que uma oferta específica cubra o produto ou o CSV analisado.`,
     });
   }
 
