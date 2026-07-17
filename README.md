@@ -7,7 +7,7 @@ Ferramenta web gratuita, 100% client-side, com duas portas de entrada para educa
 
 Nenhum dado sai do navegador. Sem cadastro, sem backend, sem dependências (HTML/CSS/JS vanilla). Depois do resultado, um roteador pergunta se a pessoa já tem Binance e qual problema quer resolver. Binance continua prioritária para novas contas; quem já tem conta recebe uma alternativa contextual, sem mural de links.
 
-> **Pré-lançamento:** indexação bloqueada de propósito por `<meta name="robots">` e `robots.txt`. Só remover os dois bloqueios depois dos testes finais, tracking e links estarem confirmados.
+> **Pré-lançamento:** indexação bloqueada de propósito por `<meta name="robots" content="noindex">`. O `robots.txt` mantém `Allow: /` para os crawlers conseguirem ler essa diretiva. Só liberar a indexação depois dos testes finais, tracking e links estarem confirmados.
 
 ## Estrutura
 
@@ -35,7 +35,7 @@ robots.txt / sitemap.xml
 2. O Telegram `@tiagolucer` está configurado somente no gate de benefício temporário para indicados; não existe contato aberto ao lado dos CTAs. Preencher ainda o código do site no GoatCounter.
 3. Abrir todos os links em janela anônima e registrar o benefício exibido, país, data e condições.
 4. Rodar simulador, CSV de exemplo, CSV real, calculadora, cards e todas as combinações do roteador em desktop e celular.
-5. Somente depois, trocar o `robots.txt` para `Allow: /`, recolocar o Sitemap e mudar a meta `robots` para `index, follow`.
+5. Somente depois, recolocar o Sitemap e mudar a meta `robots` para `index, follow`; o `robots.txt` já deve permanecer com `Allow: /`.
 6. Confirmar o deploy no GitHub Pages e testar o preview do link em WhatsApp/Telegram.
 7. Divulgar com `?c=<canal>&v=<variante>` em cada origem.
 
