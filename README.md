@@ -9,8 +9,6 @@ Nenhum dado sai do navegador. Sem cadastro, sem backend, sem dependências (HTML
 
 > **Pré-lançamento:** indexação bloqueada de propósito por `<meta name="robots">` e `robots.txt`. Só remover os dois bloqueios depois dos testes finais, tracking e links estarem confirmados.
 
-Contexto completo do projeto (estratégia, scripts de outreach, plano de julho) está no vault DFM: `100 - AREAS/03 - Financiamento/100 - PROJECTS/2 - Active/Venda de produtos afiliados por comissão/`.
-
 ## Estrutura
 
 ```
