@@ -59,3 +59,14 @@ python3 -m http.server 8000
 ```
 
 E abrir `http://localhost:8000`.
+
+### Gate de segurança
+
+Antes de publicar qualquer alteração:
+
+```bash
+python3 -m unittest discover -s tests -p 'test_security_check.py'
+python3 -m py_compile security_check.py tests/test_security_check.py
+python3 security_check.py .
+for f in js/*.js config.js; do node --check "$f"; done
+```
