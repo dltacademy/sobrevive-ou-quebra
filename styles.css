@@ -100,7 +100,7 @@ h1 .highlight { color: var(--accent); }
 }
 
 .card {
-  background: var(--bg-elev);
+  background: linear-gradient(180deg, rgba(14, 33, 72, 0.30), rgba(10, 17, 32, 0.9));
   border: 1px solid var(--border);
   border-radius: var(--radius);
   padding: 22px;
@@ -301,18 +301,19 @@ footer a { color: var(--text-dim); }
 
 .tag {
   display: inline-block;
-  font-size: 11px;
+  font-size: 10.5px;
   font-weight: 700;
-  letter-spacing: 0.04em;
+  letter-spacing: 0.06em;
   text-transform: uppercase;
-  padding: 3px 8px;
-  border-radius: 6px;
+  padding: 4px 10px;
+  border-radius: 999px;
   background: var(--bg-elev-2);
+  border: 1px solid var(--border);
   color: var(--text-dim);
   margin-bottom: 10px;
 }
-.tag.s1 { color: var(--green); }
-.tag.s2 { color: var(--accent); }
+.tag.s1 { color: var(--green); border-color: rgba(110, 231, 168, 0.3); background: rgba(110, 231, 168, 0.08); }
+.tag.s2 { color: var(--accent); border-color: rgba(74, 141, 248, 0.35); background: rgba(74, 141, 248, 0.08); }
 
 /* Roteador de oferta — recomenda uma opção principal conforme o contexto */
 .router-card {
