@@ -57,14 +57,14 @@ const ROUTER_OFFERS = {
     note: "Válido para conta nova elegível. Confirme o cashback de Spot exibido na tela de cadastro. Não presumimos que o mesmo percentual cubra Futures; o benefício acompanha as regras vigentes do programa de indicação.",
   },
   bybit: {
-    title: "Bybit como segunda corretora",
+    title: "Bybit com bônus para novos usuários elegíveis",
     cta: "Conhecer a Bybit →",
     points: [
+      "O convite pode oferecer bônus de US$20 após cadastro e verificação de identidade",
       "Alternativa ampla para spot, derivativos, pagamentos e cartão",
-      "Útil para quem já tem Binance e quer separar estratégias ou comparar execução",
       "Código de referência: O0YDQDM",
     ],
-    note: "Produtos, recompensas e cartão variam por país. Confira KYC, tarefas e condições exibidas no cadastro.",
+    note: "Bônus observado na página do convite em 17/07/2026 e sujeito a região, prazo e elegibilidade. Confira o valor, o KYC, as tarefas e as condições exibidas no seu cadastro.",
   },
   etherfi: {
     title: "ether.fi Cash para gastos e viagens",
@@ -72,19 +72,21 @@ const ROUTER_OFFERS = {
     points: [
       "Cartão focado em gastar stablecoins e cripto no dia a dia",
       "Cashback pode chegar a 3% conforme tier, promoção, gasto e transação elegível",
+      "O convite pode exibir até 15% em supermercado e restaurantes, sujeito às condições da campanha",
       "Comece o cadastro no navegador pelo link; instale o app somente depois",
     ],
-    note: "O fluxo navegador → cadastro → aplicativo é importante para a atribuição da promoção. Confira cashback, FX, taxas, limites e elegibilidade antes de concluir.",
+    note: "Os percentuais são limites máximos, não garantia para toda compra. O fluxo navegador → cadastro → aplicativo é importante para a atribuição; confira cashback, categorias, prazo, FX, taxas, limites e elegibilidade.",
   },
   okx: {
     title: "Cartão OKX Brasil",
     cta: "Ver a oferta da OKX →",
     points: [
+      "O convite pode oferecer até R$1.000 ao começar a negociar, conforme tarefas e elegibilidade",
       "Cartão virtual conectado ao saldo em USD do OKX Pay",
       "A tabela atual do produto brasileiro informa IOF zero e sem anuidade",
       "Código de referência: 30985036",
     ],
-    note: "Condições do produto brasileiro. Câmbio em moeda diferente de USD usa a taxa da Mastercard; elegibilidade e campanhas podem mudar.",
+    note: "R$1.000 é o limite anunciado da campanha, não recompensa garantida. Confira tarefas, prazo e elegibilidade. No cartão brasileiro, câmbio fora de USD usa a taxa da Mastercard; condições podem mudar.",
   },
   kucoin: {
     title: "KuCoin",
