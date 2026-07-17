@@ -517,3 +517,48 @@ footer a { color: var(--text-dim); }
   .alternative-grid { grid-template-columns: 1fr; }
   .router-result { padding: 16px; }
 }
+
+/* ============================================================
+   INTERAÇÃO — estados de foco, hover e feedback tátil.
+   Aditivo: nenhum seletor existente muda, só ganha resposta.
+   ============================================================ */
+
+/* Foco visível pra teclado (não interfere no clique do mouse) */
+a:focus-visible, button:focus-visible, .btn:focus-visible,
+input:focus-visible, select:focus-visible, summary:focus-visible,
+[tabindex]:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+/* Botões — lift no hover, afunda no clique (já existia o :active) */
+.btn, button { transition: transform .12s, opacity .15s, box-shadow .15s, background .15s, border-color .15s; }
+.btn-primary:hover { transform: translateY(-1px); box-shadow: 0 10px 26px rgba(30,79,216,0.45); }
+.btn-secondary:hover { color: var(--text); }
+
+/* Sliders — o polegar responde ao toque */
+input[type="range"]::-webkit-slider-thumb { transition: transform .12s, box-shadow .15s; }
+input[type="range"]:hover::-webkit-slider-thumb { transform: scale(1.12); box-shadow: 0 0 0 1px var(--accent), 0 0 0 7px rgba(74,141,248,.15); }
+input[type="range"]:active::-webkit-slider-thumb { transform: scale(1.22); box-shadow: 0 0 0 1px var(--accent), 0 0 0 10px rgba(74,141,248,.22); }
+input[type="range"]::-moz-range-thumb { transition: transform .12s, box-shadow .15s; }
+input[type="range"]:hover::-moz-range-thumb { transform: scale(1.12); box-shadow: 0 0 0 7px rgba(74,141,248,.15); }
+input[type="range"]:active::-moz-range-thumb { transform: scale(1.22); box-shadow: 0 0 0 10px rgba(74,141,248,.22); }
+
+/* Opções de fluxo (radio-group) — hover diz "sou clicável" */
+.radio-group button:hover { border-color: var(--accent); color: var(--text); }
+
+/* Checklist do plano — linha inteira responde */
+.plan-check { transition: border-color .15s, background .15s; }
+.plan-check:hover { border-color: var(--accent); }
+
+/* Campos e selects — foco com borda da marca */
+select:hover, .calc-field input:hover { border-color: var(--accent); }
+select:focus, .calc-field input:focus { border-color: var(--accent); outline: none; }
+
+/* Zona de upload — reforço do convite */
+.upload-zone:hover, .upload-zone.dragover { background: rgba(74,141,248,.05); }
+
+@media (prefers-reduced-motion: reduce) {
+  .btn, button, input[type="range"]::-webkit-slider-thumb, input[type="range"]::-moz-range-thumb { transition: none; }
+  .btn-primary:hover { transform: none; }
+}
