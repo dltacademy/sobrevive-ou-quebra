@@ -3,6 +3,8 @@ import json
 import re
 import unittest
 
+from security_check import check_html
+
 ROOT = Path(__file__).resolve().parents[1]
 HTML = ROOT / "historico" / "index.html"
 JS = ROOT / "js" / "historico.js"
@@ -15,6 +17,9 @@ class HistoricoEntryContractTests(unittest.TestCase):
         self.assertIn('<meta name="robots" content="noindex">', source)
         self.assertIn('<meta name="referrer" content="no-referrer">', source)
         self.assertIn("Seu CSV fica no navegador", source)
+
+    def test_page_passes_repository_security_checker(self):
+        self.assertEqual(check_html(HTML), [])
 
     def test_page_loads_only_external_executable_scripts(self):
         source = HTML.read_text(encoding="utf-8")
