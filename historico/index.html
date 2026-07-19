@@ -7,9 +7,79 @@
 <meta name="description" content="Analise seu histórico de trades em CSV, identifique taxas, drawdown e padrões de risco. Grátis, sem cadastro e com processamento local no navegador.">
 <meta name="robots" content="noindex">
 <meta name="referrer" content="no-referrer">
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data: blob:; connect-src 'self' https://*.goatcounter.com; object-src 'none'; frame-src 'none'; worker-src 'none'; base-uri 'none'; form-action 'self'; upgrade-insecure-requests">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data: blob:; connect-src 'self' https://*.goatcounter.com; object-src 'none'; frame-src 'none'; worker-src 'none'; base-uri 'none'; form-action 'self'; upgrade-insecure-requests">
 <link rel="canonical" href="https://sobrevive-ou-quebra.dlt.academy/historico/">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="DLT Academy">
 <meta property="og:title" content="Raio-X do seu histórico de trades">
-<meta property
+<meta property="og:description" content="Descubra taxas, drawdown e padrões de risco no seu CSV — sem enviar seus dados.">
+<meta property="og:url" content="https://sobrevive-ou-quebra.dlt.academy/historico/">
+<meta property="og:image" content="https://sobrevive-ou-quebra.dlt.academy/og-image.png">
+<meta name="theme-color" content="#06090F">
+<link rel="icon" type="image/png" href="../assets/dlt-mark.png">
+<link rel="stylesheet" href="../styles.css">
+<link rel="stylesheet" href="../styles-historico.css">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"WebApplication","name":"Raio-X do Histórico de Trades","url":"https://sobrevive-ou-quebra.dlt.academy/historico/","applicationCategory":"FinanceApplication","operatingSystem":"Web","inLanguage":"pt-BR","isAccessibleForFree":true}
+</script>
+</head>
+<body>
+<header class="top"><div class="wrap"><a class="brand" href="https://dlt.academy/"><img src="../assets/dlt-logo-light.png" alt="DLT Academy"></a></div></header>
+<main id="top"><div class="wrap">
+<section class="hero historico-hero">
+<span class="disclaimer-badge">⚠️ Diagnóstico educacional — não é recomendação de investimento</span>
+<h1>Seu histórico mostra <span class="highlight">onde o dinheiro está vazando.</span></h1>
+<p class="subtitle">Envie o CSV das suas operações e veja win rate, profit factor, drawdown, taxas e padrões de risco. Sem cadastro e sem servidor.</p>
+<div class="privacy-strip"><strong>Seu CSV fica no navegador.</strong> O arquivo não é enviado nem armazenado. Limite de 5 MB e 20.000 linhas.</div>
+<div class="card">
+<h2><span class="num">1</span>Analise seu histórico real</h2>
+<p class="section-desc">Aceita CSV da Binance, Bybit e outros formatos. Quando as colunas não forem reconhecidas, você pode mapeá-las manualmente.</p>
+<div class="upload-zone" id="upload-zone" tabindex="0" role="button" aria-label="Escolher arquivo CSV">
+<div class="upload-icon">📄</div>
+<div><strong>Arraste seu CSV aqui</strong> ou clique para escolher</div>
+<input type="file" id="file-input" accept=".csv,text/csv">
+</div>
+<div class="btn-row"><button class="btn-secondary" id="btn-example" type="button">👀 Ver com dados de exemplo</button></div>
+<div id="mapping-panel" hidden>
+<p class="section-desc">Confirme quais colunas representam os dados abaixo:</p>
+<div id="mapping-rows"></div>
+<div class="btn-row"><button class="btn-primary" id="btn-confirm-mapping" type="button">Gerar diagnóstico →</button></div>
+</div>
+</div>
+<div class="card" id="raiox-results" hidden>
+<h2>Seu diagnóstico</h2>
+<div class="stat-row">
+<div class="stat-box"><div class="val" id="rx-winrate">—</div><div class="label">win rate</div></div>
+<div class="stat-box"><div class="val" id="rx-pf">—</div><div class="label">profit factor</div></div>
+<div class="stat-box"><div class="val" id="rx-trades">—</div><div class="label">trades analisados</div></div>
+<div class="stat-box"><div class="val" id="rx-fees">—</div><div class="label">total em taxas</div></div>
+<div class="stat-box"><div class="val" id="rx-dd">—</div><div class="label">drawdown máximo</div></div>
+<div class="stat-box"><div class="val" id="rx-rr">—</div><div class="label">R:R realizado</div></div>
+</div>
+<div id="findings-list" class="findings-list"></div>
+<div class="btn-row"><button class="btn-secondary" id="btn-download-rx-card" type="button">📥 Baixar card do resultado</button></div>
+</div>
+<div class="card convert-block" id="convert-rx">
+<span class="tag s1">Próximo passo contextual</span>
+<div class="convert-headline">A conta que você já tem muda a recomendação.</div>
+<div class="convert-sub">Quem já possui Binance não recebe promessa de benefício para conta nova. Responda abaixo e veja apenas uma opção coerente com seu contexto.</div>
+<div class="router-question"><strong>Você já tem conta na Binance?</strong>
+<div class="btn-row"><button class="btn-secondary router-choice" data-has-binance="no" type="button">Ainda não tenho</button><button class="btn-secondary router-choice" data-has-binance="yes" type="button">Já tenho</button></div></div>
+<div id="offer-result" hidden>
+<h3 id="offer-title"></h3><p id="offer-reason"></p>
+<a class="btn btn-primary" id="offer-cta" target="_blank" rel="sponsored nofollow noopener noreferrer" referrerpolicy="no-referrer">Ver condições →</a>
+<p class="fine-print" id="offer-note"></p>
+</div>
+</div>
+<div class="secondary-path"><a href="../">Prefere testar uma estratégia antes? Abrir simulador completo →</a></div>
+</section>
+</div></main>
+<footer><div class="wrap"><p>Conteúdo educacional. Operar futuros envolve alto risco. Este site pode conter links de afiliado, sem custo extra para você.</p><p><a href="https://dlt.academy/">DLT Academy</a> · <a href="https://dlt.academy/transparencia/">Transparência</a></p></div></footer>
+<script src="../config.js"></script>
+<script src="../js/csv-parser.js"></script>
+<script src="../js/metrics.js"></script>
+<script src="../js/example-data.js"></script>
+<script src="../js/share-card.js"></script>
+<script src="../js/historico.js"></script>
+</body>
+</html>
