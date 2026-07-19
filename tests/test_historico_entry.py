@@ -6,6 +6,7 @@ import unittest
 ROOT = Path(__file__).resolve().parents[1]
 HTML = ROOT / "historico" / "index.html"
 JS = ROOT / "js" / "historico.js"
+PARSER = ROOT / "js" / "csv-parser.js"
 
 
 class HistoricoEntryContractTests(unittest.TestCase):
@@ -40,15 +41,16 @@ class HistoricoEntryContractTests(unittest.TestCase):
 
     def test_runtime_preserves_channel_and_variant(self):
         source = JS.read_text(encoding="utf-8")
-        self.assertIn('params.set("c", channel)', source)
-        self.assertIn('params.set("v", variant)', source)
+        self.assertIn('searchParams.set("c", channel)', source)
+        self.assertIn('searchParams.set("v", variant)', source)
         self.assertIn("getRefLink()", source)
 
     def test_runtime_enforces_local_file_limits(self):
-        source = JS.read_text(encoding="utf-8")
-        self.assertIn("5 * 1024 * 1024", source)
-        self.assertIn("MAX_CSV_ROWS = 20000", source)
-        self.assertIn('endsWith(".csv")', source)
+        runtime = JS.read_text(encoding="utf-8")
+        parser = PARSER.read_text(encoding="utf-8")
+        self.assertIn("5 * 1024 * 1024", runtime)
+        self.assertIn("MAX_CSV_ROWS = 20000", parser)
+        self.assertIn('endsWith(".csv")', runtime)
 
 
 if __name__ == "__main__":
