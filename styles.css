@@ -50,6 +50,22 @@ body {
   padding: 0 20px;
 }
 
+/* Links de conteudo.
+   Sem esta regra o navegador aplica os padroes dele: #0000EE no link
+   comum e #551A8B no visitado. Sobre o navy (--bg) isso rende 2,1:1 e
+   1,8:1 de contraste — o minimo legivel e 4,5:1, entao o link visitado
+   ficava praticamente invisivel e o comum parecia um azul neon fora da
+   identidade. O --accent rende 6,1:1 e ja e a cor de destaque da marca.
+   Componentes estruturais (.btn-*, cards, header, footer) declaram a
+   propria cor e continuam intactos. */
+a {
+  color: var(--accent);
+  text-underline-offset: 3px;
+  text-decoration-thickness: 1px;
+}
+a:visited { color: var(--accent); }
+a:hover { color: #8FB8FF; }
+
 header.top { padding: 20px 0 0; }
 .brand {
   display: flex;
