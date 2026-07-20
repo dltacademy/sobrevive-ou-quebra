@@ -416,7 +416,10 @@ function renderSimResult(result, params) {
   document.getElementById("stat-custo").textContent =
     params.rota === "nada" ? "—" : (diff >= 0 ? "+" : "−") + formatBRLShort(Math.abs(diff));
 
+  // Só futuros podem ser liquidados; nas outras rotas a caixa não se aplica
+  // e uma caixa vazia sozinha numa linha só polui o resultado.
   const liq = result.taxaLiquidacaoProtecao;
+  document.getElementById("box-liquidacao").hidden = liq === null;
   document.getElementById("stat-liquidacao").textContent =
     liq === null ? "—" : (liq * 100).toFixed(0) + "%";
 
