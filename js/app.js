@@ -363,6 +363,56 @@ function updateSimLabels(p) {
   }
 }
 
+// ---------- Porta emocional ----------
+// A peça começa por um medo específico, não por uma planilha: é o que o
+// reposicionamento pede (psicologia antes de mecânica) e é onde os
+// protocolos psicológicos vão se conectar depois. Cada resposta apenas
+// PRÉ-CONFIGURA os controles — a pessoa continua livre para mexer em tudo.
+const MEDOS = {
+  cair: {
+    eco: "Medo de cair e não voltar. Então o que importa é o tamanho do buraco no pior cenário, não a média — o simulador começa cobrindo a posição inteira num prazo longo.",
+    valores: { meses: 12, cobertura: 100, tolerancia: 20, rota: "seguro" },
+  },
+  precisar: {
+    eco: "Medo de precisar do dinheiro no pior momento. Aqui o prazo manda mais que o preço: proteção curta e barata costuma bater proteção perfeita e cara.",
+    valores: { meses: 3, cobertura: 60, tolerancia: 10, rota: "reduzir" },
+  },
+  dormir: {
+    eco: "Se a posição tira o seu sono, normalmente ela está maior do que a sua tolerância real — e reduzir resolve mais barato do que qualquer derivativo. O simulador já começa por essa rota.",
+    valores: { meses: 6, cobertura: 50, tolerancia: 15, rota: "reduzir" },
+  },
+  devolver: {
+    eco: "Medo de devolver o que já ganhou. É o caso clássico de travar parte do resultado: cobrir tudo custa caro e devolve pouco — veja o efeito no bolso antes de decidir a dose.",
+    valores: { meses: 3, cobertura: 70, tolerancia: 25, rota: "futuros" },
+  },
+};
+
+function aplicarMedo(chave) {
+  const medo = MEDOS[chave];
+  if (!medo) return;
+  const v = medo.valores;
+  controles.meses.value = v.meses;
+  controles.cobertura.value = v.cobertura;
+  controles.tolerancia.value = v.tolerancia;
+  controles.rota.value = v.rota;
+
+  document.getElementById("medo-eco").textContent = medo.eco;
+  document.querySelectorAll("#medo-opcoes button").forEach((b) => {
+    const ativo = b.dataset.medo === chave;
+    b.classList.toggle("btn-primary", ativo);
+    b.classList.toggle("btn-secondary", !ativo);
+    b.setAttribute("aria-pressed", ativo ? "true" : "false");
+  });
+
+  track("medo_escolhido_" + chave);
+  runSimAndRender();
+}
+
+document.querySelectorAll("#medo-opcoes button").forEach((botao) => {
+  botao.setAttribute("aria-pressed", "false");
+  botao.addEventListener("click", () => aplicarMedo(botao.dataset.medo));
+});
+
 let simDebounce = null;
 function runSimAndRender() {
   const params = readSimParams();
@@ -383,6 +433,78 @@ const ROTA_LABEL = {
   futuros: "travar com futuros",
   seguro: "comprar seguro",
 };
+
+// A oferta é continuação do diagnóstico (CONVERSION_FRAMEWORK do kit): ela
+// responde à rota que a pessoa acabou de escolher. Duas dessas rotas não
+// exigem conta nova nenhuma — e dizer isso é a parte que constrói confiança.
+const CONVERSAO_POR_ROTA = {
+  nada: {
+    precisaConta: false,
+    tag: "Nenhuma conta necessária",
+    headline: "Não agir também é uma decisão — e ela não exige abrir nada.",
+    sub: "Você viu o tamanho do risco que já corre. Se a conclusão foi conviver com ele, não há produto para comprar aqui: o próximo passo é definir em que ponto você mudaria de ideia, antes de o preço decidir por você.",
+    itens: [
+      "Escreva agora qual queda faria você agir — e o que faria depois",
+      "Revise o tamanho da posição em vez de prever o preço",
+      "Volte a este simulador quando o valor exposto ou o seu prazo mudarem",
+    ],
+    fine: "Não recomendamos abrir conta para quem não vai usar. A oferta desta página só aparece nas rotas em que ela realmente faz diferença.",
+  },
+  reduzir: {
+    precisaConta: false,
+    tag: "Nenhuma conta necessária",
+    headline: "Reduzir você faz onde a posição já está.",
+    sub: "Essa é a proteção mais barata do simulador e a única que não depende de derivativo, margem ou prêmio. Ela se executa na mesma plataforma onde o seu dinheiro já está — abrir conta nova não ajudaria em nada.",
+    itens: [
+      "Defina quanto reduzir antes de abrir a tela de ordens",
+      "Considere custo de saída e imposto na conta final",
+      "Reduzir parcialmente é decisão válida; não precisa ser tudo ou nada",
+    ],
+    fine: "Se em algum momento você quiser comparar custos de execução entre plataformas, o simulador continua aqui — mas para esta rota você não precisa de conta nova.",
+  },
+  futuros: {
+    precisaConta: true,
+    tag: "Seu próximo passo",
+    headline: "Travar preço exige plataforma com derivativos — e o custo sai das taxas.",
+    sub: "Essa rota depende de mercado futuro, margem e funding visíveis. Cada montagem e desmontagem cobra, e é isso que corrói o resultado que você acabou de ver. Se ainda não tem Binance, o link abaixo ativa o cashback vitalício de Spot dessa indicação; se já tem conta, responda duas perguntas e receba uma alternativa que você possa usar.",
+    itens: [
+      "Cashback vitalício nas taxas elegíveis de Spot pelo código BOSS2026",
+      "Confira margem, funding e preço de liquidação antes de montar qualquer proteção",
+      "Roteamento sem empilhar links nem recomendar conta que você já possui",
+    ],
+    fine: "A abertura da conta não obriga você a montar proteção nenhuma. Só use derivativos depois de entender margem, liquidação e custo de carregamento — inclusive a possibilidade de a proteção ser encerrada antes da hora, como o simulador mostrou.",
+  },
+  seguro: {
+    precisaConta: true,
+    tag: "Seu próximo passo",
+    headline: "Seguro exige um mercado de opções — e ele não existe em todo lugar.",
+    sub: "Comprar uma opção de venda depende de plataforma com mercado de opções e liquidez suficiente no vencimento que você quer. No Brasil o acesso a opções de cripto é limitado, então confirme disponibilidade, prazos e prêmio real antes de contar com esta rota.",
+    itens: [
+      "Confirme quais vencimentos existem e a que preço, antes de assumir o prêmio",
+      "O prêmio deste simulador é o que você informa — não é cotação nossa",
+      "Se as opções não estiverem acessíveis, reduzir posição continua sendo alternativa honesta",
+    ],
+    fine: "Não afirmamos que uma corretora específica oferece as opções que você precisa: isso muda por região e por data. Verifique na própria plataforma antes de decidir.",
+  },
+};
+
+function renderConvertBlock(rota) {
+  const c = CONVERSAO_POR_ROTA[rota];
+  document.getElementById("convert-tag").textContent = c.tag;
+  document.getElementById("convert-headline").textContent = c.headline;
+  document.getElementById("convert-sub").textContent = c.sub;
+  document.getElementById("convert-fine").textContent = c.fine;
+
+  const lista = document.getElementById("convert-list");
+  lista.replaceChildren();
+  c.itens.forEach((texto) => {
+    const li = document.createElement("li");
+    li.textContent = texto;
+    lista.appendChild(li);
+  });
+
+  document.getElementById("convert-botoes").hidden = !c.precisaConta;
+}
 
 function renderSimResult(result, params) {
   const banner = document.getElementById("result-banner");
@@ -426,6 +548,7 @@ function renderSimResult(result, params) {
   const canvas = document.getElementById("equity-canvas");
   drawEquityCurves(canvas, result, params.exposicao);
 
+  renderConvertBlock(params.rota);
   const convertBlock = document.getElementById("convert-sim");
   convertBlock.classList.add("visible");
 }

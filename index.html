@@ -32,7 +32,7 @@
 
 <meta name="theme-color" content="#06090F">
 <link rel="icon" type="image/png" href="assets/dlt-mark.png">
-<link rel="stylesheet" href="styles.css?v=2026-07-20d">
+<link rel="stylesheet" href="styles.css?v=2026-07-20e">
 
 
 <!-- Dados estruturados (JSON-LD é bloco de dados, não executa — ok com o CSP) -->
@@ -76,7 +76,19 @@
       <p class="subtitle" id="subheadline">Você tem patrimônio exposto e teme uma queda. Existem quatro caminhos — inclusive não fazer nada. Veja o que cada um faz com o seu dinheiro nos cenários ruins, e quanto ele cobra nos cenários bons.</p>
 
       <div class="card">
-        <h2><span class="num">1</span>O que cada proteção faz com o seu dinheiro</h2>
+        <h2><span class="num">1</span>Antes dos números: o que você teme que aconteça?</h2>
+        <p class="section-desc">Proteção começa por um medo específico, não por uma planilha. Escolha o que está mais perto do seu caso — os controles abaixo já começam num ponto compatível, e você ajusta o que quiser depois.</p>
+        <div class="btn-row" id="medo-opcoes" role="group" aria-label="O que você teme que aconteça">
+          <button type="button" class="btn btn-secondary" data-medo="cair">Cair muito e não voltar</button>
+          <button type="button" class="btn btn-secondary" data-medo="precisar">Precisar do dinheiro no pior momento</button>
+          <button type="button" class="btn btn-secondary" data-medo="dormir">Não conseguir dormir com isso</button>
+          <button type="button" class="btn btn-secondary" data-medo="devolver">Devolver o que eu já ganhei</button>
+        </div>
+        <p class="model-note" id="medo-eco">Nenhuma resposta é enviada a lugar nenhum — a página inteira roda no seu navegador.</p>
+      </div>
+
+      <div class="card">
+        <h2><span class="num">2</span>O que cada proteção faz com o seu dinheiro</h2>
         <p class="section-desc">O simulador sorteia 1.000 trajetórias de preço para o seu prazo e calcula, em cada uma, o que acontece com e sem proteção — usando o <strong>mesmo sorteio</strong> nos dois casos, para a comparação ser honesta. Ele não tenta adivinhar o preço: a tendência é zero de propósito. O que ele mostra é o <strong>formato do risco</strong>, que é o que separa proteção de aposta.</p>
 
         <div class="control-grid">
@@ -162,20 +174,16 @@
       </div>
 
       <div class="card convert-block" id="convert-sim">
-        <span class="tag s2">Seu próximo passo</span>
-        <div class="convert-headline">Proteção também tem custo de execução — e ele sai das taxas.</div>
-        <div class="convert-sub">Montar e desmontar proteção passa por uma corretora, e cada operação cobra. Se você ainda não tem Binance, o link abaixo ativa o cashback vitalício de Spot disponível nessa indicação. Se já tem conta, responda duas perguntas e receba uma alternativa que você realmente possa usar.</div>
-        <ul class="offer-list">
-          <li>Cashback vitalício nas taxas elegíveis de Spot pelo código BOSS2026</li>
-          <li>Roteamento sem empilhar links ou recomendar uma conta que você já possui</li>
-          <li>Sem sinais, sem promessa de lucro — proteção é decisão de risco, não de retorno</li>
-        </ul>
-        <div class="btn-row">
+        <span class="tag s2" id="convert-tag">Seu próximo passo</span>
+        <div class="convert-headline" id="convert-headline">Proteção também tem custo de execução — e ele sai das taxas.</div>
+        <div class="convert-sub" id="convert-sub">Montar e desmontar proteção passa por uma corretora, e cada operação cobra.</div>
+        <ul class="offer-list" id="convert-list"></ul>
+        <div class="btn-row" id="convert-botoes">
           <a class="btn btn-primary" id="cta-ref-sim" href="#" target="_blank" rel="sponsored nofollow noopener noreferrer" referrerpolicy="no-referrer">Ainda não tenho Binance →</a>
           <a class="btn btn-secondary js-open-router" href="#proximo-passo">Já tenho — ver meu próximo passo</a>
           <a class="btn btn-secondary" href="#beneficio-indicado">Já me cadastrei — solicitar benefício</a>
         </div>
-        <p class="fine-print">A abertura da conta não obriga você a montar proteção nenhuma. Verifique o benefício exibido no cadastro e só use derivativos depois de entender margem, liquidação e custo de carregamento — inclusive a possibilidade de a proteção ser encerrada antes da hora.</p>
+        <p class="fine-print" id="convert-fine">A abertura da conta não obriga você a montar proteção nenhuma. Verifique o benefício exibido no cadastro e só use derivativos depois de entender margem, liquidação e custo de carregamento — inclusive a possibilidade de a proteção ser encerrada antes da hora.</p>
       </div>
     </section>
 
@@ -183,7 +191,7 @@
     <!-- ============ CALCULADORA DE POSIÇÃO ============ -->
     <section id="calc">
       <div class="card">
-        <h2><span class="num">2</span>Calculadora de tamanho da proteção</h2>
+        <h2><span class="num">3</span>Calculadora de tamanho da proteção</h2>
         <p class="section-desc">Quanto de proteção cobre a parte que você quer proteger, quanta margem ela exige e em que preço ela seria encerrada antes da hora.</p>
         <div class="calc-grid">
           <div class="calc-field"><label>Valor exposto (R$)</label><input type="number" id="calc-exposicao" value="100000" step="1000"></div>
@@ -317,10 +325,10 @@
   </div>
 </footer>
 
-<script src="config.js?v=2026-07-20d"></script>
-<script src="js/protection.js?v=2026-07-20d"></script>
-<script src="js/chart.js?v=2026-07-20d"></script>
-<script src="js/share-card.js?v=2026-07-20d"></script>
-<script src="js/app.js?v=2026-07-20d"></script>
+<script src="config.js?v=2026-07-20e"></script>
+<script src="js/protection.js?v=2026-07-20e"></script>
+<script src="js/chart.js?v=2026-07-20e"></script>
+<script src="js/share-card.js?v=2026-07-20e"></script>
+<script src="js/app.js?v=2026-07-20e"></script>
 </body>
 </html>
