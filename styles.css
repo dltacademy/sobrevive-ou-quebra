@@ -50,6 +50,13 @@ body {
   padding: 0 20px;
 }
 
+/* O atributo `hidden` vale display:none, mas qualquer regra de display
+   posterior o derrota — foi o que fez os controles de seguro aparecerem
+   numa simulação de futuros. Havia dois remendos pontuais no arquivo
+   (.router-result[hidden], .benefit-form[hidden]); esta regra resolve a
+   classe inteira do problema de uma vez. */
+[hidden] { display: none !important; }
+
 /* Links de conteudo.
    Sem esta regra o navegador aplica os padroes dele: #0000EE no link
    comum e #551A8B no visitado. Sobre o navy (--bg) isso rende 2,1:1 e
@@ -158,7 +165,10 @@ h2 .num {
 /* Sliders */
 .control-grid { display: grid; gap: 18px; }
 .control { display: grid; gap: 6px; }
-.control-label { display: flex; justify-content: space-between; font-size: 14px; color: var(--text-dim); }
+/* gap + wrap porque os rótulos em linguagem simples ("Quanto você aguenta
+   perder sem quebrar") são bem mais longos que os rótulos técnicos que
+   existiam antes, e no celular encostavam no valor. */
+.control-label { display: flex; justify-content: space-between; gap: 12px; flex-wrap: wrap; font-size: 14px; color: var(--text-dim); }
 .control-label strong { color: var(--text); font-weight: 600; }
 input[type="range"] {
   -webkit-appearance: none;

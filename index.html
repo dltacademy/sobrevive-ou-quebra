@@ -3,8 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Simulador de Risco em Futuros | Sobrevive ou Quebra?</title>
-<meta name="description" content="Simule 100 trades, teste risco, alavancagem e win rate e analise seu CSV de operações. Grátis, sem cadastro e com processamento no navegador.">
+<title>Vale a pena proteger sua posição? | Sobrevive ou Quebra?</title>
+<meta name="description" content="Você tem patrimônio exposto e teme uma queda. Compare não fazer nada, reduzir, travar com futuros e comprar seguro nos mesmos 1.000 cenários. Grátis, sem cadastro, tudo no navegador.">
 <meta name="robots" content="noindex">
 <meta name="referrer" content="no-referrer">
 <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://gc.zgo.at; style-src 'self' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data: blob:; connect-src 'self' https://*.goatcounter.com; object-src 'none'; frame-src 'none'; worker-src 'none'; base-uri 'none'; form-action 'self'; upgrade-insecure-requests">
@@ -13,26 +13,26 @@
 <!-- Open Graph -->
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="DLT Academy">
-<meta property="og:title" content="Simulador de Risco em Futuros | Sobrevive ou Quebra?">
-<meta property="og:description" content="Simule 100 trades, teste sua gestão de risco e analise seu histórico real — grátis, sem cadastro e direto no navegador.">
+<meta property="og:title" content="Vale a pena proteger sua posição? | Sobrevive ou Quebra?">
+<meta property="og:description" content="Proteger custa caro; não proteger pode custar mais. Veja o que cada rota faz com o seu dinheiro nos cenários ruins — e quanto ela cobra nos bons.">
 <meta property="og:url" content="https://sobrevive-ou-quebra.dlt.academy/">
 <meta property="og:image" content="https://sobrevive-ou-quebra.dlt.academy/og-image.png">
 <meta property="og:image:type" content="image/png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
-<meta property="og:image:alt" content="Sobrevive ou Quebra? — simulador de risco para traders de futuros">
+<meta property="og:image:alt" content="Sobrevive ou Quebra? — o que cada proteção faz com o seu dinheiro">
 <meta property="og:locale" content="pt_BR">
 
 <!-- Twitter/X -->
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="Simulador de Risco em Futuros | Sobrevive ou Quebra?">
-<meta name="twitter:description" content="Simule 100 trades, teste sua gestão de risco e analise seu histórico real — grátis e sem cadastro.">
+<meta name="twitter:title" content="Vale a pena proteger sua posição? | Sobrevive ou Quebra?">
+<meta name="twitter:description" content="Proteger custa caro; não proteger pode custar mais. Compare as quatro rotas nos mesmos 1.000 cenários.">
 <meta name="twitter:image" content="https://sobrevive-ou-quebra.dlt.academy/og-image.png">
-<meta name="twitter:image:alt" content="Sobrevive ou Quebra? — simulador de risco para traders de futuros">
+<meta name="twitter:image:alt" content="Sobrevive ou Quebra? — o que cada proteção faz com o seu dinheiro">
 
 <meta name="theme-color" content="#06090F">
 <link rel="icon" type="image/png" href="assets/dlt-mark.png">
-<link rel="stylesheet" href="styles.css">
+<link rel="stylesheet" href="styles.css?v=2026-07-20e">
 
 
 <!-- Dados estruturados (JSON-LD é bloco de dados, não executa — ok com o CSP) -->
@@ -41,7 +41,7 @@
   "@context": "https://schema.org",
   "@type": "WebApplication",
   "name": "Sobrevive ou Quebra?",
-  "description": "Simulador gratuito de gestão de risco em futuros cripto: descubra se sua estratégia sobrevive a 100 trades e analise seu histórico real no navegador.",
+  "description": "Simulador gratuito de proteção de patrimônio: compare não fazer nada, reduzir posição, travar com futuros e comprar seguro nos mesmos cenários de preço, direto no navegador.",
   "url": "https://sobrevive-ou-quebra.dlt.academy/",
   "applicationCategory": "FinanceApplication",
   "operatingSystem": "Web",
@@ -49,9 +49,9 @@
   "isAccessibleForFree": true,
   "image": "https://sobrevive-ou-quebra.dlt.academy/og-image.png",
   "featureList": [
-    "Simulação Monte Carlo de 100 trades",
-    "Análise local de histórico em CSV",
-    "Calculadora de tamanho de posição"
+    "Comparação de quatro rotas de proteção nos mesmos cenários",
+    "Simulação Monte Carlo de trajetórias de preço",
+    "Calculadora de tamanho e margem da proteção"
   ],
   "offers": { "@type": "Offer", "price": 0, "priceCurrency": "BRL" },
   "publisher": { "@type": "Organization", "name": "DLT Academy", "url": "https://dlt.academy/" }
@@ -72,51 +72,100 @@
     <!-- ============ HERO / PORTA 1 — SIMULADOR ============ -->
     <section class="hero">
       <span class="disclaimer-badge">⚠️ Não é recomendação de investimento — modelo educacional de probabilidade</span>
-      <h1 id="headline">A maioria <span class="highlight">quebra</span> operando futuros.<br>A sua estratégia sobrevive?</h1>
-      <p class="subtitle" id="subheadline">Ajuste os controles abaixo e veja 1.000 simulações da sua estratégia rodando 100 trades — em segundos, sem cadastro, sem instalar nada.</p>
+      <h1 id="headline">Proteger custa caro.<br><span class="highlight">Não proteger</span> pode custar mais.</h1>
+      <p class="subtitle" id="subheadline">Você tem patrimônio exposto e teme uma queda. Existem quatro caminhos — inclusive não fazer nada. Veja o que cada um faz com o seu dinheiro nos cenários ruins, e quanto ele cobra nos cenários bons.</p>
 
       <div class="card">
-        <h2><span class="num">1</span>Simulador de sobrevivência</h2>
-        <p class="section-desc">Baseado em Monte Carlo: roda sua estratégia 1.000 vezes com resultados aleatórios respeitando seu win rate e R:R, e mostra em quantos cenários a banca sobrevive.</p>
+        <h2><span class="num">1</span>Antes dos números: o que você teme que aconteça?</h2>
+        <p class="section-desc">Proteção começa por um medo específico, não por uma planilha. Escolha o que está mais perto do seu caso — os controles abaixo já começam num ponto compatível, e você ajusta o que quiser depois.</p>
+        <div class="btn-row" id="medo-opcoes" role="group" aria-label="O que você teme que aconteça">
+          <button type="button" class="btn btn-secondary" data-medo="cair">Cair muito e não voltar</button>
+          <button type="button" class="btn btn-secondary" data-medo="precisar">Precisar do dinheiro no pior momento</button>
+          <button type="button" class="btn btn-secondary" data-medo="dormir">Não conseguir dormir com isso</button>
+          <button type="button" class="btn btn-secondary" data-medo="devolver">Devolver o que eu já ganhei</button>
+        </div>
+        <p class="model-note" id="medo-eco">Nenhuma resposta é enviada a lugar nenhum — a página inteira roda no seu navegador.</p>
+      </div>
+
+      <div class="card">
+        <h2><span class="num">2</span>O que cada proteção faz com o seu dinheiro</h2>
+        <p class="section-desc">O simulador sorteia 1.000 trajetórias de preço para o seu prazo e calcula, em cada uma, o que acontece com e sem proteção — usando o <strong>mesmo sorteio</strong> nos dois casos, para a comparação ser honesta. Ele não tenta adivinhar o preço: a tendência é zero de propósito. O que ele mostra é o <strong>formato do risco</strong>, que é o que separa proteção de aposta.</p>
 
         <div class="control-grid">
           <div class="control">
-            <div class="control-label"><span>Banca inicial</span><strong id="val-bankroll">R$ 1.000</strong></div>
-            <input type="range" id="bankroll" min="100" max="20000" step="100" value="1000">
+            <div class="control-label"><span>Quanto você tem exposto</span><strong id="val-exposicao">R$ 100.000</strong></div>
+            <input type="range" id="exposicao" min="5000" max="1000000" step="5000" value="100000">
           </div>
           <div class="control">
-            <div class="control-label"><span>Alavancagem</span><strong id="val-leverage">10x</strong></div>
-            <input type="range" id="leverage" min="1" max="100" step="1" value="10">
+            <div class="control-label"><span>Por quanto tempo quer ficar protegido</span><strong id="val-meses">3 meses</strong></div>
+            <input type="range" id="meses" min="1" max="24" step="1" value="3">
           </div>
           <div class="control">
-            <div class="control-label"><span>Risco por trade (% da banca)</span><strong id="val-risk">2%</strong></div>
-            <input type="range" id="riskPct" min="0.5" max="20" step="0.5" value="2">
+            <div class="control-label"><span>Quanto da posição quer cobrir</span><strong id="val-cobertura">100%</strong></div>
+            <input type="range" id="cobertura" min="0" max="100" step="5" value="100">
           </div>
           <div class="control">
-            <div class="control-label"><span>Win rate estimado</span><strong id="val-winrate">45%</strong></div>
-            <input type="range" id="winRate" min="10" max="90" step="1" value="45">
-          </div>
-          <div class="control">
-            <div class="control-label"><span>Relação Risco:Retorno (R:R)</span><strong id="val-rr">1.5</strong></div>
-            <input type="range" id="rr" min="0.5" max="5" step="0.1" value="1.5">
+            <div class="control-label"><span>Quanto você aguenta perder sem quebrar</span><strong id="val-tolerancia">20%</strong></div>
+            <input type="range" id="tolerancia" min="5" max="60" step="5" value="20">
           </div>
         </div>
 
-        <p class="model-note"><strong>O que o modelo assume:</strong> o stop é executado antes da liquidação; alavancagem entra na estimativa de taxa. Não simula funding, slippage, manutenção de margem ou falha do stop. Use o resultado para comparar regras de risco — não para prever seu saldo.</p>
+        <div class="control-grid">
+          <div class="control">
+            <label class="control-label" for="ativo"><span>O que você tem</span></label>
+            <select id="ativo">
+              <option value="cripto" selected>Cripto (oscila muito)</option>
+              <option value="acoes">Ações (oscila médio)</option>
+              <option value="cambio">Moeda estrangeira (oscila pouco)</option>
+            </select>
+          </div>
+          <div class="control">
+            <label class="control-label" for="rota"><span>Como quer se proteger</span></label>
+            <select id="rota">
+              <option value="nada">Não fazer nada</option>
+              <option value="reduzir">Reduzir a posição agora</option>
+              <option value="futuros" selected>Travar preço com futuros</option>
+              <option value="seguro">Comprar seguro (opção de venda)</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="control-grid" id="controles-futuros">
+          <div class="control">
+            <div class="control-label"><span>Alavancagem da proteção</span><strong id="val-alav">2x</strong></div>
+            <input type="range" id="alavancagem" min="1" max="20" step="0.5" value="2">
+          </div>
+          <div class="control">
+            <div class="control-label"><span>Custo de carregar (funding ao ano)</span><strong id="val-funding">10%</strong></div>
+            <input type="range" id="funding" min="0" max="60" step="1" value="10">
+          </div>
+        </div>
+
+        <div class="control-grid" id="controles-seguro" hidden>
+          <div class="control">
+            <div class="control-label"><span>Preço do seguro (prêmio, % do valor coberto)</span><strong id="val-premio">15%</strong></div>
+            <input type="range" id="premio" min="0.5" max="40" step="0.5" value="15">
+            <p class="model-note" id="nota-premio"></p>
+          </div>
+        </div>
+
+        <p class="model-note"><strong>O que o modelo assume:</strong> trajetórias de preço sem tendência, volatilidade típica da classe escolhida, e uma proteção montada hoje e mantida até o fim do prazo. O prêmio do seguro é um valor que <strong>você informa</strong> — não cotamos opção. Não simula spread, corretagem, imposto, ajuste diário nem execução parcial. Serve para comparar o formato dos desfechos, não para prever o seu saldo.</p>
 
         <div class="result-banner" id="result-banner">
           <div>
             <div class="big-stat" id="result-big">—</div>
-            <div class="stat-label" id="result-label">ajuste os controles pra simular</div>
+            <div class="stat-label" id="result-label">ajuste os controles para simular</div>
           </div>
         </div>
 
         <canvas id="equity-canvas" class="chart-canvas"></canvas>
+        <p class="model-note" id="chart-legend">Linha clara: sem proteção. Linha destacada: com a proteção escolhida. Mesmo sorteio nas duas.</p>
 
         <div class="stat-row">
-          <div class="stat-box"><div class="val" id="stat-ruin-trade">—</div><div class="label">trade médio da quebra</div></div>
-          <div class="stat-box"><div class="val" id="stat-median">—</div><div class="label">banca mediana final</div></div>
-          <div class="stat-box"><div class="val" id="stat-p90">—</div><div class="label">melhor 10% dos casos</div></div>
+          <div class="stat-box"><div class="val" id="stat-ruins-sem">—</div><div class="label">cenários ruins sem proteção</div></div>
+          <div class="stat-box"><div class="val" id="stat-ruins-com">—</div><div class="label">cenários ruins com proteção</div></div>
+          <div class="stat-box"><div class="val" id="stat-custo">—</div><div class="label">efeito médio no bolso</div></div>
+          <div class="stat-box" id="box-liquidacao"><div class="val" id="stat-liquidacao">—</div><div class="label">cenários em que a proteção quebrou</div></div>
         </div>
 
         <div class="btn-row">
@@ -125,98 +174,37 @@
       </div>
 
       <div class="card convert-block" id="convert-sim">
-        <span class="tag s2">Seu próximo passo</span>
-        <div class="convert-headline">Decidiu operar? Comece reduzindo o risco — inclusive o custo.</div>
-        <div class="convert-sub">Se você ainda não tem Binance, o link abaixo ativa o cashback vitalício de Spot disponível nessa indicação. Se já tem conta, responda duas perguntas e receba uma alternativa que você realmente possa usar.</div>
-        <ul class="offer-list">
-          <li>Cashback vitalício nas taxas elegíveis de Spot pelo código BOSS2026</li>
-          <li>Roteamento sem empilhar links ou recomendar uma conta que você já possui</li>
-          <li>Sem sinais, sem promessa de lucro — só gestão de risco de verdade</li>
-        </ul>
-        <div class="btn-row">
+        <span class="tag s2" id="convert-tag">Seu próximo passo</span>
+        <div class="convert-headline" id="convert-headline">Proteção também tem custo de execução — e ele sai das taxas.</div>
+        <div class="convert-sub" id="convert-sub">Montar e desmontar proteção passa por uma corretora, e cada operação cobra.</div>
+        <ul class="offer-list" id="convert-list"></ul>
+        <div class="btn-row" id="convert-botoes">
           <a class="btn btn-primary" id="cta-ref-sim" href="#" target="_blank" rel="sponsored nofollow noopener noreferrer" referrerpolicy="no-referrer">Ainda não tenho Binance →</a>
           <a class="btn btn-secondary js-open-router" href="#proximo-passo">Já tenho — ver meu próximo passo</a>
           <a class="btn btn-secondary" href="#beneficio-indicado">Já me cadastrei — solicitar benefício</a>
         </div>
-        <p class="fine-print">A abertura da conta não obriga você a operar futuros. Verifique o benefício exibido no cadastro e só opere depois de entender alavancagem, liquidação e stop.</p>
+        <p class="fine-print" id="convert-fine">A abertura da conta não obriga você a montar proteção nenhuma. Verifique o benefício exibido no cadastro e só use derivativos depois de entender margem, liquidação e custo de carregamento — inclusive a possibilidade de a proteção ser encerrada antes da hora.</p>
       </div>
     </section>
 
-    <!-- ============ PORTA 2 — RAIO-X DO HISTÓRICO ============ -->
-    <section id="raiox">
-      <div class="card">
-        <h2><span class="num">2</span>Raio-X do seu histórico real</h2>
-        <p class="section-desc">Já opera futuros? Suba o CSV do seu histórico de trades (Binance, Bybit ou qualquer exchange) e receba um diagnóstico honesto — win rate, profit factor, quanto você paga de taxa, e os padrões que mais custam dinheiro. <strong>Nada é enviado a nenhum servidor: tudo roda aqui no seu navegador.</strong></p>
-
-        <div class="upload-zone" id="upload-zone">
-          <div class="upload-icon">📄</div>
-          <div><strong>Arraste seu CSV aqui</strong> ou clique pra escolher</div>
-          <input type="file" id="file-input" accept=".csv">
-        </div>
-
-        <div class="btn-row">
-          <button class="btn-secondary" id="btn-example">👀 Ver com dados de exemplo</button>
-        </div>
-
-        <!-- Mapeamento manual (fallback pra qualquer formato de CSV) -->
-        <div id="mapping-panel">
-          <p class="section-desc">Não reconhecemos algumas colunas automaticamente — confirme o mapeamento abaixo:</p>
-          <div id="mapping-rows"></div>
-          <div class="btn-row">
-            <button class="btn-primary" id="btn-confirm-mapping">Gerar diagnóstico →</button>
-          </div>
-        </div>
-      </div>
-
-      <div class="card" id="raiox-results" style="display:none;">
-        <h2>Seu diagnóstico</h2>
-        <div class="stat-row">
-          <div class="stat-box"><div class="val" id="rx-winrate">—</div><div class="label">win rate</div></div>
-          <div class="stat-box"><div class="val" id="rx-pf">—</div><div class="label">profit factor</div></div>
-          <div class="stat-box"><div class="val" id="rx-trades">—</div><div class="label">trades analisados</div></div>
-          <div class="stat-box"><div class="val" id="rx-fees">—</div><div class="label">total em taxas</div></div>
-          <div class="stat-box"><div class="val" id="rx-dd">—</div><div class="label">drawdown máximo</div></div>
-          <div class="stat-box"><div class="val" id="rx-rr">—</div><div class="label">R:R realizado</div></div>
-        </div>
-
-        <div id="findings-list" style="margin-top:20px;"></div>
-
-        <div class="btn-row">
-          <button class="btn-secondary" id="btn-download-rx-card">📥 Baixar card do resultado</button>
-        </div>
-      </div>
-
-      <div class="card convert-block" id="convert-rx">
-        <span class="tag s1">Com base no seu histórico</span>
-        <div class="convert-headline">Quanto uma redução de taxa representaria no seu histórico</div>
-        <div class="savings-highlight" id="rx-savings">—</div>
-        <div class="convert-sub">Este é um cenário educacional de 10% aplicado ao CSV — não afirma que o cashback de uma oferta cubra os trades analisados. Agora precisamos saber onde você já tem conta para não recomendar um benefício de novo usuário que não se aplica.</div>
-        <ul class="offer-list">
-          <li>Sem conta Binance: cashback vitalício nas taxas elegíveis de Spot pelo link</li>
-          <li>Com conta Binance: alternativa contextual entre as corretoras cadastradas</li>
-          <li>13 anos de mercado — gestão de risco e psicologia de trading, não sinal</li>
-        </ul>
-        <div class="btn-row">
-          <a class="btn btn-primary js-open-router" id="cta-ref-rx" href="#proximo-passo">Encontrar a opção adequada →</a>
-        </div>
-      </div>
-    </section>
 
     <!-- ============ CALCULADORA DE POSIÇÃO ============ -->
     <section id="calc">
       <div class="card">
-        <h2><span class="num">3</span>Calculadora de position size</h2>
-        <p class="section-desc">Quanto abrir de posição dado o seu risco por trade e a distância até o stop.</p>
+        <h2><span class="num">3</span>Calculadora de tamanho da proteção</h2>
+        <p class="section-desc">Quanto de proteção cobre a parte que você quer proteger, quanta margem ela exige e em que preço ela seria encerrada antes da hora.</p>
         <div class="calc-grid">
-          <div class="calc-field"><label>Banca (R$)</label><input type="number" id="calc-bankroll" value="1000"></div>
-          <div class="calc-field"><label>Risco por trade (%)</label><input type="number" id="calc-risk" value="2" step="0.1"></div>
-          <div class="calc-field"><label>Preço de entrada</label><input type="number" id="calc-entry" value="100" step="0.01"></div>
-          <div class="calc-field"><label>Preço de stop</label><input type="number" id="calc-stop" value="98" step="0.01"></div>
+          <div class="calc-field"><label>Valor exposto (R$)</label><input type="number" id="calc-exposicao" value="100000" step="1000"></div>
+          <div class="calc-field"><label>Quanto quer cobrir (%)</label><input type="number" id="calc-cobertura" value="100" step="5"></div>
+          <div class="calc-field"><label>Preço do ativo hoje</label><input type="number" id="calc-preco" value="100" step="0.01"></div>
+          <div class="calc-field"><label>Alavancagem da proteção</label><input type="number" id="calc-alav" value="2" step="0.5"></div>
         </div>
-        <div class="stat-row" style="grid-template-columns:1fr 1fr;">
-          <div class="stat-box"><div class="val" id="calc-position">—</div><div class="label">tamanho da posição</div></div>
-          <div class="stat-box"><div class="val" id="calc-riskval">—</div><div class="label">valor em risco</div></div>
+        <div class="stat-row" style="grid-template-columns:repeat(3,1fr);">
+          <div class="stat-box"><div class="val" id="calc-nocional">—</div><div class="label">proteção a montar</div></div>
+          <div class="stat-box"><div class="val" id="calc-margem">—</div><div class="label">margem necessária</div></div>
+          <div class="stat-box"><div class="val" id="calc-liquidacao">—</div><div class="label">preço que encerra a proteção</div></div>
         </div>
+        <p class="model-note">A proteção é encerrada quando o preço <strong>sobe</strong> o suficiente para consumir a margem. Quanto maior a alavancagem, menos margem parada — e mais perto fica esse preço. É por isso que proteção alavancada demais costuma sumir justamente antes da queda que se queria evitar.</p>
       </div>
     </section>
 
@@ -337,13 +325,10 @@
   </div>
 </footer>
 
-<script src="config.js"></script>
-<script src="js/montecarlo.js"></script>
-<script src="js/chart.js"></script>
-<script src="js/csv-parser.js"></script>
-<script src="js/metrics.js"></script>
-<script src="js/example-data.js"></script>
-<script src="js/share-card.js"></script>
-<script src="js/app.js"></script>
+<script src="config.js?v=2026-07-20e"></script>
+<script src="js/protection.js?v=2026-07-20e"></script>
+<script src="js/chart.js?v=2026-07-20e"></script>
+<script src="js/share-card.js?v=2026-07-20e"></script>
+<script src="js/app.js?v=2026-07-20e"></script>
 </body>
 </html>
