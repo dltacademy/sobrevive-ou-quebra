@@ -17,21 +17,41 @@ function generateSimulatorCard(mcResult, params) {
   ctx.font = "600 40px system-ui, sans-serif";
   ctx.fillText("SOBREVIVE OU QUEBRA?", 540, 120);
 
-  const survived = mcResult.ruinRate < 0.5;
+  const semPct = mcResult.cenariosRuinsSemProtecao * 100;
+  const comPct = mcResult.cenariosRuinsComProtecao * 100;
+  const protegido = params.rota !== "nada";
+  const melhorou = semPct - comPct > 0.5;
+
   ctx.font = "900 80px system-ui, sans-serif";
-  ctx.fillStyle = survived ? "#6EE7A8" : "#f87171";
-  ctx.fillText(survived ? "SOBREVIVEU" : "QUEBROU", 540, 300);
+  ctx.fillStyle = protegido && melhorou ? "#6EE7A8" : "#f87171";
+  ctx.fillText(
+    protegido ? `${semPct.toFixed(0)}% → ${comPct.toFixed(0)}%` : `${semPct.toFixed(0)}%`,
+    540,
+    300
+  );
 
   ctx.font = "600 30px system-ui, sans-serif";
   ctx.fillStyle = "#9AA7C2";
-  ctx.fillText(`${(mcResult.ruinRate * 100).toFixed(0)}% dos cenários quebram`, 540, 365);
+  ctx.fillText(
+    `dos cenários perdem mais de ${Math.round(params.toleranciaPct * 100)}%`,
+    540,
+    365
+  );
 
+  const ROTAS = {
+    nada: "Sem proteção",
+    reduzir: "Reduzindo a posição",
+    futuros: "Travando com futuros",
+    seguro: "Comprando seguro",
+  };
   ctx.font = "500 26px system-ui, sans-serif";
   ctx.fillStyle = "#cbd5e1";
   const details = [
-    `Risco por trade: ${(params.riskPct * 100).toFixed(1)}%`,
-    `Win rate: ${(params.winRate * 100).toFixed(0)}%  ·  R:R ${params.rr.toFixed(1)}`,
-    `Alavancagem: ${params.leverage}x`,
+    `${ROTAS[params.rota]} · ${Math.round(params.cobertura * 100)}% da posição`,
+    `Prazo: ${params.meses} ${params.meses === 1 ? "mês" : "meses"}`,
+    protegido
+      ? `Efeito médio: ${mcResult.diferencaMedia >= 0 ? "+" : "−"}R$ ${Math.abs(Math.round(mcResult.diferencaMedia)).toLocaleString("pt-BR")}`
+      : "Nenhuma proteção montada",
   ];
   details.forEach((line, i) => ctx.fillText(line, 540, 435 + i * 40));
 
@@ -42,43 +62,6 @@ function generateSimulatorCard(mcResult, params) {
   return canvas;
 }
 
-function generateRaioXCard(metrics) {
-  const canvas = document.createElement("canvas");
-  canvas.width = 1080;
-  canvas.height = 1080;
-  const ctx = canvas.getContext("2d");
-
-  drawCardBackground(ctx);
-
-  ctx.textAlign = "center";
-  ctx.fillStyle = "#E8EDF7";
-  ctx.font = "600 40px system-ui, sans-serif";
-  ctx.fillText("RAIO-X DO TRADER", 540, 120);
-
-  ctx.font = "900 90px system-ui, sans-serif";
-  ctx.fillStyle = metrics.winRate >= 0.5 ? "#6EE7A8" : "#f87171";
-  ctx.fillText(`${(metrics.winRate * 100).toFixed(0)}%`, 540, 300);
-
-  ctx.font = "500 28px system-ui, sans-serif";
-  ctx.fillStyle = "#9AA7C2";
-  ctx.fillText("win rate", 540, 345);
-
-  ctx.font = "500 26px system-ui, sans-serif";
-  ctx.fillStyle = "#cbd5e1";
-  const pf = metrics.profitFactor === Infinity ? "∞" : metrics.profitFactor.toFixed(2);
-  const details = [
-    `Profit factor: ${pf}`,
-    `${metrics.totalTrades} trades analisados`,
-    `${(metrics.feeBleedPct * 100).toFixed(1)}% do volume em taxas`,
-  ];
-  details.forEach((line, i) => ctx.fillText(line, 540, 415 + i * 42));
-
-  drawCouponBox(ctx, {
-    label: "PRESENTE POR ANALISAR",
-    offerText: "Cashback vitalício\nno Spot Binance",
-  });
-  return canvas;
-}
 
 function drawCardBackground(ctx) {
   const grad = ctx.createLinearGradient(0, 0, 1080, 1080);
