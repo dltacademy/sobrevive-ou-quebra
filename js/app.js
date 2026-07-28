@@ -223,6 +223,24 @@ document.getElementById("router-offer-cta").addEventListener("click", (event) =>
 });
 document.getElementById("router-reset").addEventListener("click", resetRouter);
 
+// Comunidade oficial ao lado da recomendação. Discreta de propósito: o
+// roteador sempre chega a uma oferta, e ela é a ação que sustenta o projeto.
+// `.btn-telegram` (#26a5e4) tem contraste 7.20:1 com o fundo contra 3.00:1
+// do `.btn-primary` — destacado ali, o brinde gratuito puxaria mais o olho
+// que a própria recomendação. Ver CONVERSION_FRAMEWORK.md do ferramenta-kit.
+(function wireCommunity() {
+  const el = document.getElementById("cta-comunidade");
+  if (!el) return;
+  if (!isCommunityConfigured()) {
+    el.remove();
+    return;
+  }
+  el.href = getCommunityLink();
+  if (CONFIG.community.label) el.textContent = CONFIG.community.label;
+  el.hidden = false;
+  el.addEventListener("click", () => track("clique_comunidade"));
+})();
+
 // ============================================================
 // SIMULADOR DE PROTEÇÃO
 // ============================================================
