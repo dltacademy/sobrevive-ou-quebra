@@ -224,85 +224,6 @@ document.getElementById("router-offer-cta").addEventListener("click", (event) =>
 document.getElementById("router-reset").addEventListener("click", resetRouter);
 
 // ============================================================
-// BENEFÍCIO TEMPORÁRIO — contato liberado após dados mínimos
-// ============================================================
-function initReferralBenefit() {
-  const section = document.getElementById("beneficio-indicado");
-  if (!section) return;
-  if (!isTelegramConfigured()) {
-    section.hidden = true;
-    return;
-  }
-
-  const start = document.getElementById("benefit-start");
-  const form = document.getElementById("benefit-form");
-  const offer = document.getElementById("benefit-offer");
-  const uid = document.getElementById("benefit-uid");
-  const date = document.getElementById("benefit-date");
-  const ready = document.getElementById("benefit-ready");
-  const preview = document.getElementById("benefit-message-preview");
-  const telegram = document.getElementById("benefit-telegram");
-
-  date.max = new Date().toISOString().slice(0, 10);
-
-  start.addEventListener("click", () => {
-    form.hidden = false;
-    start.hidden = true;
-    offer.focus();
-    track("beneficio_verificacao_iniciada");
-  });
-
-  form.addEventListener("input", () => {
-    ready.hidden = true;
-    telegram.removeAttribute("href");
-  });
-
-  form.addEventListener("submit", (event) => {
-    event.preventDefault();
-    if (!form.reportValidity()) return;
-
-    const cleanUid = uid.value.trim();
-    if (!/^[A-Za-z0-9_-]{4,40}$/.test(cleanUid)) {
-      uid.setCustomValidity("Use somente letras, números, _ ou - do UID da plataforma.");
-      uid.reportValidity();
-      return;
-    }
-    uid.setCustomValidity("");
-
-    const selectedDate = new Date(date.value + "T00:00:00");
-    if (Number.isNaN(selectedDate.getTime()) || selectedDate > new Date()) {
-      date.setCustomValidity("Informe uma data de cadastro válida, sem usar uma data futura.");
-      date.reportValidity();
-      return;
-    }
-    date.setCustomValidity("");
-
-    const channel = getChannel() || "direto";
-    const variant = getVariant();
-    const message = [
-      "Olá, Tiago. Quero solicitar o benefício temporário para indicados do site Sobrevive ou Quebra?.",
-      "",
-      `Plataforma: ${offer.value}`,
-      `UID: ${cleanUid}`,
-      `Data do cadastro: ${date.value.split("-").reverse().join("/")}`,
-      `Origem do site: ${channel} · variante ${variant}`,
-      "",
-      "Confirmo que me cadastrei pelo link do site e entendo que o benefício depende da confirmação no painel e da disponibilidade.",
-    ].join("\n");
-
-    preview.textContent = message;
-    telegram.href = getTelegramLink(message);
-    ready.hidden = false;
-    ready.scrollIntoView({ behavior: "smooth", block: "nearest" });
-    track("beneficio_solicitacao_preparada_" + offer.value.toLowerCase().replace(/[^a-z0-9]+/g, "_"));
-  });
-
-  uid.addEventListener("input", () => uid.setCustomValidity(""));
-  date.addEventListener("input", () => date.setCustomValidity(""));
-  telegram.addEventListener("click", () => track("beneficio_abriu_telegram"));
-}
-
-// ============================================================
 // SIMULADOR DE PROTEÇÃO
 // ============================================================
 let lastMcResult = null;
@@ -603,7 +524,6 @@ function runCalc() {
 // ============================================================
 applyVariant();
 wireConversionLinks();
-initReferralBenefit();
 runSimAndRender();
 runCalc();
 
