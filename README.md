@@ -1,52 +1,52 @@
 # Sobrevive ou Quebra?
 
-Ferramenta web gratuita, 100% client-side, com duas portas de entrada para educar, diagnosticar e encaminhar cada pessoa para uma oferta afiliada compatível com o contexto dela:
+Ferramenta web gratuita, 100% client-side, para quem **já tem patrimônio exposto e teme uma queda**. Ela não tenta prever preço: compara o que cada rota de proteção faz com o dinheiro **nos mesmos cenários sorteados**, para mostrar o formato do risco — que é o que separa proteção de aposta.
 
-- **Simulador de sobrevivência** — Monte Carlo (1.000 simulações de 100 trades) que mostra se uma estratégia de futuros sobrevive dado banca, alavancagem, risco por trade, win rate e R:R. Mira quem ainda não abriu conta (S2).
-- **Raio-X do histórico** — upload de CSV de trades (auto-detecção de colunas Binance/Bybit + mapeamento manual como fallback) gera diagnóstico de win rate, profit factor, sangramento de taxas, revenge trading e overtrading. Mira quem já opera em outra corretora (S1).
+Três etapas na mesma página:
 
-Nenhum dado sai do navegador. Sem cadastro, sem backend, sem dependências (HTML/CSS/JS vanilla). Depois do resultado, um roteador pergunta se a pessoa já tem Binance e qual problema quer resolver. Binance continua prioritária para novas contas; quem já tem conta recebe uma alternativa contextual, sem mural de links.
+1. **Antes dos números: o que você teme que aconteça?** — a entrada é um medo específico, não uma planilha. Os controles já começam num ponto compatível com o caso escolhido.
+2. **O que cada proteção faz com o seu dinheiro** — 1.000 trajetórias de preço para o prazo informado, calculadas com e sem proteção usando o **mesmo sorteio**, comparando quatro rotas: não fazer nada, reduzir posição, travar com futuros e comprar seguro (opção de venda).
+3. **Calculadora de tamanho da proteção** — quanto cobre a parte que se quer proteger, quanta margem exige e em que preço a proteção seria encerrada antes da hora.
 
-> **Pré-lançamento:** indexação bloqueada de propósito por `<meta name="robots" content="noindex">`. O `robots.txt` mantém `Allow: /` para os crawlers conseguirem ler essa diretiva. Só liberar a indexação depois dos testes finais, tracking e links estarem confirmados.
+Depois do resultado, um roteador pergunta se a pessoa já tem Binance e qual objetivo ela tem, e recomenda **uma** oferta compatível com o contexto — sem mural de links.
+
+Nenhum dado sai do navegador. Sem cadastro, sem backend, sem dependências (HTML/CSS/JS vanilla).
+
+> **O que o modelo assume:** trajetórias sem tendência, volatilidade típica da classe escolhida, proteção montada hoje e mantida até o fim do prazo. O prêmio do seguro é um valor **informado pela pessoa** — não cotamos opção. Não simula spread, corretagem, imposto, ajuste diário nem execução parcial.
 
 ## Estrutura
 
 ```
-index.html          página única
-config.js            ÚNICO arquivo a editar pra lançar (refs, telegram, GoatCounter, URL)
+index.html            página única
+config.js             ÚNICO arquivo a editar pra lançar (refs por canal, offers, GoatCounter, URL)
 styles.css
 js/
-  montecarlo.js       motor de simulação
-  chart.js            desenho das curvas de equity (canvas)
-  csv-parser.js       parser CSV genérico + auto-detecção de colunas
-  metrics.js          cálculo de métricas e diagnóstico do Raio-X
-  example-data.js      CSV sintético pro botão "ver com dados de exemplo"
-  share-card.js        geração dos cards 1080x1080 pra download
-  app.js                wiring da UI
-og-image.png          preview de compartilhamento (WhatsApp/Telegram/X) — marca DLT Academy
-assets/                logo/favicon de marca (dlt-mark.png, dlt-logo.png, dlt-logo-light.png)
+  protection.js        motor das quatro rotas de proteção
+  chart.js             desenho das curvas (canvas)
+  share-card.js        geração dos cards para download
+  app.js               wiring da UI, roteador de ofertas
+security_check.py     gate de política de segurança
+tests/
+  test-protection.mjs   contrato do motor de proteção
+  test_security_check.py
+og-image.png          preview de compartilhamento — marca DLT Academy
+assets/               logo e favicon de marca
 robots.txt / sitemap.xml
-.github/workflows/pages.yml   deploy automático no GitHub Pages a cada push em main
+.github/workflows/
+  ci.yml              gates em PR e push para main
+  pages.yml           deploy no GitHub Pages
 ```
 
-## Antes de divulgar — checklist de lançamento
+## Estado de publicação
 
-1. Confirmar em `config.js` os links por canal (`refByChannel`) e todos os destinos em `offers`.
-2. O Telegram `@<removido>` está configurado somente no gate de benefício temporário para indicados; não existe contato aberto ao lado dos CTAs. Preencher ainda o código do site no GoatCounter.
-3. Abrir todos os links em janela anônima e registrar o benefício exibido, país, data e condições.
-4. Rodar simulador, CSV de exemplo, CSV real, calculadora, cards e todas as combinações do roteador em desktop e celular.
-5. Somente depois, recolocar o Sitemap e mudar a meta `robots` para `index, follow`; o `robots.txt` já deve permanecer com `Allow: /`.
-6. Confirmar o deploy no GitHub Pages e testar o preview do link em WhatsApp/Telegram.
-7. Divulgar com `?c=<canal>&v=<variante>` em cada origem.
+**No ar e indexável** em `https://sobrevive-ou-quebra.dlt.academy/`, servindo `<meta name="robots" content="index, follow">`. O `robots.txt` mantém `Allow: /`.
 
 ## Rastreamento
 
-- **GoatCounter**: eventos carregam canal e variante; o roteador também mede respostas, recomendação gerada e clique por oferta.
-- **Painéis afiliados**: cadastro e ativação são medidos no programa de cada oferta. Para Binance, `refByChannel` continua permitindo um destino específico por origem quando houver links separados.
+- **GoatCounter**: os eventos carregam canal e variante; o roteador mede respostas, recomendação gerada e clique por oferta. Fica inerte enquanto `goatCounterSite` estiver vazio — isso é esperado, não é defeito.
+- **Painéis afiliados**: cadastro e ativação são medidos no programa de cada oferta. `refByChannel` permite um destino específico por origem quando houver links separados.
 
-## Benefício temporário para indicados
-
-O contato no Telegram não é suporte público. A pessoa declara que concluiu o cadastro pelo link, informa plataforma + UID + data, revisa a mensagem e então abre `@<removido>`. Nenhum dado é armazenado no site. O benefício fica pendente até a indicação ser confirmada no painel e depende da disponibilidade da campanha. Nunca pedir senha, 2FA, documento, selfie, chave privada, saldo, carteira ou comprovante financeiro.
+Divulgar sempre com `?c=<canal>&v=<variante>`. Canal fora da allowlist é descartado em silêncio, e o teste nasce sem origem.
 
 ## Desenvolvimento local
 
@@ -58,13 +58,21 @@ python3 -m http.server 8000
 
 E abrir `http://localhost:8000`.
 
-### Gate de segurança
+### Gates
 
-Antes de publicar qualquer alteração:
+O `ci.yml` roda isto em todo PR e push para `main`. Para rodar antes de abrir o PR:
 
 ```bash
-python3 -m unittest discover -s tests -p 'test_security_check.py'
-python3 -m py_compile security_check.py tests/test_security_check.py
+python3 -m py_compile security_check.py
 python3 security_check.py .
-for f in js/*.js config.js; do node --check "$f"; done
+node --check config.js
+find js -name '*.js' -print0 | xargs -0 -n1 node --check
+node tests/test-protection.mjs
+python3 -m unittest discover -s tests -v
 ```
+
+## Regras que não mudam
+
+- **Nenhum dado pessoal é pedido, coletado ou armazenado.** Não existe formulário, cadastro nem contato pessoal nesta página.
+- Nunca pedir senha, 2FA, documento, selfie, chave privada, saldo, carteira ou comprovante financeiro.
+- Toda oferta afiliada é declarada como tal, e as condições exibidas pela plataforma no cadastro prevalecem sobre qualquer descrição daqui.
