@@ -10,6 +10,8 @@ Três etapas na mesma página:
 
 Depois do resultado, um roteador pergunta se a pessoa já tem Binance e qual objetivo ela tem, e recomenda **uma** oferta compatível com o contexto — sem mural de links.
 
+Ao lado da recomendação entra o **grupo público da marca** (`CONFIG.community`), discreto de propósito: o roteador sempre chega a uma oferta, e ela é a ação principal. O grupo acompanha como opção gratuita, sem disputar o clique.
+
 Nenhum dado sai do navegador. Sem cadastro, sem backend, sem dependências (HTML/CSS/JS vanilla).
 
 > **O que o modelo assume:** trajetórias sem tendência, volatilidade típica da classe escolhida, proteção montada hoje e mantida até o fim do prazo. O prêmio do seguro é um valor **informado pela pessoa** — não cotamos opção. Não simula spread, corretagem, imposto, ajuste diário nem execução parcial.

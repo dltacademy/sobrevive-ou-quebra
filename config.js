@@ -51,6 +51,14 @@ const CONFIG = {
     },
   },
 
+  // Comunidade oficial da marca. Entra como brinde discreto ao lado da oferta
+  // recomendada pelo roteador. Nunca é contato pessoal: o telegramUsername,
+  // que abria conversa direta com uma pessoa, saiu em 27/07 com a promoção.
+  community: {
+    url: "https://t.me/dltacademy",
+    label: "Entrar grátis no grupo →",
+  },
+
   // Código de site do GoatCounter (ex: "meusite" para meusite.goatcounter.com)
   goatCounterSite: "",
 
@@ -71,6 +79,23 @@ function getVariant() {
   const params = new URLSearchParams(window.location.search);
   const v = params.get("v");
   return v === "b" ? "b" : "a";
+}
+
+function getSafeExternalUrl(value) {
+  try {
+    const url = new URL(value);
+    return url.protocol === "https:" ? url.href : "#";
+  } catch (_) {
+    return "#";
+  }
+}
+
+function isCommunityConfigured() {
+  return Boolean(CONFIG.community && CONFIG.community.url && getCommunityLink() !== "#");
+}
+
+function getCommunityLink() {
+  return getSafeExternalUrl(CONFIG.community && CONFIG.community.url);
 }
 
 function getRefLink() {
