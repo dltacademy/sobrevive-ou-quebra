@@ -51,9 +51,6 @@ const CONFIG = {
     },
   },
 
-  // Username do Telegram para a consultoria de 20 minutos (sem @, ex: "hyadhuad")
-  telegramUsername: "tiagolucer",
-
   // Código de site do GoatCounter (ex: "meusite" para meusite.goatcounter.com)
   goatCounterSite: "",
 
@@ -84,18 +81,6 @@ function getRefLink() {
   return CONFIG.refDefault;
 }
 
-function getTelegramLink(prefill) {
-  if (!isTelegramConfigured()) return null;
-  const base = `https://t.me/${CONFIG.telegramUsername}`;
-  return prefill ? `${base}?text=${encodeURIComponent(prefill)}` : base;
-}
-
-function isTelegramConfigured() {
-  return Boolean(
-    CONFIG.telegramUsername &&
-    CONFIG.telegramUsername !== "SEU_USUARIO_TELEGRAM"
-  );
-}
 
 function getOfferLink(offerKey) {
   if (offerKey === "binance") return getRefLink();
