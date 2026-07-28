@@ -181,7 +181,6 @@
         <div class="btn-row" id="convert-botoes">
           <a class="btn btn-primary" id="cta-ref-sim" href="#" target="_blank" rel="sponsored nofollow noopener noreferrer" referrerpolicy="no-referrer">Ainda não tenho Binance →</a>
           <a class="btn btn-secondary js-open-router" href="#proximo-passo">Já tenho — ver meu próximo passo</a>
-          <a class="btn btn-secondary" href="#beneficio-indicado">Já me cadastrei — solicitar benefício</a>
         </div>
         <p class="fine-print" id="convert-fine">A abertura da conta não obriga você a montar proteção nenhuma. Verifique o benefício exibido no cadastro e só use derivativos depois de entender margem, liquidação e custo de carregamento — inclusive a possibilidade de a proteção ser encerrada antes da hora.</p>
       </div>
@@ -253,63 +252,6 @@
 
         <div class="affiliate-disclosure">
           <strong>Transparência:</strong> esta página contém links de afiliado. Podemos receber comissão se você se cadastrar e usar um produto, sem custo adicional direto para você. Benefícios, disponibilidade, cashback e regras mudam por país e campanha; confira sempre a tela final antes do cadastro.
-        </div>
-      </div>
-    </section>
-
-    <!-- ============ BENEFÍCIO TEMPORÁRIO PARA INDICADOS ============ -->
-    <section id="beneficio-indicado" aria-labelledby="benefit-title">
-      <div class="card benefit-card">
-        <span class="tag s1">Temporário · opcional · sujeito a confirmação</span>
-        <h2 id="benefit-title">Já se cadastrou pelo link deste site?</h2>
-        <p class="section-desc">Indicados confirmados no painel podem solicitar uma consultoria inicial de até 20 minutos sobre primeiros passos, segurança e gestão de risco. A disponibilidade é limitada e o benefício só é liberado depois da confirmação do cadastro.</p>
-
-        <ol class="benefit-steps">
-          <li>Você conclui o cadastro pelo link afiliado exibido nesta página.</li>
-          <li>Informa somente a plataforma, seu UID/número de usuário e a data do cadastro.</li>
-          <li>O cadastro é conferido no painel; depois da confirmação, combinamos o atendimento se ainda houver disponibilidade.</li>
-        </ol>
-
-        <button class="btn-secondary" type="button" id="benefit-start">Tenho interesse e já concluí o cadastro</button>
-
-        <form id="benefit-form" class="benefit-form" hidden>
-          <div class="calc-grid">
-            <div class="calc-field">
-              <label for="benefit-offer">Plataforma usada no cadastro</label>
-              <select id="benefit-offer" required>
-                <option value="">Selecione</option>
-                <option value="Binance">Binance</option>
-                <option value="Bybit">Bybit</option>
-                <option value="ether.fi Cash">ether.fi Cash</option>
-                <option value="OKX">OKX</option>
-                <option value="KuCoin">KuCoin</option>
-                <option value="MEXC">MEXC</option>
-              </select>
-            </div>
-            <div class="calc-field">
-              <label for="benefit-date">Data do cadastro</label>
-              <input type="date" id="benefit-date" required>
-            </div>
-          </div>
-          <div class="calc-field">
-            <label for="benefit-uid">UID / número de usuário na plataforma</label>
-            <input type="text" id="benefit-uid" inputmode="numeric" autocomplete="off" minlength="4" maxlength="40" placeholder="Somente o UID público da conta" required>
-          </div>
-          <label class="benefit-consent">
-            <input type="checkbox" id="benefit-confirm" required>
-            <span>Confirmo que me cadastrei pelo link deste site e quero enviar esses dados ao Tiago pelo Telegram para conferência no painel.</span>
-          </label>
-          <div class="privacy-warning"><strong>Nunca envie:</strong> senha, código 2FA, documento, selfie, chave privada, saldo, endereço de carteira ou comprovante de depósito. Para a conferência bastam plataforma, UID e data.</div>
-          <div class="btn-row benefit-actions">
-            <button class="btn-primary" type="submit">Preparar solicitação →</button>
-          </div>
-        </form>
-
-        <div id="benefit-ready" class="benefit-ready" hidden aria-live="polite">
-          <div class="benefit-ready-title">Revise antes de enviar</div>
-          <pre id="benefit-message-preview"></pre>
-          <a class="btn btn-telegram" id="benefit-telegram" target="_blank" rel="nofollow noopener noreferrer" referrerpolicy="no-referrer">Abrir Telegram e enviar solicitação →</a>
-          <p class="fine-print">Abrir o Telegram não confirma automaticamente o benefício. Você ainda precisa enviar a mensagem; o cadastro será conferido no painel antes de qualquer atendimento.</p>
         </div>
       </div>
     </section>
