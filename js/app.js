@@ -443,6 +443,8 @@ function renderConvertBlock(rota) {
   });
 
   document.getElementById("convert-botoes").hidden = !c.precisaConta;
+  const convertDisclosure = document.getElementById("convert-disclosure");
+  if (convertDisclosure) convertDisclosure.hidden = !c.precisaConta;
 }
 
 function renderSimResult(result, params) {
@@ -451,7 +453,7 @@ function renderSimResult(result, params) {
   const comPct = result.cenariosRuinsComProtecao * 100;
   const evitados = semPct - comPct;
   const melhorou = evitados > 0.5;
-  banner.className = "result-banner " + (melhorou ? "survive" : "ruin");
+  banner.className = "result-hero result-banner " + (melhorou ? "survive" : "ruin is-alert");
 
   const perdaLimite = Math.round(params.toleranciaPct * 100);
 
@@ -489,6 +491,7 @@ function renderSimResult(result, params) {
 
   renderConvertBlock(params.rota);
   const convertBlock = document.getElementById("convert-sim");
+  convertBlock.dataset.tone = params.rota === "nada" ? "risk" : melhorou ? "warn" : "risk";
   convertBlock.classList.add("visible");
 }
 
@@ -509,6 +512,31 @@ document.getElementById("btn-download-sim-card").addEventListener("click", () =>
   const canvas = generateSimulatorCard(lastMcResult, lastSimParams);
   downloadCanvasAsPng(canvas, "sobrevive-ou-quebra.png");
   track("download_card_simulador");
+});
+
+document.getElementById("btn-download-sim-text").addEventListener("click", () => {
+  if (!lastMcResult) return;
+  const lines = [
+    "Sobrevive ou Quebra?",
+    document.getElementById("result-big").textContent,
+    document.getElementById("result-label").textContent,
+    `Cenários ruins sem proteção: ${document.getElementById("stat-ruins-sem").textContent}`,
+    `Cenários ruins com proteção: ${document.getElementById("stat-ruins-com").textContent}`,
+    `Efeito médio no bolso: ${document.getElementById("stat-custo").textContent}`,
+    "",
+    window.location.href,
+    "Conteúdo educacional. Não é recomendação de investimento.",
+  ];
+  const blob = new Blob([lines.join("\n")], { type: "text/plain;charset=utf-8" });
+  const url = URL.createObjectURL(blob);
+  const link = document.createElement("a");
+  link.href = url;
+  link.download = "sobrevive-ou-quebra-resultado.txt";
+  link.rel = "noopener";
+  document.body.appendChild(link);
+  link.click();
+  link.remove();
+  window.setTimeout(() => URL.revokeObjectURL(url), 0);
 });
 
 // ============================================================
