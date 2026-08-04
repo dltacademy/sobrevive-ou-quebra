@@ -517,3 +517,28 @@ select:focus, .calc-field input:focus { border-color: var(--accent); outline: no
   .btn, button, input[type="range"]::-webkit-slider-thumb, input[type="range"]::-moz-range-thumb { transition: none; }
   .btn-primary:hover { transform: none; }
 }
+
+.tool-shell { max-width: 840px; }
+.tool-head { padding-top: 34px; }
+.tool-head .disclaimer-badge { margin-bottom: 16px; }
+.tool-head .privacy-line { margin: 0 0 24px; }
+.tool-head .tool-facts { margin-bottom: 20px; }
+.tool-head .card:first-of-type { margin-top: 20px; }
+.calc { max-width: 100%; }
+.three-stat-grid { grid-template-columns: repeat(3, 1fr); }
+.stat-support { display: block; margin-top: 8px; color: var(--text-faint); font-size: 11.5px; line-height: 1.35; }
+.result-actions { margin-top: 22px; }
+.result-actions-title { font-family: var(--font-head); font-size: 17px; font-weight: 700; margin: 0 0 5px; }
+.result-actions > p:not(.result-actions-title) { color: var(--text-dim); font-size: 14px; line-height: 1.55; margin: 0 0 16px; }
+.result-actions-row { display: flex; flex-wrap: wrap; gap: 10px; }
+.result-actions button { min-height: 44px; }
+.affiliate-disclosure { color: var(--text-faint); font-size: 12.5px; line-height: 1.55; margin: 16px 0 0; }
+.next-step { margin-top: 36px; }
+.share-row { margin-top: 34px; }
+
+@media (max-width: 560px) {
+  .tool-head .tool-facts { display: grid; gap: 8px; }
+  .three-stat-grid { grid-template-columns: 1fr; }
+  .result-actions-row { flex-direction: column; }
+  .result-actions-row .btn { width: 100%; justify-content: center; }
+}

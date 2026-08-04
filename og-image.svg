@@ -1,0 +1,35 @@
+
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630" role="img" aria-label="FERRAMENTA DE PROTEÇÃO — DLT Academy">
+  <defs>
+    <radialGradient id="glow" cx="18%" cy="0%" r="70%">
+      <stop offset="0%" stop-color="#1E4FD8" stop-opacity="0.42"></stop>
+      <stop offset="100%" stop-color="#1E4FD8" stop-opacity="0"></stop>
+    </radialGradient>
+    <linearGradient id="rule" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#7FB2FF"></stop>
+      <stop offset="100%" stop-color="#1E4FD8"></stop>
+    </linearGradient>
+  </defs>
+
+  <rect width="1200" height="630" fill="#06090F"></rect>
+  <rect width="1200" height="630" fill="url(#glow)"></rect>
+  <rect x="0" y="0" width="1200" height="6" fill="url(#rule)"></rect>
+
+
+  <rect x="80" y="92" width="251" height="46" rx="23" fill="#1E4FD8" fill-opacity="0.16" stroke="#4A8DF8" stroke-opacity="0.45"></rect>
+  <text x="108" y="122" font-family="Sora, &#39;Trebuchet MS&#39;, sans-serif" font-size="21" font-weight="700" letter-spacing="1.8" fill="#8FBBFF">FERRAMENTA DE PROTEÇÃO</text>
+
+
+  <text font-family="Sora, &#39;Trebuchet MS&#39;, sans-serif" font-size="70" font-weight="700" letter-spacing="-1.6" fill="#E8EDF7">
+    <tspan x="80" y="272">SOBREVIVE OU QUEBRA?</tspan>
+    <tspan x="80" y="352">O FORMATO DO RISCO</tspan>
+    <tspan x="80" y="432">ANTES DE AGIR</tspan>
+  </text>
+
+
+  <rect x="80" y="486" width="1040" height="1" fill="#1E2C4E"></rect>
+  <rect x="80" y="522" width="54" height="54" rx="14" fill="#1E4FD8" fill-opacity="0.16" stroke="#4A8DF8" stroke-opacity="0.4"></rect>
+  <text x="107" y="557" text-anchor="middle" font-family="Sora, &#39;Trebuchet MS&#39;, sans-serif" font-size="22" font-weight="700" fill="#8FBBFF">DA</text>
+  <text x="152" y="557" font-family="Sora, &#39;Trebuchet MS&#39;, sans-serif" font-size="25" font-weight="700" letter-spacing="3.4" fill="#E8EDF7">DLT ACADEMY</text>
+  <text x="1120" y="557" text-anchor="end" font-family="Sora, &#39;Trebuchet MS&#39;, sans-serif" font-size="21" font-weight="500" fill="#7C8AA6">dlt.academy</text>
+</svg>
