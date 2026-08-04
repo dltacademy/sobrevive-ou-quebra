@@ -31,7 +31,8 @@
       exchangeRate: 0.014,
     },
   };
-  var atmDefaultIofRate = 0.011;
+  var atmWiseDefaultIofRate = 0.035;
+  var atmRevolutDefaultIofRate = 0.035;
 
   /* ---------- 1 · Barra de progresso de leitura -------------
      <div class="read-progress" data-progress-for=".article-body"></div> */
@@ -199,16 +200,19 @@
   /* ---------- 6 · Calculadora de custo conhecido do saque --
      <form data-calc="atm"> com inputs [data-calc-value] e [data-calc-count]
      e saídas [data-out="arq|wise|revolut"], barras [data-bar="..."],
-     veredito [data-calc-verdict]. [data-calc-iof] é opcional e recebe
-     percentual; sem ele, usa a premissa de 1,1% para conversão de conta
-     global. O custo do ATM e DCC não entram: são disclaimer da peça. */
-  function atmMonthlyCost(value, count, iofRate) {
+     veredito [data-calc-verdict]. [data-calc-wise-iof] e
+     [data-calc-revolut-iof] recebem percentuais; [data-calc-iof] continua
+     aceito como legado para alimentar os dois. Sem eles, a conta usa 3,5%
+     para conversão BRL→moeda estrangeira. O custo do ATM e DCC não entram:
+     são disclaimer da peça. */
+  function atmMonthlyCost(value, count, wiseIofRate, revolutIofRate) {
     var totalValue = value * count;
     var arqConversion = totalValue * atmTariffs.arq.conversionRate;
     var arqWithdrawal = totalValue * atmTariffs.arq.withdrawalRate;
-    var wiseConversion = totalValue * (atmTariffs.wise.conversionRate + iofRate);
+    var wiseConversion = totalValue * atmTariffs.wise.conversionRate;
+    var wiseIof = totalValue * wiseIofRate;
     var wiseWithdrawal = 0;
-    var revolutIof = totalValue * iofRate;
+    var revolutIof = totalValue * revolutIofRate;
     var revolutExchange = Math.max(totalValue - atmTariffs.revolut.exchangeFreeLimit, 0) * atmTariffs.revolut.exchangeRate;
     var revolutWithdrawal = 0;
     var accumulated = 0;
@@ -228,11 +232,11 @@
         detail: "conversão + IOF + spread/serviço " + fmtBRL.format(arqConversion) + " · cartão " + fmtBRL.format(arqWithdrawal),
       },
       wise: {
-        total: wiseConversion + wiseWithdrawal,
+        total: wiseConversion + wiseIof + wiseWithdrawal,
         conversion: totalValue * atmTariffs.wise.conversionRate,
-        iof: totalValue * iofRate,
+        iof: wiseIof,
         withdrawal: wiseWithdrawal,
-        detail: "conversão " + fmtBRL.format(totalValue * atmTariffs.wise.conversionRate) + " · IOF " + fmtBRL.format(totalValue * iofRate) + " · cartão " + fmtBRL.format(wiseWithdrawal),
+        detail: "conversão " + fmtBRL.format(totalValue * atmTariffs.wise.conversionRate) + " · IOF " + fmtBRL.format(wiseIof) + " · cartão " + fmtBRL.format(wiseWithdrawal),
       },
       revolut: {
         total: revolutIof + revolutExchange + revolutWithdrawal,
@@ -249,7 +253,9 @@
     if (!form) return;
     var valueIn = form.querySelector("[data-calc-value]");
     var countIn = form.querySelector("[data-calc-count]");
-    var iofIn = form.querySelector("[data-calc-iof]");
+    var legacyIofIn = form.querySelector("[data-calc-iof]");
+    var wiseIofIn = form.querySelector("[data-calc-wise-iof]") || legacyIofIn;
+    var revolutIofIn = form.querySelector("[data-calc-revolut-iof]") || legacyIofIn;
     if (!valueIn || !countIn) return;
     var verdict = form.querySelector("[data-calc-verdict]");
     var names = { arq: "ARQ", wise: "Wise", revolut: "Revolut" };
@@ -257,8 +263,9 @@
     function render() {
       var value = Math.max(Number(valueIn.value) || 0, 0);
       var count = Math.max(Math.floor(Number(countIn.value) || 1), 1);
-      var iofPercent = iofIn ? Math.max(Number(iofIn.value) || 0, 0) : atmDefaultIofRate * 100;
-      var cost = atmMonthlyCost(value, count, iofPercent / 100);
+      var wiseIofPercent = wiseIofIn ? Math.max(Number(wiseIofIn.value) || 0, 0) : atmWiseDefaultIofRate * 100;
+      var revolutIofPercent = revolutIofIn ? Math.max(Number(revolutIofIn.value) || 0, 0) : atmRevolutDefaultIofRate * 100;
+      var cost = atmMonthlyCost(value, count, wiseIofPercent / 100, revolutIofPercent / 100);
       var keys = Object.keys(cost);
       var max = Math.max.apply(null, keys.map(function (key) { return cost[key].total; }).concat(1));
       var best = keys.reduce(function (winner, candidate) {
@@ -272,7 +279,13 @@
         el.textContent = count + (count === 1 ? " saque" : " saques");
       });
       form.querySelectorAll("[data-echo-iof]").forEach(function (el) {
-        el.textContent = iofPercent.toLocaleString("pt-BR", { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + "%";
+        el.textContent = wiseIofPercent.toLocaleString("pt-BR", { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + "%";
+      });
+      form.querySelectorAll("[data-echo-wise-iof]").forEach(function (el) {
+        el.textContent = wiseIofPercent.toLocaleString("pt-BR", { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + "%";
+      });
+      form.querySelectorAll("[data-echo-revolut-iof]").forEach(function (el) {
+        el.textContent = revolutIofPercent.toLocaleString("pt-BR", { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + "%";
       });
 
       keys.forEach(function (key) {
@@ -305,7 +318,7 @@
       }
     }
 
-    [valueIn, countIn, iofIn].forEach(function (input) {
+    [valueIn, countIn, legacyIofIn, wiseIofIn, revolutIofIn].forEach(function (input) {
       if (input) input.addEventListener("input", render);
     });
     form.addEventListener("submit", function (event) { event.preventDefault(); });
