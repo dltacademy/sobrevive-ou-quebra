@@ -16,8 +16,8 @@
 <meta property="og:title" content="Vale a pena proteger sua posição? | Sobrevive ou Quebra?">
 <meta property="og:description" content="Proteger custa caro; não proteger pode custar mais. Veja o que cada rota faz com o seu dinheiro nos cenários ruins — e quanto ela cobra nos bons.">
 <meta property="og:url" content="https://sobrevive-ou-quebra.dlt.academy/">
-<meta property="og:image" content="https://sobrevive-ou-quebra.dlt.academy/og-image.png">
-<meta property="og:image:type" content="image/png">
+<meta property="og:image" content="https://sobrevive-ou-quebra.dlt.academy/og-image.svg">
+<meta property="og:image:type" content="image/svg+xml">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta property="og:image:alt" content="Sobrevive ou Quebra? — o que cada proteção faz com o seu dinheiro">
@@ -27,12 +27,13 @@
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Vale a pena proteger sua posição? | Sobrevive ou Quebra?">
 <meta name="twitter:description" content="Proteger custa caro; não proteger pode custar mais. Compare as quatro rotas nos mesmos 1.000 cenários.">
-<meta name="twitter:image" content="https://sobrevive-ou-quebra.dlt.academy/og-image.png">
+<meta name="twitter:image" content="https://sobrevive-ou-quebra.dlt.academy/og-image.svg">
 <meta name="twitter:image:alt" content="Sobrevive ou Quebra? — o que cada proteção faz com o seu dinheiro">
 
 <meta name="theme-color" content="#06090F">
 <link rel="icon" type="image/png" href="assets/dlt-mark.png">
 <link rel="stylesheet" href="styles.css?v=2026-07-20e">
+<link rel="stylesheet" href="dlt-patterns.css">
 
 
 <!-- Dados estruturados (JSON-LD é bloco de dados, não executa — ok com o CSP) -->
@@ -47,7 +48,7 @@
   "operatingSystem": "Web",
   "inLanguage": "pt-BR",
   "isAccessibleForFree": true,
-  "image": "https://sobrevive-ou-quebra.dlt.academy/og-image.png",
+  "image": "https://sobrevive-ou-quebra.dlt.academy/og-image.svg",
   "featureList": [
     "Comparação de quatro rotas de proteção nos mesmos cenários",
     "Simulação Monte Carlo de trajetórias de preço",
@@ -67,13 +68,15 @@
 </header>
 
 <main id="top">
-  <div class="wrap">
+  <div class="wrap tool-shell">
 
     <!-- ============ HERO / PORTA 1 — SIMULADOR ============ -->
-    <section class="hero">
-      <span class="disclaimer-badge">⚠️ Não é recomendação de investimento — modelo educacional de probabilidade</span>
+    <section class="hero tool-head">
+      <span class="disclaimer-badge">Ferramenta educacional · modelo de probabilidade, não recomendação de investimento</span>
       <h1 id="headline">Proteger custa caro.<br><span class="highlight">Não proteger</span> pode custar mais.</h1>
-      <p class="subtitle" id="subheadline">Você tem patrimônio exposto e teme uma queda. Existem quatro caminhos — inclusive não fazer nada. Veja o que cada um faz com o seu dinheiro nos cenários ruins, e quanto ele cobra nos cenários bons.</p>
+      <p class="subtitle tool-promise" id="subheadline">Você tem patrimônio exposto e teme uma queda. Existem quatro caminhos — inclusive não fazer nada. Veja o que cada um faz com o seu dinheiro nos cenários ruins, e quanto ele cobra nos cenários bons.</p>
+      <ul class="tool-facts" aria-label="Como funciona"><li>1.000 trajetórias · cerca de 3 min</li><li>Sem cadastro</li><li>Simulação local no navegador</li></ul>
+      <p class="privacy-line">Privacidade: os controles, cenários e resultados ficam no seu navegador; não enviamos sua posição para um servidor.</p>
 
       <div class="card">
         <h2><span class="num">1</span>Antes dos números: o que você teme que aconteça?</h2>
@@ -87,7 +90,7 @@
         <p class="model-note" id="medo-eco">Nenhuma resposta é enviada a lugar nenhum — a página inteira roda no seu navegador.</p>
       </div>
 
-      <div class="card">
+      <div class="card calc">
         <h2><span class="num">2</span>O que cada proteção faz com o seu dinheiro</h2>
         <p class="section-desc">O simulador sorteia 1.000 trajetórias de preço para o seu prazo e calcula, em cada uma, o que acontece com e sem proteção — usando o <strong>mesmo sorteio</strong> nos dois casos, para a comparação ser honesta. Ele não tenta adivinhar o preço: a tendência é zero de propósito. O que ele mostra é o <strong>formato do risco</strong>, que é o que separa proteção de aposta.</p>
 
@@ -151,29 +154,38 @@
 
         <p class="model-note"><strong>O que o modelo assume:</strong> trajetórias de preço sem tendência, volatilidade típica da classe escolhida, e uma proteção montada hoje e mantida até o fim do prazo. O prêmio do seguro é um valor que <strong>você informa</strong> — não cotamos opção. Não simula spread, corretagem, imposto, ajuste diário nem execução parcial. Serve para comparar o formato dos desfechos, não para prever o seu saldo.</p>
 
-        <div class="result-banner" id="result-banner">
-          <div>
-            <div class="big-stat" id="result-big">—</div>
-            <div class="stat-label" id="result-label">ajuste os controles para simular</div>
+        <div class="result-hero result-banner" id="result-banner">
+          <div class="result-top">
+            <div>
+              <div class="result-kicker">Resultado pareado</div>
+              <div class="result-big big-stat" id="result-big">—</div>
+            </div>
+            <div class="result-read stat-label" id="result-label">ajuste os controles para simular</div>
           </div>
         </div>
 
         <canvas id="equity-canvas" class="chart-canvas"></canvas>
         <p class="model-note" id="chart-legend">Linha clara: sem proteção. Linha destacada: com a proteção escolhida. Mesmo sorteio nas duas.</p>
 
-        <div class="stat-row">
+        <div class="stat-row result-stats three-stat-grid">
           <div class="stat-box"><div class="val" id="stat-ruins-sem">—</div><div class="label">cenários ruins sem proteção</div></div>
           <div class="stat-box"><div class="val" id="stat-ruins-com">—</div><div class="label">cenários ruins com proteção</div></div>
-          <div class="stat-box"><div class="val" id="stat-custo">—</div><div class="label">efeito médio no bolso</div></div>
-          <div class="stat-box" id="box-liquidacao"><div class="val" id="stat-liquidacao">—</div><div class="label">cenários em que a proteção quebrou</div></div>
+          <div class="stat-box" id="box-liquidacao"><div class="val" id="stat-custo">—</div><div class="label">efeito médio no bolso</div><span class="stat-support"><span id="stat-liquidacao">—</span> proteção quebrada</span></div>
         </div>
 
-        <div class="btn-row">
-          <button class="btn-secondary" id="btn-download-sim-card">📥 Baixar card do resultado</button>
+        <div class="result-actions">
+          <p class="result-actions-title">Leve a comparação com você</p>
+          <p>Baixe o card ou copie o resumo para revisar os custos e limites antes de agir.</p>
+          <div class="result-actions-row">
+            <button class="btn btn-secondary" id="btn-download-sim-card">Baixar card do resultado</button>
+            <button class="btn btn-secondary" id="btn-download-sim-text" type="button">Baixar texto</button>
+            <button class="btn btn-secondary" type="button" data-copy-result="#result-banner">Copiar resultado</button>
+          </div>
+          <p class="privacy-line">O sorteio e a comparação foram feitos neste navegador. Nenhum valor ou posição foi enviado à DLT Academy.</p>
         </div>
       </div>
 
-      <div class="card convert-block" id="convert-sim">
+      <div class="card convert-block cta-verdict" id="convert-sim" data-tone="warn">
         <span class="tag s2" id="convert-tag">Seu próximo passo</span>
         <div class="convert-headline" id="convert-headline">Proteção também tem custo de execução — e ele sai das taxas.</div>
         <div class="convert-sub" id="convert-sub">Montar e desmontar proteção passa por uma corretora, e cada operação cobra.</div>
@@ -183,13 +195,14 @@
           <a class="btn btn-secondary js-open-router" href="#proximo-passo">Já tenho — ver meu próximo passo</a>
         </div>
         <p class="fine-print" id="convert-fine">A abertura da conta não obriga você a montar proteção nenhuma. Verifique o benefício exibido no cadastro e só use derivativos depois de entender margem, liquidação e custo de carregamento — inclusive a possibilidade de a proteção ser encerrada antes da hora.</p>
+        <p class="affiliate-disclosure" id="convert-disclosure">Transparência: o link de cadastro é afiliado. A DLT Academy pode receber comissão se uma conta elegível for criada e utilizada, sem custo adicional direto para você. Benefícios e condições variam por país e campanha.</p>
       </div>
     </section>
 
 
     <!-- ============ CALCULADORA DE POSIÇÃO ============ -->
     <section id="calc">
-      <div class="card">
+      <div class="card calc">
         <h2><span class="num">3</span>Calculadora de tamanho da proteção</h2>
         <p class="section-desc">Quanto de proteção cobre a parte que você quer proteger, quanta margem ela exige e em que preço ela seria encerrada antes da hora.</p>
         <div class="calc-grid">
@@ -198,7 +211,7 @@
           <div class="calc-field"><label>Preço do ativo hoje</label><input type="number" id="calc-preco" value="100" step="0.01"></div>
           <div class="calc-field"><label>Alavancagem da proteção</label><input type="number" id="calc-alav" value="2" step="0.5"></div>
         </div>
-        <div class="stat-row" style="grid-template-columns:repeat(3,1fr);">
+        <div class="stat-row three-stat-grid">
           <div class="stat-box"><div class="val" id="calc-nocional">—</div><div class="label">proteção a montar</div></div>
           <div class="stat-box"><div class="val" id="calc-margem">—</div><div class="label">margem necessária</div></div>
           <div class="stat-box"><div class="val" id="calc-liquidacao">—</div><div class="label">preço que encerra a proteção</div></div>
@@ -208,7 +221,7 @@
     </section>
 
     <!-- ============ ROTEADOR DE PRÓXIMO PASSO ============ -->
-    <section id="proximo-passo" aria-labelledby="router-title">
+    <section id="proximo-passo" class="next-step" aria-labelledby="router-title">
       <div class="card router-card">
         <span class="tag">Recomendação contextual</span>
         <h2 id="router-title">Qual próximo passo faz sentido para você?</h2>
@@ -251,11 +264,13 @@
           </details>
         </div>
 
-        <div class="affiliate-disclosure">
+      <div class="affiliate-disclosure" id="router-disclosure">
           <strong>Transparência:</strong> esta página contém links de afiliado. Podemos receber comissão se você se cadastrar e usar um produto, sem custo adicional direto para você. Benefícios, disponibilidade, cashback e regras mudam por país e campanha; confira sempre a tela final antes do cadastro.
         </div>
       </div>
     </section>
+
+    <section class="share-row" data-share><p>Compartilhe o formato do risco — não seus valores.</p><div class="share-actions"><button type="button" data-share-copy>Copiar link</button><a data-share-telegram target="_blank" rel="noopener noreferrer" referrerpolicy="no-referrer">Telegram</a><a data-share-whatsapp target="_blank" rel="noopener noreferrer" referrerpolicy="no-referrer">WhatsApp</a></div></section>
 
   </div>
 </main>
@@ -273,5 +288,6 @@
 <script src="js/chart.js?v=2026-07-20e"></script>
 <script src="js/share-card.js?v=2026-07-20e"></script>
 <script src="js/app.js?v=2026-07-20e"></script>
+<script src="js/dlt-interactions.js"></script>
 </body>
 </html>
