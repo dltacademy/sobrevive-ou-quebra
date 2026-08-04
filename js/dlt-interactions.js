@@ -15,15 +15,23 @@
   /*
      Calculadora ATM de referência do kit.
      Última verificação: 04/08/2026 · Brasil · planos Standard.
-     A conta cobre somente a tarifa própria de cada cartão. Tarifa do ATM,
-     conversão, spread, funding e impostos ficam fora e devem ser declarados
-     pela peça que usa o componente. Fontes e escopo: contrato ATM_CALCULATOR.md do ferramenta-kit.
+     A conta soma os custos conhecidos da rota: conversão, IOF e tarifa própria
+     do cartão. A tarifa do operador do ATM e o DCC são variáveis e ficam no
+     disclaimer da peça. Fontes e escopo: contrato ATM_CALCULATOR.md do kit.
   */
   var atmTariffs = {
-    arq: { rate: 0.01 },
-    wise: { freeWithdrawals: 1, fixedFee: 20 },
-    revolut: { freeWithdrawals: 5, freeLimit: 1600, rate: 0.02, minimumFee: 6 },
+    arq: { withdrawalRate: 0.01, conversionRate: 0.005 },
+    wise: { freeWithdrawals: 1, fixedFee: 20, conversionRate: 0.0078 },
+    revolut: {
+      freeWithdrawals: 5,
+      freeLimit: 1600,
+      withdrawalRate: 0.02,
+      minimumFee: 6,
+      exchangeFreeLimit: 1000,
+      exchangeRate: 0.014,
+    },
   };
+  var atmDefaultIofRate = 0.011;
 
   /* ---------- 1 · Barra de progresso de leitura -------------
      <div class="read-progress" data-progress-for=".article-body"></div> */
@@ -188,23 +196,52 @@
     apply();
   }
 
-  /* ---------- 6 · Calculadora de saque no exterior ----------
+  /* ---------- 6 · Calculadora de custo conhecido do saque --
      <form data-calc="atm"> com inputs [data-calc-value] e [data-calc-count]
      e saídas [data-out="arq|wise|revolut"], barras [data-bar="..."],
-     veredito [data-calc-verdict]. A lógica permanece aqui para que o kit
-     entregue o padrão de interação; os números precisam ser mantidos com
-     fonte, data, mercado e escopo conforme ATM_CALCULATOR.md. */
-  function atmMonthlyCost(value, count) {
-    var arq = 0, wise = 0, revolut = 0, accumulated = 0;
+     veredito [data-calc-verdict]. [data-calc-iof] é opcional e recebe
+     percentual; sem ele, usa a premissa de 1,1% para conversão de conta
+     global. O custo do ATM e DCC não entram: são disclaimer da peça. */
+  function atmMonthlyCost(value, count, iofRate) {
+    var totalValue = value * count;
+    var arqConversion = totalValue * atmTariffs.arq.conversionRate;
+    var arqWithdrawal = totalValue * atmTariffs.arq.withdrawalRate;
+    var wiseConversion = totalValue * (atmTariffs.wise.conversionRate + iofRate);
+    var wiseWithdrawal = 0;
+    var revolutIof = totalValue * iofRate;
+    var revolutExchange = Math.max(totalValue - atmTariffs.revolut.exchangeFreeLimit, 0) * atmTariffs.revolut.exchangeRate;
+    var revolutWithdrawal = 0;
+    var accumulated = 0;
     for (var i = 0; i < count; i += 1) {
-      arq += value * atmTariffs.arq.rate;
-      wise += i < atmTariffs.wise.freeWithdrawals ? 0 : atmTariffs.wise.fixedFee;
+      wiseWithdrawal += i < atmTariffs.wise.freeWithdrawals ? 0 : atmTariffs.wise.fixedFee;
       var freeRevolut = i < atmTariffs.revolut.freeWithdrawals &&
         accumulated + value <= atmTariffs.revolut.freeLimit;
-      revolut += freeRevolut ? 0 : Math.max(value * atmTariffs.revolut.rate, atmTariffs.revolut.minimumFee);
+      revolutWithdrawal += freeRevolut ? 0 : Math.max(value * atmTariffs.revolut.withdrawalRate, atmTariffs.revolut.minimumFee);
       accumulated += value;
     }
-    return { arq: arq, wise: wise, revolut: revolut };
+    return {
+      arq: {
+        total: arqConversion + arqWithdrawal,
+        conversion: arqConversion,
+        iof: 0,
+        withdrawal: arqWithdrawal,
+        detail: "conversão + IOF + spread/serviço " + fmtBRL.format(arqConversion) + " · cartão " + fmtBRL.format(arqWithdrawal),
+      },
+      wise: {
+        total: wiseConversion + wiseWithdrawal,
+        conversion: totalValue * atmTariffs.wise.conversionRate,
+        iof: totalValue * iofRate,
+        withdrawal: wiseWithdrawal,
+        detail: "conversão " + fmtBRL.format(totalValue * atmTariffs.wise.conversionRate) + " · IOF " + fmtBRL.format(totalValue * iofRate) + " · cartão " + fmtBRL.format(wiseWithdrawal),
+      },
+      revolut: {
+        total: revolutIof + revolutExchange + revolutWithdrawal,
+        conversion: revolutExchange,
+        iof: revolutIof,
+        withdrawal: revolutWithdrawal,
+        detail: "câmbio " + fmtBRL.format(revolutExchange) + " · IOF " + fmtBRL.format(revolutIof) + " · cartão " + fmtBRL.format(revolutWithdrawal),
+      },
+    };
   }
 
   function initAtmCalc() {
@@ -212,17 +249,20 @@
     if (!form) return;
     var valueIn = form.querySelector("[data-calc-value]");
     var countIn = form.querySelector("[data-calc-count]");
+    var iofIn = form.querySelector("[data-calc-iof]");
     if (!valueIn || !countIn) return;
     var verdict = form.querySelector("[data-calc-verdict]");
     var names = { arq: "ARQ", wise: "Wise", revolut: "Revolut" };
 
     function render() {
-      var value = Number(valueIn.value);
-      var count = Number(countIn.value);
-      var cost = atmMonthlyCost(value, count);
-      var max = Math.max(cost.arq, cost.wise, cost.revolut, 1);
-      var best = Object.keys(cost).reduce(function (winner, candidate) {
-        return cost[candidate] < cost[winner] ? candidate : winner;
+      var value = Math.max(Number(valueIn.value) || 0, 0);
+      var count = Math.max(Math.floor(Number(countIn.value) || 1), 1);
+      var iofPercent = iofIn ? Math.max(Number(iofIn.value) || 0, 0) : atmDefaultIofRate * 100;
+      var cost = atmMonthlyCost(value, count, iofPercent / 100);
+      var keys = Object.keys(cost);
+      var max = Math.max.apply(null, keys.map(function (key) { return cost[key].total; }).concat(1));
+      var best = keys.reduce(function (winner, candidate) {
+        return cost[candidate].total < cost[winner].total ? candidate : winner;
       }, "arq");
 
       form.querySelectorAll("[data-echo-value]").forEach(function (el) {
@@ -231,30 +271,43 @@
       form.querySelectorAll("[data-echo-count]").forEach(function (el) {
         el.textContent = count + (count === 1 ? " saque" : " saques");
       });
+      form.querySelectorAll("[data-echo-iof]").forEach(function (el) {
+        el.textContent = iofPercent.toLocaleString("pt-BR", { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + "%";
+      });
 
-      Object.keys(cost).forEach(function (key) {
+      keys.forEach(function (key) {
         var output = form.querySelector('[data-out="' + key + '"]');
         var bar = form.querySelector('[data-bar="' + key + '"]');
         var row = form.querySelector('[data-row="' + key + '"]');
-        if (output) output.textContent = cost[key] === 0 ? "grátis" : fmtBRL.format(cost[key]);
+        var detail = form.querySelector('[data-detail="' + key + '"]') ||
+          (output && output.querySelector("[data-calc-detail]"));
+        var total = fmtBRL.format(cost[key].total);
+        if (output) {
+          var totalEl = output.querySelector("[data-calc-total]");
+          if (totalEl) totalEl.textContent = total;
+          else output.textContent = total;
+        }
+        if (detail) detail.textContent = cost[key].detail;
         if (bar) {
-          bar.style.width = (cost[key] / max) * 100 + "%";
+          bar.style.width = (cost[key].total / max) * 100 + "%";
           bar.classList.toggle("is-best", key === best);
         }
         if (row) row.classList.toggle("is-best", key === best);
       });
 
       if (verdict) {
-        var second = Object.keys(cost).filter(function (key) { return key !== best; })
-          .sort(function (a, b) { return cost[a] - cost[b]; })[0];
-        var difference = cost[second] - cost[best];
+        var second = keys.filter(function (key) { return key !== best; })
+          .sort(function (a, b) { return cost[a].total - cost[b].total; })[0];
+        var difference = cost[second].total - cost[best].total;
         verdict.textContent = difference <= 0
           ? "Empate nesse cenário — decida pela conveniência."
-          : names[best] + " economiza " + fmtBRL.format(difference) + " por mês em relação ao " + names[second] + ".";
+          : names[best] + " economiza " + fmtBRL.format(difference) + " por mês em relação ao " + names[second] + ", sem contar a tarifa variável do ATM ou o DCC.";
       }
     }
 
-    [valueIn, countIn].forEach(function (input) { input.addEventListener("input", render); });
+    [valueIn, countIn, iofIn].forEach(function (input) {
+      if (input) input.addEventListener("input", render);
+    });
     form.addEventListener("submit", function (event) { event.preventDefault(); });
     render();
   }
