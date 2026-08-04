@@ -10,6 +10,20 @@
   "use strict";
 
   var reduced = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  var fmtBRL = new Intl.NumberFormat("pt-BR", { style: "currency", currency: "BRL", maximumFractionDigits: 2 });
+
+  /*
+     Calculadora ATM de referência do kit.
+     Última verificação: 04/08/2026 · Brasil · planos Standard.
+     A conta cobre somente a tarifa própria de cada cartão. Tarifa do ATM,
+     conversão, spread, funding e impostos ficam fora e devem ser declarados
+     pela peça que usa o componente. Fontes e escopo: contrato ATM_CALCULATOR.md do ferramenta-kit.
+  */
+  var atmTariffs = {
+    arq: { rate: 0.01 },
+    wise: { freeWithdrawals: 1, fixedFee: 20 },
+    revolut: { freeWithdrawals: 5, freeLimit: 1600, rate: 0.02, minimumFee: 6 },
+  };
 
   /* ---------- 1 · Barra de progresso de leitura -------------
      <div class="read-progress" data-progress-for=".article-body"></div> */
@@ -122,14 +136,30 @@
      <div data-filter-group>
        <button data-filter="viagem" aria-pressed="false">Vou viajar</button> …
      Cards: <a class="entry-card" data-situations="viagem custos"> …
-     Sem seleção mostra tudo. Estado guardado só na URL (#), não no storage. */
+     Sem seleção mostra tudo. O filtro ativo fica só na URL (#), não no storage. */
   function initFilters() {
     var group = document.querySelector("[data-filter-group]");
     if (!group) return;
     var buttons = Array.prototype.slice.call(group.querySelectorAll("[data-filter]"));
     var cards = Array.prototype.slice.call(document.querySelectorAll("[data-situations]"));
     var countEl = document.querySelector("[data-filter-count]");
+    var baseUrl = window.location.pathname + window.location.search;
     var active = "";
+
+    function readHash() {
+      var value = window.location.hash.replace(/^#/, "");
+      try {
+        value = decodeURIComponent(value);
+      } catch (error) {
+        value = "";
+      }
+      return buttons.some(function (button) { return button.getAttribute("data-filter") === value; }) ? value : "";
+    }
+
+    function writeHash() {
+      if (!window.history || !window.history.replaceState) return;
+      window.history.replaceState(null, "", active ? baseUrl + "#" + encodeURIComponent(active) : baseUrl);
+    }
 
     function apply() {
       var shown = 0;
@@ -146,13 +176,90 @@
     buttons.forEach(function (b) {
       b.addEventListener("click", function () {
         active = b.getAttribute("data-filter") === active ? "" : b.getAttribute("data-filter");
+        writeHash();
         apply();
       });
+    });
+    active = readHash();
+    window.addEventListener("hashchange", function () {
+      active = readHash();
+      apply();
     });
     apply();
   }
 
-  /* ---------- 6 · Progresso de guia -------------------------
+  /* ---------- 6 · Calculadora de saque no exterior ----------
+     <form data-calc="atm"> com inputs [data-calc-value] e [data-calc-count]
+     e saídas [data-out="arq|wise|revolut"], barras [data-bar="..."],
+     veredito [data-calc-verdict]. A lógica permanece aqui para que o kit
+     entregue o padrão de interação; os números precisam ser mantidos com
+     fonte, data, mercado e escopo conforme ATM_CALCULATOR.md. */
+  function atmMonthlyCost(value, count) {
+    var arq = 0, wise = 0, revolut = 0, accumulated = 0;
+    for (var i = 0; i < count; i += 1) {
+      arq += value * atmTariffs.arq.rate;
+      wise += i < atmTariffs.wise.freeWithdrawals ? 0 : atmTariffs.wise.fixedFee;
+      var freeRevolut = i < atmTariffs.revolut.freeWithdrawals &&
+        accumulated + value <= atmTariffs.revolut.freeLimit;
+      revolut += freeRevolut ? 0 : Math.max(value * atmTariffs.revolut.rate, atmTariffs.revolut.minimumFee);
+      accumulated += value;
+    }
+    return { arq: arq, wise: wise, revolut: revolut };
+  }
+
+  function initAtmCalc() {
+    var form = document.querySelector('[data-calc="atm"]');
+    if (!form) return;
+    var valueIn = form.querySelector("[data-calc-value]");
+    var countIn = form.querySelector("[data-calc-count]");
+    if (!valueIn || !countIn) return;
+    var verdict = form.querySelector("[data-calc-verdict]");
+    var names = { arq: "ARQ", wise: "Wise", revolut: "Revolut" };
+
+    function render() {
+      var value = Number(valueIn.value);
+      var count = Number(countIn.value);
+      var cost = atmMonthlyCost(value, count);
+      var max = Math.max(cost.arq, cost.wise, cost.revolut, 1);
+      var best = Object.keys(cost).reduce(function (winner, candidate) {
+        return cost[candidate] < cost[winner] ? candidate : winner;
+      }, "arq");
+
+      form.querySelectorAll("[data-echo-value]").forEach(function (el) {
+        el.textContent = fmtBRL.format(value);
+      });
+      form.querySelectorAll("[data-echo-count]").forEach(function (el) {
+        el.textContent = count + (count === 1 ? " saque" : " saques");
+      });
+
+      Object.keys(cost).forEach(function (key) {
+        var output = form.querySelector('[data-out="' + key + '"]');
+        var bar = form.querySelector('[data-bar="' + key + '"]');
+        var row = form.querySelector('[data-row="' + key + '"]');
+        if (output) output.textContent = cost[key] === 0 ? "grátis" : fmtBRL.format(cost[key]);
+        if (bar) {
+          bar.style.width = (cost[key] / max) * 100 + "%";
+          bar.classList.toggle("is-best", key === best);
+        }
+        if (row) row.classList.toggle("is-best", key === best);
+      });
+
+      if (verdict) {
+        var second = Object.keys(cost).filter(function (key) { return key !== best; })
+          .sort(function (a, b) { return cost[a] - cost[b]; })[0];
+        var difference = cost[second] - cost[best];
+        verdict.textContent = difference <= 0
+          ? "Empate nesse cenário — decida pela conveniência."
+          : names[best] + " economiza " + fmtBRL.format(difference) + " por mês em relação ao " + names[second] + ".";
+      }
+    }
+
+    [valueIn, countIn].forEach(function (input) { input.addEventListener("input", render); });
+    form.addEventListener("submit", function (event) { event.preventDefault(); });
+    render();
+  }
+
+  /* ---------- 7 · Progresso de guia -------------------------
      <main data-guide-progress="slug">
        <span data-guide-progress-fill></span>
        <span data-guide-progress-label></span>
@@ -196,13 +303,11 @@
     update();
   }
 
-  /* ---------- 7 · Calculadoras específicas ------------------
-     O núcleo compartilhado não contém tarifas, franquias ou fórmulas de
-     produto. Uma calculadora usa o padrão visual .calc, mas sua lógica vive
-     num arquivo externo da própria peça, com fonte, data e testes. Isso evita
-     que um claim volátil seja propagado silenciosamente para todo o ecossistema. */
+  /* ---------- 8 · Calculadoras específicas ------------------
+     Outras calculadoras continuam específicas da peça. O ATM é o único
+     padrão compartilhado porque faz parte da biblioteca de interações. */
 
-  /* ---------- 8 · FAQ: um aberto por vez -------------------
+  /* ---------- 9 · FAQ: um aberto por vez -------------------
      <div class="faq" data-faq-exclusive> */
   function initFaq() {
     var wrap = document.querySelector("[data-faq-exclusive]");
@@ -216,7 +321,7 @@
     });
   }
 
-  /* ---------- 9 · Compartilhar (padrão 28) ------------------
+  /* ---------- 10 · Compartilhar (padrão 28) ------------------
      <div class="share-row" data-share>
        <button data-share-copy>Copiar link</button>
        <a data-share-telegram></a> <a data-share-whatsapp></a> <a data-share-x></a>
@@ -254,7 +359,7 @@
     });
   }
 
-  /* ---------- 10 · Copiar o resultado (padrão 29) -----------
+  /* ---------- 11 · Copiar o resultado (padrão 29) -----------
      <button data-copy-result="#resultado">Copiar como texto</button>
      Lê o texto visível do bloco apontado — nada é enviado. */
   function initCopyResult() {
@@ -283,7 +388,7 @@
 
   function boot() {
     initProgress(); initToc(); initReveal(); initCounters();
-    initFilters(); initGuideProgress(); initFaq(); initShare(); initCopyResult();
+    initFilters(); initAtmCalc(); initGuideProgress(); initFaq(); initShare(); initCopyResult();
   }
   if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", boot);
   else boot();
