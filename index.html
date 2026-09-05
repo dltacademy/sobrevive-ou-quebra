@@ -75,7 +75,7 @@
       <span class="disclaimer-badge">Ferramenta educacional · modelo de probabilidade, não recomendação de investimento</span>
       <h1 id="headline">Proteger custa caro.<br><span class="highlight">Não proteger</span> pode custar mais.</h1>
       <p class="subtitle tool-promise" id="subheadline">Você tem patrimônio exposto e teme uma queda. Existem quatro caminhos — inclusive não fazer nada. Veja o que cada um faz com o seu dinheiro nos cenários ruins, e quanto ele cobra nos cenários bons.</p>
-      <ul class="tool-facts" aria-label="Como funciona"><li>1.000 trajetórias · cerca de 3 min</li><li>Sem cadastro</li><li>Simulação local no navegador</li></ul>
+      <ul class="tool-facts" aria-label="Como funciona"><li>1.000 trajetórias · cerca de 3 minutos</li><li>Sem cadastro</li><li>Simulação local no navegador</li></ul>
       <p class="privacy-line">Privacidade: os controles, cenários e resultados ficam no seu navegador; não enviamos sua posição para um servidor.</p>
 
       <div class="card">
@@ -96,26 +96,26 @@
 
         <div class="control-grid">
           <div class="control">
-            <div class="control-label"><span>Quanto você tem exposto</span><strong id="val-exposicao">R$ 100.000</strong></div>
+            <div class="control-label"><span>Quanto você tem exposto ao risco?</span><strong id="val-exposicao">R$ 100.000</strong></div>
             <input type="range" id="exposicao" min="5000" max="1000000" step="5000" value="100000">
           </div>
           <div class="control">
-            <div class="control-label"><span>Por quanto tempo quer ficar protegido</span><strong id="val-meses">3 meses</strong></div>
+            <div class="control-label"><span>Por quanto tempo quer ficar protegido?</span><strong id="val-meses">3 meses</strong></div>
             <input type="range" id="meses" min="1" max="24" step="1" value="3">
           </div>
           <div class="control">
-            <div class="control-label"><span>Quanto da posição quer cobrir</span><strong id="val-cobertura">100%</strong></div>
+            <div class="control-label"><span>Quanto da posição quer cobrir?</span><strong id="val-cobertura">100%</strong></div>
             <input type="range" id="cobertura" min="0" max="100" step="5" value="100">
           </div>
           <div class="control">
-            <div class="control-label"><span>Quanto você aguenta perder sem quebrar</span><strong id="val-tolerancia">20%</strong></div>
+            <div class="control-label"><span>Quanto você aguenta perder sem quebrar?</span><strong id="val-tolerancia">20%</strong></div>
             <input type="range" id="tolerancia" min="5" max="60" step="5" value="20">
           </div>
         </div>
 
         <div class="control-grid">
           <div class="control">
-            <label class="control-label" for="ativo"><span>O que você tem</span></label>
+            <label class="control-label" for="ativo"><span>O que você tem exposto?</span></label>
             <select id="ativo">
               <option value="cripto" selected>Cripto (oscila muito)</option>
               <option value="acoes">Ações (oscila médio)</option>
@@ -123,7 +123,7 @@
             </select>
           </div>
           <div class="control">
-            <label class="control-label" for="rota"><span>Como quer se proteger</span></label>
+            <label class="control-label" for="rota"><span>Como quer se proteger?</span></label>
             <select id="rota">
               <option value="nada">Não fazer nada</option>
               <option value="reduzir">Reduzir a posição agora</option>
@@ -135,11 +135,11 @@
 
         <div class="control-grid" id="controles-futuros">
           <div class="control">
-            <div class="control-label"><span>Alavancagem da proteção</span><strong id="val-alav">2x</strong></div>
+            <div class="control-label"><span>Alavancagem da proteção (multiplicador)</span><strong id="val-alav">2x</strong></div>
             <input type="range" id="alavancagem" min="1" max="20" step="0.5" value="2">
           </div>
           <div class="control">
-            <div class="control-label"><span>Custo de carregar (funding ao ano)</span><strong id="val-funding">10%</strong></div>
+            <div class="control-label"><span>Custo de carregamento ao ano (funding)</span><strong id="val-funding">10%</strong></div>
             <input type="range" id="funding" min="0" max="60" step="1" value="10">
           </div>
         </div>
@@ -191,7 +191,7 @@
         <div class="convert-sub" id="convert-sub">Montar e desmontar proteção passa por uma corretora, e cada operação cobra.</div>
         <ul class="offer-list" id="convert-list"></ul>
         <div class="btn-row" id="convert-botoes">
-          <a class="btn btn-primary" id="cta-ref-sim" href="#" target="_blank" rel="sponsored nofollow noopener noreferrer" referrerpolicy="no-referrer">Ainda não tenho Binance →</a>
+          <a class="btn btn-primary" id="cta-ref-sim" href="https://www.binance.com/register?ref=BOSS2026" target="_blank" rel="sponsored nofollow noopener noreferrer" referrerpolicy="no-referrer">Ainda não tenho Binance →</a>
           <a class="btn btn-secondary js-open-router" href="#proximo-passo">Já tenho — ver meu próximo passo</a>
         </div>
         <p class="fine-print" id="convert-fine">A abertura da conta não obriga você a montar proteção nenhuma. Verifique o benefício exibido no cadastro e só use derivativos depois de entender margem, liquidação e custo de carregamento — inclusive a possibilidade de a proteção ser encerrada antes da hora.</p>
@@ -209,7 +209,7 @@
           <div class="calc-field"><label>Valor exposto (R$)</label><input type="number" id="calc-exposicao" value="100000" step="1000"></div>
           <div class="calc-field"><label>Quanto quer cobrir (%)</label><input type="number" id="calc-cobertura" value="100" step="5"></div>
           <div class="calc-field"><label>Preço do ativo hoje</label><input type="number" id="calc-preco" value="100" step="0.01"></div>
-          <div class="calc-field"><label>Alavancagem da proteção</label><input type="number" id="calc-alav" value="2" step="0.5"></div>
+          <div class="calc-field"><label>Alavancagem da proteção (multiplicador)</label><input type="number" id="calc-alav" value="2" step="0.5"></div>
         </div>
         <div class="stat-row three-stat-grid">
           <div class="stat-box"><div class="val" id="calc-nocional">—</div><div class="label">proteção a montar</div></div>
@@ -228,7 +228,7 @@
         <p class="section-desc">Duas respostas, uma recomendação principal. Os critérios são utilidade para o seu caso e possibilidade real de receber o benefício — não a comissão mais alta.</p>
 
         <div class="router-question" data-question="binance">
-          <div class="router-label">1. Você já tem uma conta Binance validada?</div>
+          <div class="router-label">1. Você já tem uma conta na Binance validada?</div>
           <div class="radio-group" role="group" aria-label="Conta Binance">
             <button type="button" data-router-field="hasBinance" data-value="no">Ainda não</button>
             <button type="button" data-router-field="hasBinance" data-value="yes">Sim</button>
@@ -239,7 +239,7 @@
           <div class="router-label">2. O que você quer resolver agora?</div>
           <div class="radio-group" role="group" aria-label="Objetivo principal">
             <button type="button" data-router-field="goal" data-value="trade">Começar ou melhorar no trading</button>
-            <button type="button" data-router-field="goal" data-value="alternative">Ter outra corretora</button>
+            <button type="button" data-router-field="goal" data-value="alternative">Usar outra corretora</button>
             <button type="button" data-router-field="goal" data-value="spend">Gastar cripto e economizar em viagens</button>
           </div>
         </div>
@@ -252,8 +252,8 @@
           <p id="router-offer-reason">—</p>
           <ul class="offer-list" id="router-offer-points"></ul>
           <div class="btn-row router-actions">
-            <a class="btn btn-primary" id="router-offer-cta" href="#" target="_blank" rel="sponsored nofollow noopener noreferrer" referrerpolicy="no-referrer">Ver oferta →</a>
-            <a class="btn btn-secondary" id="cta-comunidade" href="#" target="_blank" rel="noopener noreferrer" referrerpolicy="no-referrer" hidden>Entrar grátis no grupo →</a>
+            <a class="btn btn-primary" id="router-offer-cta" href="https://www.binance.com/register?ref=BOSS2026" target="_blank" rel="sponsored nofollow noopener noreferrer" referrerpolicy="no-referrer">Ver oferta →</a>
+            <a class="btn btn-secondary" id="cta-comunidade" href="https://t.me/dltacademy" target="_blank" rel="noopener noreferrer" referrerpolicy="no-referrer" hidden>Entrar grátis no grupo →</a>
             <button class="btn-secondary" type="button" id="router-reset">Refazer respostas</button>
           </div>
           <p class="fine-print" id="router-offer-note"></p>
