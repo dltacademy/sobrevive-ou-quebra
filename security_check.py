@@ -10,16 +10,52 @@ from html.parser import HTMLParser
 from pathlib import Path
 
 
-SECURITY_POLICY_VERSION = "2026-07-17"
+SECURITY_POLICY_VERSION = "2026-10-07"
 
 REQUIRED_CSP = (
     "default-src 'self'",
-    "script-src 'self' https://gc.zgo.at",
+    "script-src 'self'",
+    "style-src 'self'",
+    "font-src 'self'",
     "object-src 'none'",
     "frame-src 'none'",
     "base-uri 'none'",
     "form-action 'self'",
 )
+
+# Scripts, estilos e fontes saem só do próprio site: nada de CDN, Google Fonts
+# ou script de analytics de terceiros com acesso ao DOM das calculadoras.
+SELF_ONLY_DIRECTIVES = ("script-src", "style-src", "font-src")
+
+# Hosts que já estiveram na política e não podem voltar. GoatCounter, quando
+# ligado, entra só pelo host exato da conta (ex.: dltacademy.goatcounter.com)
+# em connect-src e img-src; o script é servido de js/vendor/.
+FORBIDDEN_CSP_HOSTS = ("gc.zgo.at", "fonts.googleapis.com", "fonts.gstatic.com")
+
+
+def parse_csp(policy: str) -> dict[str, list[str]]:
+    directives: dict[str, list[str]] = {}
+    for part in policy.split(";"):
+        tokens = part.split()
+        if tokens:
+            directives.setdefault(tokens[0].lower(), tokens[1:])
+    return directives
+
+
+def check_csp_sources(path: Path, policy: str) -> list[str]:
+    errors: list[str] = []
+    directives = parse_csp(policy)
+    for name in SELF_ONLY_DIRECTIVES:
+        sources = directives.get(name)
+        if sources is not None and sources != ["'self'"]:
+            errors.append(f"{path}: CSP {name} deve ser só 'self'")
+    for name, sources in directives.items():
+        for source in sources:
+            if "*" in source:
+                errors.append(f"{path}: CSP {name} com curinga ({source})")
+            if any(host in source for host in FORBIDDEN_CSP_HOSTS):
+                errors.append(f"{path}: CSP {name} com host proibido ({source})")
+    return errors
 
 
 class SecurityHTMLParser(HTMLParser):
@@ -106,6 +142,7 @@ def check_html(path: Path) -> list[str]:
                 errors.append(f"{path}: CSP sem {directive}")
         if "unsafe-inline" in parser.csp or "unsafe-eval" in parser.csp:
             errors.append(f"{path}: CSP contém diretiva insegura")
+        errors.extend(check_csp_sources(path, parser.csp))
     if parser.referrer != "no-referrer":
         errors.append(f"{path}: meta referrer deve ser no-referrer")
     return errors
