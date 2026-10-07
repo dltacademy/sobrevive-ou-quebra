@@ -36,7 +36,7 @@ assets/               logo e favicon de marca
 robots.txt / sitemap.xml
 .github/workflows/
   ci.yml              gates em PR e push para main
-  pages.yml           deploy no GitHub Pages
+  pages.yml           deploy no GitHub Pages (publica só _site/, montado por scripts/montar_site.sh)
 ```
 
 ## Estado de publicação
@@ -45,7 +45,7 @@ robots.txt / sitemap.xml
 
 ## Rastreamento
 
-- **GoatCounter**: os eventos carregam canal e variante; o roteador mede respostas, recomendação gerada e clique por oferta. Fica inerte enquanto `goatCounterSite` estiver vazio — isso é esperado, não é defeito.
+- **GoatCounter**: os eventos carregam canal e variante; o roteador mede qual pergunta foi respondida (nunca a resposta), que uma recomendação foi gerada (nunca qual) e o clique por oferta. Ao ligar, o script vem de `js/vendor/` e o host exato da conta entra na CSP (ver `SECURITY_BASELINE.md` do kit). Fica inerte enquanto `goatCounterSite` estiver vazio — isso é esperado, não é defeito.
 - **Painéis afiliados**: cadastro e ativação são medidos no programa de cada oferta. `refByChannel` permite um destino específico por origem quando houver links separados.
 
 Divulgar sempre com `?c=<canal>&v=<variante>`. Canal fora da allowlist é descartado em silêncio, e o teste nasce sem origem.

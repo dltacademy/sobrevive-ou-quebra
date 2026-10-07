@@ -149,7 +149,8 @@ function renderRouter() {
   cta.textContent = offer.cta;
   cta.dataset.offer = selection.primary;
   renderRouterAlternatives(selection.alternatives);
-  track(`roteador_resultado_${selection.primary}`);
+  // Evento fixo: a oferta recomendada deriva das respostas e não entra no nome.
+  track("roteador_resultado");
 }
 
 function buildRouterReason(primary) {
@@ -167,8 +168,8 @@ function renderRouterAlternatives(keys) {
   const list = document.getElementById("router-alternative-list");
   list.innerHTML = "";
   details.hidden = keys.length === 0;
-  keys.forEach((key) => {
-    const offer = ROUTER_OFFERS[key];
+  keys.forEach((offerKey) => {
+    const offer = ROUTER_OFFERS[offerKey];
     const card = document.createElement("article");
     card.className = "alternative-card";
     const title = document.createElement("h4");
@@ -177,13 +178,13 @@ function renderRouterAlternatives(keys) {
     text.textContent = offer.points[0];
     const link = document.createElement("a");
     link.className = "alternative-link";
-    link.href = getOfferLink(key);
+    link.href = getOfferLink(offerKey);
     link.target = "_blank";
     link.rel = "sponsored nofollow noopener noreferrer";
     link.referrerPolicy = "no-referrer";
-    link.dataset.offer = key;
+    link.dataset.offer = offerKey;
     link.textContent = "Ver condições →";
-    link.addEventListener("click", () => track(`clique_oferta_${key}_alternativa`));
+    link.addEventListener("click", () => track(`clique_oferta_${offerKey}_alternativa`));
     card.append(title, text, link);
     list.appendChild(card);
   });
@@ -212,14 +213,16 @@ document.querySelectorAll("[data-router-field]").forEach((button) => {
       peer.classList.toggle("selected", selected);
       peer.setAttribute("aria-pressed", String(selected));
     });
-    track(`roteador_resposta_${field}_${value}`);
+    // Registra só qual pergunta foi respondida, nunca a resposta.
+    if (field === "hasBinance") track("roteador_resposta_hasBinance");
+    else if (field === "goal") track("roteador_resposta_goal");
     renderRouter();
   });
 });
 
 document.getElementById("router-offer-cta").addEventListener("click", (event) => {
-  const offer = event.currentTarget.dataset.offer || "desconhecida";
-  track(`clique_oferta_${offer}_principal`);
+  const offerKey = event.currentTarget.dataset.offer || "desconhecida";
+  track(`clique_oferta_${offerKey}_principal`);
 });
 document.getElementById("router-reset").addEventListener("click", resetRouter);
 
@@ -343,7 +346,8 @@ function aplicarMedo(chave) {
     b.setAttribute("aria-pressed", ativo ? "true" : "false");
   });
 
-  track("medo_escolhido_" + chave);
+  // Só que um medo foi escolhido: qual deles é resposta e fica no navegador.
+  track("medo_escolhido");
   runSimAndRender();
 }
 
@@ -524,7 +528,8 @@ document.getElementById("btn-download-sim-text").addEventListener("click", () =>
     `Cenários ruins com proteção: ${document.getElementById("stat-ruins-com").textContent}`,
     `Efeito médio no bolso: ${document.getElementById("stat-custo").textContent}`,
     "",
-    window.location.href,
+    // Só origem + caminho: canal, variante e outros parâmetros não vão no arquivo.
+    window.location.origin + window.location.pathname,
     "Conteúdo educacional. Não é recomendação de investimento.",
   ];
   const blob = new Blob([lines.join("\n")], { type: "text/plain;charset=utf-8" });
@@ -575,10 +580,15 @@ runCalc();
 
 // Analytics opcional. O identificador precisa ser um subdomínio simples;
 // valores inválidos não geram script nem requisição externa.
+// Esta ferramenta não liga analytics (goatCounterSite vazio) e por isso não
+// traz o script. Para ligar: copiar js/vendor/goatcounter-count.js do
+// template do ferramenta-kit (servido pelo próprio site, nunca de gc.zgo.at)
+// e liberar o host exato da conta (https://<site>.goatcounter.com) em
+// connect-src e img-src da CSP — ver SECURITY_BASELINE.md do kit.
 if (CONFIG.goatCounterSite && /^[a-z0-9-]{1,63}$/.test(CONFIG.goatCounterSite)) {
   const gc = document.createElement("script");
   gc.async = true;
   gc.dataset.goatcounter = `https://${CONFIG.goatCounterSite}.goatcounter.com/count`;
-  gc.src = "https://gc.zgo.at/count.js";
+  gc.src = "js/vendor/goatcounter-count.js";
   document.head.appendChild(gc);
 }

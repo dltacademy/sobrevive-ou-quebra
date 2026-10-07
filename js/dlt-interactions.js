@@ -391,11 +391,17 @@
      <div class="share-row" data-share>
        <button data-share-copy>Copiar link</button>
        <a data-share-telegram></a> <a data-share-whatsapp></a> <a data-share-x></a>
-     O href sai montado daqui: nenhum SDK de rede social, nenhum pixel. */
+     O href sai montado daqui: nenhum SDK de rede social, nenhum pixel.
+     O link compartilhado é só origem + caminho: canal (?c=), variante (?v=)
+     e qualquer outro parâmetro de quem compartilha não viajam junto. */
+  function shareableUrl() {
+    return window.location.origin + window.location.pathname;
+  }
+
   function initShare() {
     var row = document.querySelector("[data-share]");
     if (!row) return;
-    var url = encodeURIComponent(window.location.href);
+    var url = encodeURIComponent(shareableUrl());
     var title = encodeURIComponent(document.title.replace(/ — DLT Academy$/, ""));
 
     var targets = {
@@ -420,7 +426,7 @@
           copy.classList.remove("is-done");
         }, 2000);
       };
-      if (navigator.clipboard) navigator.clipboard.writeText(window.location.href).then(done, done);
+      if (navigator.clipboard) navigator.clipboard.writeText(shareableUrl()).then(done, done);
       else done();
     });
   }
@@ -436,7 +442,7 @@
         var src = document.querySelector(btn.getAttribute("data-copy-result"));
         if (!src) return;
         var txt = src.innerText.replace(/\n{3,}/g, "\n\n").trim() +
-          "\n\n" + window.location.href +
+          "\n\n" + shareableUrl() +
           "\nConteúdo educacional. Não é recomendação de investimento.";
         var done = function () {
           btn.textContent = "Copiado";
