@@ -100,14 +100,23 @@ function getCommunityLink() {
 
 function getRefLink() {
   const channel = getChannel();
-  if (channel && CONFIG.refByChannel[channel]) {
-    return CONFIG.refByChannel[channel];
+  const channelMap = CONFIG.refByChannel;
+  // Só chave própria do mapa: ?c=constructor não pode cair em Object.prototype.
+  if (
+    channel &&
+    channelMap &&
+    Object.prototype.hasOwnProperty.call(channelMap, channel)
+  ) {
+    return getSafeExternalUrl(channelMap[channel]);
   }
-  return CONFIG.refDefault;
+  return getSafeExternalUrl(CONFIG.refDefault);
 }
 
 
 function getOfferLink(offerKey) {
   if (offerKey === "binance") return getRefLink();
-  return CONFIG.offers[offerKey] ? CONFIG.offers[offerKey].url : "#";
+  const offers = CONFIG.offers;
+  if (!offers || !Object.prototype.hasOwnProperty.call(offers, offerKey)) return "#";
+  const offer = offers[offerKey];
+  return offer && offer.url ? getSafeExternalUrl(offer.url) : "#";
 }

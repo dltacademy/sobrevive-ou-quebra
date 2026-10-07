@@ -29,3 +29,12 @@ jobs:
 
       - name: Bateria de testes
         run: python3 -m unittest discover -s tests -v
+
+      - name: Links de indicação
+        run: node tests/test-links.mjs
+
+      - name: Montar e conferir _site
+        run: bash scripts/montar_site.sh
+
+      - name: Privacidade e publicação
+        run: node tests/test-privacidade.mjs
