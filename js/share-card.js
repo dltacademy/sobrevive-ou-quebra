@@ -94,7 +94,7 @@ function drawCouponBox(ctx, coupon) {
 
   ctx.font = "700 28px system-ui, sans-serif";
   ctx.fillStyle = "#4A8DF8";
-  ctx.fillText("🎁 " + coupon.label, 540, cy);
+  ctx.fillText(coupon.label, 540, cy);
 
   cy += 55;
   ctx.font = "800 36px system-ui, sans-serif";
