@@ -55,14 +55,16 @@
   color: var(--sky-light); margin: 0 0 16px;
 }
 .key-points ul { list-style: none; padding: 0; margin: 0; display: grid; gap: 13px; }
+/* Bloco com o ✓ posicionado: negrito, texto e links correm na mesma linha.
+   Com display:flex cada pedaço virava uma coluna e o texto saía da caixa. */
 .key-points li {
-  display: flex; gap: 12px; align-items: flex-start;
+  position: relative; padding-left: 32px;
   font-size: 15.5px; line-height: 1.55; color: var(--text);
 }
 .key-points li::before {
-  content: "✓"; flex-shrink: 0;
+  content: "✓"; position: absolute; left: 0; top: 2px;
   display: inline-flex; align-items: center; justify-content: center;
-  width: 20px; height: 20px; margin-top: 2px; border-radius: 6px;
+  width: 20px; height: 20px; border-radius: 6px;
   background: rgba(110,231,168,.12); border: 1px solid rgba(110,231,168,.3);
   color: var(--green); font-size: 11px; font-weight: 700;
 }
@@ -81,7 +83,7 @@
 .piece-toc ol { list-style: none; padding: 0; margin: 0; display: grid; gap: 10px; counter-reset: toc; }
 .piece-toc li { counter-increment: toc; display: flex; gap: 12px; align-items: baseline; }
 .piece-toc li::before {
-  content: "0" counter(toc);
+  content: counter(toc, decimal-leading-zero);
   font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
   font-size: 12px; color: var(--accent); flex-shrink: 0;
 }
@@ -117,8 +119,8 @@
   letter-spacing: .1em; text-transform: uppercase; margin: 0 0 6px;
 }
 .note > p:last-child { margin: 0; font-size: 15px; line-height: 1.6; color: var(--text); }
-.note.is-info { background: rgba(30,79,216,.10); border-color: rgba(74,141,248,.32); }
-.note.is-info > p:first-child { color: var(--sky-light); }
+/* is-info = tom neutro (o mesmo da .note base): azul é ação, não decoração de nota. */
+.note.is-info { background: var(--bg-elev); border-color: var(--border); }
 .note.is-warn { background: rgba(251,191,36,.08); border-color: rgba(251,191,36,.28); }
 .note.is-warn > p:first-child { color: var(--amber); }
 .note.is-risk { background: rgba(248,113,113,.08); border-color: rgba(248,113,113,.28); }
@@ -130,7 +132,7 @@
   border-radius: 14px; overflow: hidden; margin: 0 0 26px;
 }
 .compare .compare-scroll { overflow-x: auto; }
-.compare table { border-collapse: collapse; width: 100%; min-width: 480px; font-size: 14px; }
+.compare table { border-collapse: collapse; width: 100%; min-width: 480px; font-size: 15px; }
 .compare th {
   text-align: left; padding: 14px 16px; background: var(--bg-elev-2);
   font-family: var(--font-head); font-size: 12.5px; font-weight: 700;
@@ -239,7 +241,7 @@
 .faq summary::-webkit-details-marker { display: none; }
 .faq summary::after { content: "+"; color: var(--accent); }
 .faq details[open] summary::after { content: "–"; }
-.faq p { color: var(--text-dim); font-size: 14.5px; line-height: 1.65; margin: 12px 0 0; }
+.faq p { color: var(--text-dim); font-size: 15px; line-height: 1.65; margin: 12px 0 0; }
 
 /* ---------- 11 · Fontes e transparência ------------------- */
 .sources {
@@ -305,53 +307,11 @@
 .next-community strong { font-family: var(--font-head); font-size: 15px; display: block; margin-bottom: 4px; }
 .next-community p { color: var(--text-dim); font-size: 14px; margin: 0; }
 
-/* ---------- 13 · Card de catálogo ------------------------- */
-/* família única: ferramenta / guia / artigo / protocolo.
-   Ícone é monograma tipográfico (2 letras), não emoji. */
-.entry-card {
-  position: relative; overflow: hidden; text-decoration: none; color: var(--text);
-  display: flex; flex-direction: column; gap: 10px;
-  background: linear-gradient(180deg, #0C1428 0%, #090F1E 100%);
-  border: 1px solid rgba(255,255,255,0.08); border-radius: 18px; padding: 24px;
-  transition: border-color .2s, transform .2s, box-shadow .2s;
-}
-.entry-card:hover {
-  border-color: rgba(74,141,248,.55); transform: translateY(-4px);
-  box-shadow: 0 18px 40px rgba(0,0,0,.38); color: var(--text);
-}
-.entry-card .entry-top { display: flex; align-items: center; justify-content: space-between; }
-.entry-card .entry-mark {
-  width: 44px; height: 44px; border-radius: 13px;
-  background: rgba(30,79,216,.14); border: 1px solid rgba(74,141,248,.3);
-  display: inline-flex; align-items: center; justify-content: center;
-  font-family: var(--font-head); font-weight: 800; font-size: 15px; color: var(--sky-light);
-}
-.entry-card .entry-type {
-  font-size: 10.5px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase;
-  border-radius: 999px; padding: 4px 10px;
-  color: var(--text-dim); background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.12);
-}
-.entry-card[data-type="tool"] .entry-type,
-.entry-card[data-type="protocolo"] .entry-type {
-  color: var(--green); background: rgba(46,204,113,0.12); border-color: rgba(110,231,168,.3);
-}
-.entry-card[data-type="guide"] .entry-type {
-  color: var(--accent); background: rgba(74,141,248,0.08); border-color: rgba(74,141,248,0.35);
-}
-.entry-card h3 { font-family: var(--font-head); font-size: 21px; font-weight: 700; margin: 6px 0 0; letter-spacing: -0.01em; }
-.entry-card p { color: var(--text-dim); font-size: 14.5px; line-height: 1.55; margin: 0; }
-.entry-card .entry-effort {
-  color: var(--text-faint); font-size: 12.5px; line-height: 1.4;
-}
-.entry-card .entry-cta {
-  margin-top: auto; padding-top: 12px;
-  font-family: var(--font-head); font-weight: 700; font-size: 13.5px; color: var(--accent);
-  display: inline-flex; align-items: center; gap: 6px;
-}
-.entry-card .entry-cta .arrow { transition: transform .2s; }
-.entry-card:hover .entry-cta .arrow { transform: translateX(4px); }
-.entry-grid {
-  display: grid; grid-template-columns: repeat(auto-fill, minmax(272px, 1fr));
+/* ---------- 13 · Grade do próximo passo ------------------ */
+/* Os cartões são os do acervo (.catalog-card, bloco 39): a mesma família da home, dos
+   índices e do fim de cada peça. Aqui fica só a grade; carrega em toda página de conteúdo. */
+.next-step-grid {
+  display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 290px), 1fr));
   gap: 16px; margin-top: 12px;
 }
 
@@ -416,16 +376,25 @@
 .calc header p { color: var(--text-dim); font-size: 14.5px; line-height: 1.6; margin: 0; }
 .calc .calc-controls { display: grid; gap: 18px; margin-bottom: 22px; }
 .calc .calc-row { display: grid; grid-template-columns: 90px minmax(0, 1fr) 120px; gap: 14px; align-items: center; }
-.calc .calc-name { font-size: 14px; color: var(--text-dim); }
-.calc .calc-track { height: 10px; border-radius: 999px; background: var(--bg-elev-2); overflow: hidden; }
-.calc .calc-track > span {
-  display: block; height: 100%; width: 0; border-radius: 999px;
-  background: rgba(74,141,248,.55); transition: width .35s cubic-bezier(.22,1,.36,1);
-}
-.calc .calc-track > span.is-best { background: var(--green); }
-@media (prefers-reduced-motion: reduce) { .calc .calc-track > span { transition: none; } }
+.calc .calc-name { min-width: 0; overflow-wrap: anywhere; font-size: 14px; color: var(--text-dim); }
+/* Barras de custo: uma escala só para todas as linhas, com a linha do zero (.range-zero,
+   bloco 35). O preenchimento sai do zero para a direita (custo) ou para a esquerda
+   (cashback maior que o custo). A cor segue o resultado: data-grade 1 = mais barato,
+   4 = mais caro; sem data-grade, cinza neutro. A posição vem do JS da peça (CSSOM). */
+.calc .calc-track.range { min-width: 0; }
+/* Legenda da linha do zero, logo abaixo de um grupo de barras. */
+.range-caption { color: var(--text-faint); font-size: 12.5px; line-height: 1.5; margin: 0 0 18px; }
+.calc .calc-rows + .range-caption { margin-top: -6px; }
+.compare .range-caption { margin: 0; padding: 12px 16px 0; background: #080D18; border-top: 1px solid var(--border); }
+.compare .range-caption + .compare-foot { border-top: 0; padding-top: 4px; }
+.calc .calc-track .range-zero { left: 0; width: 2px; margin-left: -1px; background: var(--text-dim); }
+.calc .calc-track .range-fill { background: var(--grade-dot, var(--text-faint)); transition: left .35s cubic-bezier(.22,1,.36,1), width .35s cubic-bezier(.22,1,.36,1); }
+@media (prefers-reduced-motion: reduce) { .calc .calc-track .range-fill { transition: none; } }
 .calc .calc-out { font-family: var(--font-head); font-size: 16px; font-weight: 700; text-align: right; color: var(--text-dim); }
+.calc .calc-out { min-width: 0; display: grid; gap: 2px; }
+.calc .calc-out [data-calc-detail] { color: var(--text-faint); font-family: var(--font-body); font-size: 12px; font-weight: 500; line-height: 1.35; }
 .calc .calc-row.is-best .calc-out, .calc .calc-row.is-best .calc-name { color: var(--green); }
+.calc .calc-row[data-grade="4"] .calc-out { color: var(--grade-fg); }
 .calc .calc-verdict {
   border-top: 1px solid var(--border); padding-top: 16px; margin: 0;
   font-family: var(--font-head); font-size: 16px; font-weight: 600; color: var(--text);
@@ -435,13 +404,13 @@
 /* ---------- 18 · Chips de situação (portal) -------------- */
 .situation-chips { display: flex; flex-wrap: wrap; gap: 8px; }
 .situation-chips button {
-  background: rgba(255,255,255,0.04); border: 1px solid var(--border);
-  color: var(--text-dim); font-family: var(--font-body); font-weight: 600;
-  font-size: 14px; padding: 10px 16px; border-radius: 999px; cursor: pointer;
+  background: transparent; border: 1px solid var(--border);
+  color: #A9B5CC; font-family: var(--font-body); font-weight: 600;
+  font-size: 14px; padding: 8px 16px; min-height: 44px; border-radius: 999px; cursor: pointer;
 }
-.situation-chips button:hover { border-color: var(--accent); color: var(--text); }
+.situation-chips button:hover { border-color: #35508A; color: var(--text); }
 .situation-chips button[aria-pressed="true"] {
-  background: rgba(30,79,216,.18); border-color: rgba(74,141,248,.55); color: var(--text);
+  background: rgba(74,141,248,.12); border-color: var(--accent); color: var(--text);
 }
 
 /* ---------- 19 · Guia: etapa com checklist ---------------
@@ -457,7 +426,7 @@
 .guide-step .guide-step-top { display: flex; align-items: center; justify-content: space-between; gap: 16px; margin-bottom: 12px; }
 .guide-step .guide-step-num {
   width: 38px; height: 38px; border-radius: 12px;
-  background: rgba(30,79,216,.18); border: 1px solid rgba(74,141,248,.4); color: var(--sky-light);
+  background: transparent; border: 2px solid #3A4E78; color: var(--text);
   font-family: var(--font-head); font-weight: 800; font-size: 14px;
   display: inline-flex; align-items: center; justify-content: center;
 }
@@ -699,7 +668,7 @@
 }
 .answer-record .answer-q {
   font-family: var(--font-head); font-size: 12.5px; line-height: 1.45; font-weight: 700;
-  letter-spacing: .025em; text-transform: uppercase; color: var(--accent); margin: 0;
+  letter-spacing: .025em; text-transform: uppercase; color: var(--sky-light); margin: 0;
 }
 .answer-record .answer-a {
   font-size: 15.5px; line-height: 1.58; color: var(--text); margin: 0;
@@ -733,6 +702,11 @@
 
 /* ---------- Responsivo ----------------------------------- */
 @media (max-width: 560px) {
+  .calc { padding: 20px 16px; }
+  .calc .calc-row { grid-template-columns: 82px minmax(0, 1fr) 92px; gap: 8px; }
+  .calc .calc-name { font-size: 12px; }
+  .calc .calc-out { font-size: 14px; }
+  .calc .calc-out [data-calc-detail] { font-size: 9px; }
   .cta-verdict { padding: 20px 18px 22px; }
   .cta-verdict .btn, .result-actions .btn { width: 100%; justify-content: center; }
   .result-actions .result-actions-row { flex-direction: column; }
@@ -750,4 +724,228 @@
   .steps .step-num { width: 34px; height: 34px; font-size: 13px; border-radius: 10px; }
   .verdict .verdict-line { font-size: 19px; }
   .next-community a.btn { width: 100%; justify-content: center; }
+}
+
+/* ============================================================
+   PADRÕES DA NOVA HOME (proposta "Painel de decisão", nov/2026)
+   Cada bloco vale para a home, as páginas de vendas e as
+   ferramentas. Só classes novas: nada acima muda de aparência.
+   Regra de cor: azul é ação e navegação; verde, âmbar, laranja
+   e vermelho são só resultado.
+   ============================================================ */
+
+/* ---------- 32 · Base: número, ícone, sobretítulo ---------- */
+/* Sobretítulo de seção: até 3 palavras, igual ao link do menu que leva à seção. */
+.section-eyebrow {
+  font-family: var(--font-head); font-size: 12px; font-weight: 700;
+  letter-spacing: .14em; text-transform: uppercase; color: var(--sky-light); margin: 0;
+}
+/* Algarismos tabulares: número de resultado não "dança" ao trocar de valor. */
+.tnum { font-family: var(--font-head); font-variant-numeric: tabular-nums; }
+.icon { flex-shrink: 0; }
+.icon-check { color: var(--green); }
+.icon-line { color: var(--sky-light); }
+
+/* ---------- 33 · Botões e links de ação -------------------- */
+/* O primário continua sendo .btn-primary do styles-base.css (azul liso, texto branco).
+   Aqui só entram o contorno, os tamanhos e o link com seta. Um botão cheio por bloco. */
+.btn-md { padding: 12px 20px; min-height: 46px; border-radius: 11px; font-size: 15px; gap: 8px; }
+.btn-s { padding: 10px 16px; min-height: 44px; font-size: 14.5px; }
+a.btn-outline, a.btn-outline:visited {
+  background: transparent; border: 1px solid #2A3D66; color: #C3CDE0; font-weight: 700;
+}
+a.btn-outline:hover { border-color: var(--accent); color: var(--text); background: transparent; }
+a.text-link, a.text-link:visited {
+  display: inline-flex; align-items: center; gap: 8px; min-height: 44px;
+  font-weight: 700; font-size: 14.5px; color: var(--sky-light); text-decoration: none;
+}
+a.text-link:hover { color: #C7D9FF; }
+.link-button {
+  align-self: flex-start; display: inline-flex; align-items: center; min-height: 44px;
+  background: none; border: 0; padding: 0; color: var(--sky-light);
+  font: 700 14px var(--font-body); text-align: left; cursor: pointer;
+}
+.link-button:hover { color: #C7D9FF; }
+
+/* ---------- 34 · Escala de veredito em 4 graus ------------- */
+/* Cor, palavra e pontos dizem o mesmo grau; dá para ler sem depender da cor.
+   SIGA/AGUENTA = 1 · AJUSTE = 2 · ESPERE/FRÁGIL = 3 · NÃO/QUEBRA = 4.
+   <span class="verdict-pill" data-grade="3">ESPERE<span class="verdict-dots" role="img"
+   aria-label="grau 3 de 4"><i></i><i></i><i></i><i></i></span></span>
+   Sem .verdict-dots a pílula serve a resultado que não é veredito (ECONOMIA). */
+[data-grade="1"] { --grade-fg: #6EE7A8; --grade-dot: #6EE7A8; --grade-bg: rgba(110,231,168,.10); --grade-bd: rgba(110,231,168,.34); }
+[data-grade="2"] { --grade-fg: #FCD34D; --grade-dot: #FBBF24; --grade-bg: rgba(251,191,36,.12); --grade-bd: rgba(251,191,36,.38); }
+[data-grade="3"] { --grade-fg: #FDBA74; --grade-dot: #FB923C; --grade-bg: rgba(251,146,60,.12); --grade-bd: rgba(251,146,60,.38); }
+[data-grade="4"] { --grade-fg: #FCA5A5; --grade-dot: #F87171; --grade-bg: rgba(248,113,113,.12); --grade-bd: rgba(248,113,113,.38); }
+.grade-text { color: var(--grade-fg); }
+.verdict-pill {
+  display: inline-flex; align-items: center; gap: 10px; padding: 6px 14px; border-radius: 999px;
+  background: var(--grade-bg); border: 1px solid var(--grade-bd); color: var(--grade-fg);
+  font-family: var(--font-head); font-size: 13px; font-weight: 800; letter-spacing: .1em; line-height: 1.2;
+}
+.verdict-pill:has(.verdict-dots) { padding-right: 12px; }
+.verdict-dots { display: inline-flex; gap: 3px; }
+.verdict-dots i { display: block; width: 6px; height: 6px; border-radius: 50%; background: #2A3D66; }
+.verdict-pill[data-grade="1"] .verdict-dots i:nth-child(-n+1),
+.verdict-pill[data-grade="2"] .verdict-dots i:nth-child(-n+2),
+.verdict-pill[data-grade="3"] .verdict-dots i:nth-child(-n+3),
+.verdict-pill[data-grade="4"] .verdict-dots i:nth-child(-n+4) { background: var(--grade-dot); }
+/* Linha "Vereditos possíveis": a escala inteira, em pílulas pequenas. */
+.verdict-scale {
+  display: flex; flex-wrap: wrap; align-items: center; gap: 8px; padding: 12px 14px;
+  border-radius: 12px; background: var(--bg); border: 1px solid #16213B;
+}
+.verdict-scale-label { font-size: 12.5px; color: #8E9BB6; margin-right: 4px; }
+.verdict-tag {
+  font-family: var(--font-head); font-size: 12px; font-weight: 800; letter-spacing: .08em;
+  padding: 3px 9px; border-radius: 999px; color: var(--grade-fg); background: var(--grade-bg);
+}
+
+/* ---------- 35 · Número de resultado e medidores ----------- */
+/* Rótulo em cima, número embaixo, na unidade da pessoa (reais ou meses dos gastos).
+   A barra mostra a grandeza; o número diz o valor. A cor segue o grau (data-grade). */
+.num-grid {
+  display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1px; overflow: hidden;
+  background: var(--border); border: 1px solid var(--border); border-radius: 14px;
+}
+.num-cell { background: #0B1222; padding: 16px 18px; display: flex; flex-direction: column; gap: 6px; min-width: 0; }
+.num-label { font-size: 12.5px; color: var(--text-dim); }
+.num-value { font-size: clamp(22px, 2.3vw, 30px); font-weight: 700; color: #F2F5FB; letter-spacing: -.02em; overflow-wrap: anywhere; }
+.num-value.grade-text { color: var(--grade-fg); }
+.gauge-block, .range-row { display: flex; flex-direction: column; gap: 8px; }
+.gauge-head { display: flex; justify-content: space-between; gap: 12px; font-size: 13px; color: var(--text-dim); }
+.gauge-head .grade-text { font-weight: 700; }
+/* Medidor: a largura vem de uma classe da peça (CSP não aceita style inline). */
+.gauge { height: 8px; border-radius: 99px; background: #16213B; overflow: hidden; }
+.gauge-fill { height: 100%; border-radius: 99px; background: var(--grade-dot); }
+/* Comparação em faixa: a linha vertical marca o zero; mesma escala nas barras. */
+.range { position: relative; height: 10px; border-radius: 99px; background: #16213B; }
+.range-zero { position: absolute; top: -4px; bottom: -4px; width: 1px; background: #4A5D85; }
+.range-fill { position: absolute; top: 0; height: 100%; border-radius: 99px; background: var(--grade-dot); }
+
+/* ---------- 36 · Escolha em linha (radio visual) ----------- */
+/* Mesmo gesto da .choices do questionário pago: a pessoa reconhece da home ao relatório. */
+.choice-list { display: flex; flex-direction: column; gap: 10px; }
+.choice-row {
+  display: flex; gap: 14px; align-items: center; width: 100%; min-height: 52px; padding: 14px 16px;
+  border-radius: 12px; border: 1px solid var(--border); background: #0B1222; color: #C3CDE0;
+  font: 500 15px/1.45 var(--font-body); text-align: left; cursor: pointer;
+}
+.choice-row:hover { border-color: #35508A; }
+.choice-row[aria-pressed="true"] { border-color: var(--accent); background: rgba(74,141,248,.10); color: #F2F5FB; font-weight: 600; }
+.choice-dot { flex-shrink: 0; width: 16px; height: 16px; border-radius: 50%; border: 2px solid #3A4E78; }
+.choice-row[aria-pressed="true"] .choice-dot { border: 5px solid var(--accent); background: #F2F5FB; }
+
+/* ---------- 37 · Escada de 3 degraus ----------------------- */
+/* Toda trilha tem os mesmos degraus: grátis agora → para executar → se o valor pesar.
+   O pago é sempre o último, num cartão de destaque azul. Nó, linha entre os degraus
+   e cor por estado (verde, azul, azul cheio). */
+.ladder { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; }
+.ladder-step { display: flex; gap: 18px; }
+.ladder-rail { display: flex; flex-direction: column; align-items: center; width: 28px; flex-shrink: 0; }
+.ladder-node {
+  width: 28px; height: 28px; border-radius: 50%; border: 2px solid; box-sizing: border-box;
+  display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 700;
+}
+.ladder-line { flex: 1; width: 2px; background: var(--border); margin: 6px 0; }
+.ladder-body { flex: 1; min-width: 0; padding-bottom: 26px; display: flex; flex-direction: column; gap: 10px; }
+.ladder-step:last-child .ladder-body { padding-bottom: 0; }
+.ladder-step.is-free .ladder-node { border-color: var(--green); color: var(--green); }
+.ladder-step.is-guide .ladder-node { border-color: var(--accent); color: var(--sky-light); }
+.ladder-step.is-paid .ladder-node { border-color: var(--accent-2); background: var(--accent-2); color: #fff; }
+.ladder-title { font-family: var(--font-head); font-size: 16px; font-weight: 700; margin: 0; }
+.ladder-sub { font-family: var(--font-body); font-weight: 500; font-size: 13.5px; color: var(--text-dim); }
+.ladder-card {
+  border: 1px solid #2A4A8F; background: #0E1A33; border-radius: 14px; padding: 18px;
+  display: flex; flex-direction: column; gap: 10px;
+}
+.ladder-card-title { font-family: var(--font-head); font-size: 17px; font-weight: 700; line-height: 1.3; margin: 0; }
+.ladder-card-desc { font-size: 15px; line-height: 1.6; color: #A9B5CC; margin: 0; }
+.ladder-card-actions { display: flex; flex-wrap: wrap; gap: 8px 16px; align-items: center; }
+/* Lista de peças dentro do degrau: uma superfície com linhas, não caixas dentro de caixas. */
+.link-list { display: flex; flex-direction: column; border: 1px solid var(--border); border-radius: 12px; overflow: hidden; }
+a.link-row, a.link-row:visited {
+  display: flex; justify-content: space-between; align-items: center; gap: 12px; min-height: 44px;
+  padding: 11px 14px; border-bottom: 1px solid #16213B; background: #0B1222; color: var(--text); text-decoration: none;
+}
+a.link-row:last-child { border-bottom: 0; }
+a.link-row:hover { background: #0F1B33; color: var(--text); }
+.link-row-text { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+.link-row-title { font-weight: 700; font-size: 15px; }
+.link-row-meta { font-size: 12.5px; color: #8E9BB6; }
+.link-row-arrow { color: var(--sky-light); }
+
+/* ---------- 38 · Lista com marca de verificado ------------- */
+.check-list { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 10px; font-size: 15px; line-height: 1.5; }
+.check-list li { display: flex; gap: 10px; }
+.check-list .icon-check { margin-top: 2px; }
+
+/* ---------- 39 · Cartão do acervo (peça) ------------------- */
+/* Monograma + "Formato · tema", título, uma frase e o esforço real no rodapé.
+   O cartão inteiro é o link. O tom do monograma (verde ou azul) vem do registry. */
+a.catalog-card, a.catalog-card:visited {
+  display: flex; flex-direction: column; gap: 12px; padding: 24px; color: var(--text); text-decoration: none;
+  background: #0B1222; border: 1px solid var(--border); border-radius: 18px; transition: border-color .15s;
+}
+a.catalog-card:hover { border-color: #35508A; color: var(--text); }
+.catalog-card[hidden], .catalog-card[data-format-off] { display: none; }
+.catalog-card-top { display: flex; align-items: center; gap: 12px; }
+.catalog-mark {
+  flex-shrink: 0; width: 42px; height: 42px; border-radius: 11px; font-size: 14px; font-weight: 700;
+  display: flex; align-items: center; justify-content: center; border: 1px solid;
+}
+.catalog-mark.is-green { background: rgba(110,231,168,.10); color: var(--green); border-color: rgba(110,231,168,.28); }
+.catalog-mark.is-blue { background: rgba(74,141,248,.12); color: var(--sky-light); border-color: rgba(74,141,248,.32); }
+.catalog-kind { font-size: 12.5px; font-weight: 700; color: var(--text-dim); }
+.catalog-card-title { font-family: var(--font-head); font-size: 20px; font-weight: 700; line-height: 1.25; margin: 0; color: inherit; }
+.catalog-card-desc { font-size: 15px; line-height: 1.6; color: #A9B5CC; margin: 0; }
+.catalog-card-foot {
+  display: flex; justify-content: space-between; align-items: center; gap: 12px;
+  margin-top: auto; padding-top: 10px; border-top: 1px solid #16213B;
+}
+.catalog-effort { font-size: 12.5px; color: #8E9BB6; }
+.catalog-cta { margin-left: auto; font-weight: 700; font-size: 14px; color: var(--sky-light); }
+
+/* ---------- 40 · Filtros: segmentado e pílulas ------------- */
+.segmented {
+  display: inline-flex; flex-wrap: wrap; gap: 4px; padding: 4px; align-self: flex-start;
+  border: 1px solid var(--border); border-radius: 12px; background: var(--bg-elev);
+}
+.segmented-btn {
+  gap: 6px; border: 0; background: transparent; color: #A9B5CC; font-weight: 600; font-size: 14px;
+  padding: 10px 16px; border-radius: 9px; min-height: 44px; cursor: pointer;
+}
+.segmented-btn:hover { color: var(--text); }
+.segmented-btn[aria-pressed="true"] { background: #1A2A4D; color: #F2F5FB; font-weight: 700; }
+.segmented-btn[aria-pressed="true"] .segmented-count { color: var(--sky-light); }
+.pill-row { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+.pill-row-label { font-size: 13px; color: #8E9BB6; margin-right: 4px; }
+.pill-group { display: flex; flex-wrap: wrap; gap: 8px; }
+.pill {
+  border: 1px solid var(--border); background: transparent; color: #A9B5CC; font-weight: 600; font-size: 13.5px;
+  padding: 8px 14px; border-radius: 999px; min-height: 44px; cursor: pointer;
+}
+.pill:hover { border-color: #35508A; color: var(--text); }
+.pill[aria-pressed="true"] { border-color: var(--accent); background: rgba(74,141,248,.12); color: var(--text); }
+
+/* ---------- 41 · Barra fixa no celular ---------------------- */
+/* Mesmo padrão da barra das páginas de vendas (.sp-barra-fixa): escondida no topo, entra
+   depois do primeiro quadro (classe .is-visible, posta por JS) e some quando a seção de
+   destino está na tela. Sem JS ela nunca aparece; escondida, sai da ordem do Tab. */
+.mobile-bar { display: none; }
+@media (max-width: 720px) {
+  .mobile-bar {
+    position: fixed; left: 0; right: 0; bottom: 0; z-index: 50; display: flex; align-items: center; gap: 10px;
+    padding: 12px 16px calc(12px + env(safe-area-inset-bottom));
+    background: rgba(6,9,15,.94); border-top: 1px solid #22345C; backdrop-filter: blur(8px);
+    transform: translateY(110%); visibility: hidden; transition: transform .25s ease, visibility 0s linear .25s;
+  }
+  .mobile-bar.is-visible { transform: none; visibility: visible; transition: transform .25s ease; }
+  .mobile-bar .btn { min-height: 50px; justify-content: center; }
+  .mobile-bar-main { flex: 1; font-size: 15px; }
+  .mobile-bar-side { flex: 0 0 auto; padding: 0 14px; font-size: 14px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .mobile-bar, .mobile-bar.is-visible, a.catalog-card { transition: none; }
 }

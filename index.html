@@ -32,7 +32,7 @@
 
 <meta name="theme-color" content="#06090F">
 <link rel="icon" type="image/png" href="assets/dlt-mark.png">
-<link rel="stylesheet" href="styles.css?v=2026-07-20e">
+<link rel="stylesheet" href="styles.css?v=2026-11-17a">
 <link rel="stylesheet" href="dlt-patterns.css">
 
 
@@ -81,11 +81,11 @@
       <div class="card">
         <h2><span class="num">1</span>Antes dos números: o que você teme que aconteça?</h2>
         <p class="section-desc">Proteção começa por um medo específico, não por uma planilha. Escolha o que está mais perto do seu caso — os controles abaixo já começam num ponto compatível, e você ajusta o que quiser depois.</p>
-        <div class="btn-row" id="medo-opcoes" role="group" aria-label="O que você teme que aconteça">
-          <button type="button" class="btn btn-secondary" data-medo="cair">Cair muito e não voltar</button>
-          <button type="button" class="btn btn-secondary" data-medo="precisar">Precisar do dinheiro no pior momento</button>
-          <button type="button" class="btn btn-secondary" data-medo="dormir">Não conseguir dormir com isso</button>
-          <button type="button" class="btn btn-secondary" data-medo="devolver">Devolver o que eu já ganhei</button>
+        <div class="choice-list" id="medo-opcoes" role="group" aria-label="O que você teme que aconteça">
+          <button type="button" class="choice-row" data-medo="cair" aria-pressed="false"><span class="choice-dot"></span><span>Cair muito e não voltar</span></button>
+          <button type="button" class="choice-row" data-medo="precisar" aria-pressed="false"><span class="choice-dot"></span><span>Precisar do dinheiro no pior momento</span></button>
+          <button type="button" class="choice-row" data-medo="dormir" aria-pressed="false"><span class="choice-dot"></span><span>Não conseguir dormir com isso</span></button>
+          <button type="button" class="choice-row" data-medo="devolver" aria-pressed="false"><span class="choice-dot"></span><span>Devolver o que eu já ganhei</span></button>
         </div>
         <p class="model-note" id="medo-eco">Nenhuma resposta é enviada a lugar nenhum — a página inteira roda no seu navegador.</p>
       </div>
@@ -158,7 +158,7 @@
           <div class="result-top">
             <div>
               <div class="result-kicker">Resultado pareado</div>
-              <div class="result-big big-stat" id="result-big">—</div>
+              <div class="result-big big-stat tnum" id="result-big">—</div>
             </div>
             <div class="result-read stat-label" id="result-label">ajuste os controles para simular</div>
           </div>
@@ -168,9 +168,9 @@
         <p class="model-note" id="chart-legend">Linha clara: sem proteção. Linha destacada: com a proteção escolhida. Mesmo sorteio nas duas.</p>
 
         <div class="stat-row result-stats three-stat-grid">
-          <div class="stat-box"><div class="val" id="stat-ruins-sem">—</div><div class="label">cenários ruins sem proteção</div></div>
-          <div class="stat-box"><div class="val" id="stat-ruins-com">—</div><div class="label">cenários ruins com proteção</div></div>
-          <div class="stat-box" id="box-liquidacao"><div class="val" id="stat-custo">—</div><div class="label">efeito médio no bolso</div><span class="stat-support"><span id="stat-liquidacao">—</span> proteção quebrada</span></div>
+          <div class="stat-box"><div class="label">cenários ruins sem proteção</div><div class="val tnum" id="stat-ruins-sem">—</div></div>
+          <div class="stat-box"><div class="label">cenários ruins com proteção</div><div class="val tnum" id="stat-ruins-com">—</div></div>
+          <div class="stat-box" id="box-liquidacao"><div class="label">efeito médio no bolso</div><div class="val tnum" id="stat-custo">—</div><span class="stat-support"><span id="stat-liquidacao">—</span> proteção quebrada</span></div>
         </div>
 
         <div class="result-actions">
@@ -212,9 +212,9 @@
           <div class="calc-field"><label>Alavancagem da proteção (multiplicador)</label><input type="number" id="calc-alav" value="2" step="0.5"></div>
         </div>
         <div class="stat-row three-stat-grid">
-          <div class="stat-box"><div class="val" id="calc-nocional">—</div><div class="label">proteção a montar</div></div>
-          <div class="stat-box"><div class="val" id="calc-margem">—</div><div class="label">margem necessária</div></div>
-          <div class="stat-box"><div class="val" id="calc-liquidacao">—</div><div class="label">preço que encerra a proteção</div></div>
+          <div class="stat-box"><div class="label">proteção a montar</div><div class="val tnum" id="calc-nocional">—</div></div>
+          <div class="stat-box"><div class="label">margem necessária</div><div class="val tnum" id="calc-margem">—</div></div>
+          <div class="stat-box"><div class="label">preço que encerra a proteção</div><div class="val tnum" id="calc-liquidacao">—</div></div>
         </div>
         <p class="model-note">A proteção é encerrada quando o preço <strong>sobe</strong> o suficiente para consumir a margem. Quanto maior a alavancagem, menos margem parada — e mais perto fica esse preço. É por isso que proteção alavancada demais costuma sumir justamente antes da queda que se queria evitar.</p>
       </div>
@@ -229,18 +229,18 @@
 
         <div class="router-question" data-question="binance">
           <div class="router-label">1. Você já tem uma conta na Binance validada?</div>
-          <div class="radio-group" role="group" aria-label="Conta Binance">
-            <button type="button" data-router-field="hasBinance" data-value="no">Ainda não</button>
-            <button type="button" data-router-field="hasBinance" data-value="yes">Sim</button>
+          <div class="choice-list" role="group" aria-label="Conta Binance">
+            <button type="button" class="choice-row" data-router-field="hasBinance" data-value="no"><span class="choice-dot"></span><span>Ainda não</span></button>
+            <button type="button" class="choice-row" data-router-field="hasBinance" data-value="yes"><span class="choice-dot"></span><span>Sim</span></button>
           </div>
         </div>
 
         <div class="router-question" data-question="goal">
           <div class="router-label">2. O que você quer resolver agora?</div>
-          <div class="radio-group" role="group" aria-label="Objetivo principal">
-            <button type="button" data-router-field="goal" data-value="trade">Começar ou melhorar no trading</button>
-            <button type="button" data-router-field="goal" data-value="alternative">Usar outra corretora</button>
-            <button type="button" data-router-field="goal" data-value="spend">Gastar cripto e economizar em viagens</button>
+          <div class="choice-list" role="group" aria-label="Objetivo principal">
+            <button type="button" class="choice-row" data-router-field="goal" data-value="trade"><span class="choice-dot"></span><span>Começar ou melhorar no trading</span></button>
+            <button type="button" class="choice-row" data-router-field="goal" data-value="alternative"><span class="choice-dot"></span><span>Usar outra corretora</span></button>
+            <button type="button" class="choice-row" data-router-field="goal" data-value="spend"><span class="choice-dot"></span><span>Gastar cripto e economizar em viagens</span></button>
           </div>
         </div>
 
@@ -293,11 +293,11 @@
   </div>
 </footer>
 
-<script src="config.js?v=2026-07-20e"></script>
-<script src="js/protection.js?v=2026-07-20e"></script>
-<script src="js/chart.js?v=2026-07-20e"></script>
-<script src="js/share-card.js?v=2026-07-20e"></script>
-<script src="js/app.js?v=2026-07-20e"></script>
+<script src="config.js?v=2026-11-17a"></script>
+<script src="js/protection.js?v=2026-11-17a"></script>
+<script src="js/chart.js?v=2026-11-17a"></script>
+<script src="js/share-card.js?v=2026-11-17a"></script>
+<script src="js/app.js?v=2026-11-17a"></script>
 <script src="js/dlt-interactions.js"></script>
 </body>
 </html>

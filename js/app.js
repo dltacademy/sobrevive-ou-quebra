@@ -194,7 +194,6 @@ function resetRouter() {
   routerState.hasBinance = null;
   routerState.goal = null;
   document.querySelectorAll("[data-router-field]").forEach((button) => {
-    button.classList.remove("selected");
     button.setAttribute("aria-pressed", "false");
   });
   document.getElementById("router-alternatives").open = false;
@@ -209,9 +208,7 @@ document.querySelectorAll("[data-router-field]").forEach((button) => {
     const value = button.dataset.value;
     routerState[field] = value;
     document.querySelectorAll(`[data-router-field="${field}"]`).forEach((peer) => {
-      const selected = peer === button;
-      peer.classList.toggle("selected", selected);
-      peer.setAttribute("aria-pressed", String(selected));
+      peer.setAttribute("aria-pressed", String(peer === button));
     });
     // Registra só qual pergunta foi respondida, nunca a resposta.
     if (field === "hasBinance") track("roteador_resposta_hasBinance");
@@ -340,10 +337,7 @@ function aplicarMedo(chave) {
 
   document.getElementById("medo-eco").textContent = medo.eco;
   document.querySelectorAll("#medo-opcoes button").forEach((b) => {
-    const ativo = b.dataset.medo === chave;
-    b.classList.toggle("btn-primary", ativo);
-    b.classList.toggle("btn-secondary", !ativo);
-    b.setAttribute("aria-pressed", ativo ? "true" : "false");
+    b.setAttribute("aria-pressed", b.dataset.medo === chave ? "true" : "false");
   });
 
   // Só que um medo foi escolhido: qual deles é resposta e fica no navegador.
@@ -457,7 +451,10 @@ function renderSimResult(result, params) {
   const comPct = result.cenariosRuinsComProtecao * 100;
   const evitados = semPct - comPct;
   const melhorou = evitados > 0.5;
-  banner.className = "result-hero result-banner " + (melhorou ? "survive" : "ruin is-alert");
+  // Mesma decisão de antes (melhorou → bom; senão → alerta), agora como grau da
+  // escala de 4 (dlt-patterns.css, bloco 34): 1 = verde, 4 = vermelho.
+  banner.className = "result-hero result-banner";
+  banner.dataset.grade = melhorou ? "1" : "4";
 
   const perdaLimite = Math.round(params.toleranciaPct * 100);
 
