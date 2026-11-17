@@ -372,7 +372,7 @@ footer a { color: var(--text-dim); }
   margin-bottom: 10px;
 }
 /* Sobretítulo (#8FBBFF), sem caixa: verde e azul cheios são cores de resultado e de ação. */
-.tag.s1, .tag.s2 { color: var(--sky-light, #8FBBFF); border-color: transparent; background: transparent; padding-left: 0; padding-right: 0; }
+.tag, .tag.s1, .tag.s2 { color: var(--sky-light, #8FBBFF); border-color: transparent; background: transparent; padding-left: 0; padding-right: 0; }
 
 /* Roteador de oferta — recomenda uma opção principal conforme o contexto */
 .router-card {

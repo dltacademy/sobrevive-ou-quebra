@@ -480,10 +480,12 @@ function renderSimResult(result, params) {
   document.getElementById("stat-custo").textContent =
     params.rota === "nada" ? "—" : (diff >= 0 ? "+" : "−") + formatBRLShort(Math.abs(diff));
 
-  // Só futuros podem ser liquidados; nas outras rotas a caixa não se aplica
-  // e uma caixa vazia sozinha numa linha só polui o resultado.
+  // O efeito no bolso vale para toda rota com proteção; sem proteção ("nada")
+  // ele seria um traço sozinho, então a coluna some. Só futuros podem ser
+  // liquidados: nas outras rotas some apenas a linha da proteção quebrada.
   const liq = result.taxaLiquidacaoProtecao;
-  document.getElementById("box-liquidacao").hidden = liq === null;
+  document.getElementById("box-liquidacao").hidden = params.rota === "nada";
+  document.getElementById("stat-liquidacao").parentElement.hidden = liq === null;
   document.getElementById("stat-liquidacao").textContent =
     liq === null ? "—" : (liq * 100).toFixed(0) + "%";
 
