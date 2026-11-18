@@ -16,8 +16,9 @@ class VisualContractTests(unittest.TestCase):
         self.assertTrue((ROOT / "dlt-patterns.css").is_file())
         self.assertTrue((ROOT / "js" / "dlt-interactions.js").is_file())
         self.assertTrue((ROOT / "og-image.svg").is_file())
-        self.assertIn('<link rel="stylesheet" href="dlt-patterns.css">', self.html)
-        self.assertIn('<script src="js/dlt-interactions.js"></script>', self.html)
+        # Os assets podem levar ?v=AAAA-MM-DDx, que força o navegador a buscar a versão nova.
+        self.assertRegex(self.html, r'<link rel="stylesheet" href="dlt-patterns\.css(\?v=[\w.-]+)?">')
+        self.assertRegex(self.html, r'<script src="js/dlt-interactions\.js(\?v=[\w.-]+)?"></script>')
         self.assertIn('class="hero tool-head"', self.html)
         self.assertIn('class="subtitle tool-promise"', self.html)
         self.assertIn('class="tool-facts"', self.html)
