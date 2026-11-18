@@ -42,10 +42,10 @@
 }
 
 /* ---------- 02 · O essencial ------------------------------- */
+/* Superfície neutra: azul é ação e navegação, nunca fundo de bloco. */
 .key-points {
   max-width: var(--pattern-read);
-  background: linear-gradient(135deg, rgba(30,79,216,.14), rgba(10,17,32,.6));
-  border: 1px solid rgba(74,141,248,.28);
+  background: var(--bg-elev); border: 1px solid var(--border);
   border-radius: 16px; padding: 26px 28px; margin: 0 0 30px;
 }
 .key-points > p:first-child,
@@ -165,10 +165,11 @@
 .steps { max-width: var(--pattern-read); margin: 0 0 30px; }
 .steps .step { display: grid; grid-template-columns: 44px minmax(0, 1fr); gap: 18px; }
 .steps .step-rail { display: flex; flex-direction: column; align-items: center; gap: 8px; }
+/* Número do passo em anel neutro: quadradinho azul seria azul decorativo. */
 .steps .step-num {
   width: 40px; height: 40px; border-radius: 12px;
-  background: rgba(30,79,216,.18); border: 1px solid rgba(74,141,248,.4);
-  color: var(--sky-light); font-family: var(--font-head); font-weight: 800; font-size: 15px;
+  background: transparent; border: 2px solid #3A4E78;
+  color: var(--text); font-family: var(--font-head); font-weight: 800; font-size: 15px;
   display: inline-flex; align-items: center; justify-content: center; flex-shrink: 0;
 }
 .steps .step-rail::after { content: ""; width: 1px; flex: 1; background: var(--border); }
@@ -184,10 +185,11 @@
 .steps .step-body .note { margin-bottom: 0; }
 
 /* ---------- 08 · Veredito --------------------------------- */
+/* Uma superfície neutra com um filete claro no topo. Azul é ação, não decoração. */
 .verdict {
   max-width: var(--pattern-read);
-  border-top: 2px solid var(--accent-2);
-  background: linear-gradient(180deg, rgba(30,79,216,.12), rgba(10,17,32,0));
+  background: var(--bg-elev); border: 1px solid var(--border);
+  border-top: 2px solid rgba(232,237,247,.45);
   border-radius: 0 0 14px 14px; padding: 24px 26px 26px; margin: 30px 0;
 }
 .verdict > p:first-child {
