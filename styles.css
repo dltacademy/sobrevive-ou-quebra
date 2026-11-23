@@ -121,6 +121,8 @@ header.top {
 header.top > .wrap { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; column-gap: 16px; min-height: 64px; }
 /* Com letra aumentada no aparelho, o menu desce para a linha de baixo em vez de vazar da tela. */
 header.top .brand { min-height: 44px; }
+/* O logo completo tem o nome embutido: abaixo de ~40 px o "DLT ACADEMY" fica ilegível. */
+header.top .brand img { height: 44px; width: auto; }
 .header-nav { display: flex; align-items: center; gap: 6px; }
 .header-nav a {
   display: inline-flex;
@@ -143,6 +145,7 @@ header.top .brand { min-height: 44px; }
 html { scroll-padding-top: 84px; }
 @media (max-width: 560px) {
   header.top > .wrap { column-gap: 8px; padding-left: 16px; padding-right: 16px; }
+  header.top .brand img { height: 34px; }
   .header-nav { gap: 0; }
   .header-nav a { padding: 0 6px; }
 }
